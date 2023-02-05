@@ -82,16 +82,21 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-jwt (0.10.0)
+    devise-jwt (0.9.0)
       devise (~> 4.0)
       warden-jwt_auth (~> 0.6)
-    dry-auto_inject (1.0.0)
-      dry-core (~> 1.0, < 2)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
+    dry-auto_inject (0.9.0)
+      dry-container (>= 0.3.4)
+    dry-configurable (0.16.1)
+      dry-core (~> 0.6)
       zeitwerk (~> 2.6)
-    dry-configurable (1.0.1)
-      dry-core (~> 1.0, < 2)
-      zeitwerk (~> 2.6)
-    dry-core (1.0.0)
+    dry-container (0.11.0)
+      concurrent-ruby (~> 1.0)
+    dry-core (0.9.1)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
     erubi (1.12.0)
@@ -172,15 +177,16 @@ GEM
     responders (3.1.0)
       actionpack (>= 5.2)
       railties (>= 5.2)
+    spring (4.1.1)
     thor (1.2.1)
     timeout (0.3.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
-    warden-jwt_auth (0.8.0)
-      dry-auto_inject (>= 0.8, < 2)
-      dry-configurable (>= 0.13, < 2)
+    warden-jwt_auth (0.6.0)
+      dry-auto_inject (~> 0.8)
+      dry-configurable (~> 0.13)
       jwt (~> 2.1)
       warden (~> 1.2)
     websocket-driver (0.7.5)
@@ -196,12 +202,15 @@ DEPENDENCIES
   bootsnap
   debug
   devise
-  devise-jwt
+  devise-jwt (= 0.9.0)
+  dotenv-rails
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.2)
+  spring
   tzinfo-data
+  warden-jwt_auth (= 0.6.0)
 
 RUBY VERSION
    ruby 3.1.2p20

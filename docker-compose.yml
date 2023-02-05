@@ -6,8 +6,8 @@ services:
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
   api:
     build:
       context: ./api/
@@ -17,7 +17,8 @@ services:
       - ./api:/myapp-api
     environment:
       TZ: Asia/Tokyo
-      RAILS_ENV: development
+      RAILS_ENV: ${RAILS_ENV:-development}
+      DEVISE_JWT_SECRET_KEY: ${DEVISE_JWT_SECRET_KEY}
     ports:
       - "3000:3000"
     depends_on:
