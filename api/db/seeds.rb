@@ -6,6 +6,15 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+puts "Destroy TaggedTasks"
+TaggedTask.destroy_all
+
+puts "Destroy Tags"
+Tag.destroy_all
+
+puts "Destroy Tasks"
+Task.destroy_all
+
 puts "Destroy Members"
 Member.destroy_all
 
@@ -27,3 +36,20 @@ group_two = Group.create!(name: "Test Group Two", description: "blablabla", admi
 puts "Creating Participants"
 participant_one = Member.new(user: user_one, group: group_one)
 participant_one.save!
+
+puts "Creating Tasks"
+task_one = Task.create!(name: "Task 1", user: user_one, group: group_one, assignee: admin_one)
+task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_one)
+# Test if we can create tasks for users not part of the group
+task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_two)
+
+puts "Creating Tags"
+tag_one = Tag.create!(name: "Tag 1", user: user_one, group: group_one)
+tag_two = Tag.create!(name: "Tag 2", user: admin_one, group: group_one)
+# Test if we can create tags even if user not part of the group
+tag_three = Tag.create!(name: "Tag 3", user: admin_one, group: group_two)
+
+puts "Creating TaggedTasks"
+taggedtask_one = TaggedTask.create!(task: task_one, tag: tag_one)
+# Test if we can create taggedtasks even if tag not part of the group
+taggedtask_two = TaggedTask.create!(task: task_one, tag: tag_three)
