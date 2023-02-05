@@ -1,5 +1,5 @@
 FROM ruby:3.1.2
-ARG APP_NAME=myapp-api
+ARG APP_NAME=/myapp-api
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 RUN mkdir ${APP_NAME}
 WORKDIR ${APP_NAME}

@@ -28,6 +28,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./front:/usr/src/app
-    command: sh -c "cd myapp-front && npm start"
+    command: sh -c "cd myapp-front && npm install && npm start"
     ports:
       - "3001:3000"
