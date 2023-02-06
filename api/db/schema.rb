@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_05_200425) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_06_195915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_200425) do
     t.text "oauth_token"
     t.bigint "group_id", null: false
     t.bigint "sender_id", null: false
-    t.bigint "recipient_id", null: false
+    t.bigint "recipient_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_invitations_on_group_id"
@@ -97,7 +97,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_200425) do
     t.datetime "updated_at", null: false
     t.string "jti", null: false
     t.string "username"
-    t.boolean "admin", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

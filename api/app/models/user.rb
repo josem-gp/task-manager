@@ -12,4 +12,9 @@ class User < ApplicationRecord
   has_many :tags
   has_many :invitations, foreign_key: :sender_id
   has_many :invitations, foreign_key: :recipient_id
+
+  # Check if user is the admin (creator) of a specific group
+  def admin?(group)
+    self == group.admin
+  end
 end
