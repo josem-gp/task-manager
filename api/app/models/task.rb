@@ -1,15 +1,20 @@
 class Task < ApplicationRecord
+
+  # Associations
   belongs_to :group
   belongs_to :user
   belongs_to :assignee, class_name: "User", foreign_key: :assignee_id
   has_many :tagged_tasks
 
-  validate :save_task?
+  # Validations
+  validates :name, presence: true, length: { maximum: 15 }
+  validates :due_date, date: true 
+  validate :valid_task?
 
   private
 
   # Validate task before creation
-  def save_task?
+  def valid_task?
     task_user = self.user
     task_group = self.group
     task_assignee = self.assignee

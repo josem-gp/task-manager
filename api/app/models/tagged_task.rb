@@ -2,12 +2,12 @@ class TaggedTask < ApplicationRecord
   belongs_to :task
   belongs_to :tag
 
-  validate :save_tagged_task?
+  validate :valid_tagged_task?
 
   private
 
   # Validate TaggedTask before creation
-  def save_tagged_task?
+  def valid_tagged_task?
     task = self.task
     tag = self.tag
 
