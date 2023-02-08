@@ -11,6 +11,10 @@ module Api
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    # Add Logger
+    Rails.logger = Logger.new(STDOUT)
+    config.logger = ActiveSupport::Logger.new("log/#{ENV["RAILS_ENV"]}.log")
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
