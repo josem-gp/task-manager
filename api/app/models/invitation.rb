@@ -1,4 +1,7 @@
 class Invitation < ApplicationRecord
+  # It will send an invitation to a group via oauth_token. The lead can sign up from there. 
+  # It will expired after expiration date or usage (it is a one-time link)
+
   has_secure_token :oauth_token, length: 36 # Rails built-in method (https://api.rubyonrails.org/classes/ActiveRecord/SecureToken/ClassMethods.html#method-i-has_secure_token)
 
   # Associations
