@@ -30,7 +30,7 @@ class User < ApplicationRecord
   private
 
   def send_registration_email
-    UserConfirmationMailer.with(user: self).user_registration_email.deliver_later
+    UserConfirmationMailer.with(user: self).user_registration_email.deliver_now
   end 
 
 end
