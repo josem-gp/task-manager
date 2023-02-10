@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :groups, only: [ :index ]
       get 'invitation_signup/:token' => 'invitations#invitation_signup'
+      post 'send_invitation' => 'invitations#send_invitation'
     end
   end
 end
