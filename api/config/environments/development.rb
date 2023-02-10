@@ -54,7 +54,23 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
   # Devise requires a default url
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  host = 'localhost:3000'
+  config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
+  config.action_mailer.delivery_method = :smtp #change to test in order not to send in the future
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
+
+
+  ActionMailer::Base.smtp_settings = {
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true,
+    :domain => "gmail.com",
+    :user_name => ENV['GMAIL_SMTP_USER'],
+    :password => ENV['GMAIL_SMTP_PASSWORD'] 
+  }
   
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

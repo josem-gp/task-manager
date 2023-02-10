@@ -19,8 +19,18 @@ class User < ApplicationRecord
   validates :username, :email, uniqueness: { case_sensitive: false }
   validates :username, length: { in: 3..15 }
 
+  # Callbacks
+  after_create :send_registration_email
+
   # Check if user is the admin (creator) of a specific group
   def admin?(group)
     self == group.admin
   end
+
+  private
+
+  def send_registration_email
+    UserConfirmationMailer.with(user: self).user_registration_email.deliver_now
+  end 
+
 end

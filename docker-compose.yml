@@ -19,6 +19,9 @@ services:
       TZ: Asia/Tokyo
       RAILS_ENV: ${RAILS_ENV:-development}
       DEVISE_JWT_SECRET_KEY: ${DEVISE_JWT_SECRET_KEY}
+      GMAIL_SMTP_USER: ${GMAIL_SMTP_USER}
+      GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
+      APP_NAME: ${APP_NAME}
     ports:
       - "3000:3000"
     depends_on:
