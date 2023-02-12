@@ -49,7 +49,7 @@ puts "Creating Memberships"
 participant_one = Membership.create!(user: user_one, group: group_one) # I can add any user to any group
 
 puts "Creating Tasks"
-# task_one = Task.create!(name: "Task 1", user: user_one, group: group_one, assignee: admin_one, due_date: "03/12/2024") 
+task_one = Task.create!(name: "Task 1", user: user_one, group: group_one, assignee: admin_one, due_date: "03/12/2024") 
 task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_one, due_date: "24/12/30")
 
 # task_two = Task.create!(name: "Task 3", user: admin_one, group: group_two, assignee: user_one) # Test if we can create tasks for users not part of the group
