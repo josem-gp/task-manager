@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_212724) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_12_085129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,13 +44,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_212724) do
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
-  create_table "members", force: :cascade do |t|
+  create_table "memberships", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_members_on_group_id"
-    t.index ["user_id"], name: "index_members_on_user_id"
+    t.index ["group_id"], name: "index_memberships_on_group_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "tagged_tasks", force: :cascade do |t|
@@ -107,8 +107,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_212724) do
   add_foreign_key "invitations", "groups"
   add_foreign_key "invitations", "users", column: "recipient_id"
   add_foreign_key "invitations", "users", column: "sender_id"
-  add_foreign_key "members", "groups"
-  add_foreign_key "members", "users"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users"
   add_foreign_key "tagged_tasks", "tags"
   add_foreign_key "tagged_tasks", "tasks"
   add_foreign_key "tags", "groups"
