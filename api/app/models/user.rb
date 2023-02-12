@@ -5,9 +5,9 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   # Associations
-  has_many :groups, foreign_key: :admin_id, dependent: :destroy # If we delete the user (if admin), then the group will be also deleted
-  has_many :members
-  has_many :groups, through: :members
+  has_many :groups_as_admin, foreign_key: :admin_id, class_name: "Group", dependent: :destroy # If we delete the user (if admin), then the group will be also deleted
+  has_many :memberships
+  has_many :groups, through: :memberships
   has_many :tasks
   has_many :tasks, foreign_key: :assignee_id # Tasks will have one assignee per task
   has_many :tags
