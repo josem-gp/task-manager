@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+# Configure Sidekiq-specific session middleware
+Sidekiq::Web.use ActionDispatch::Cookies
+Sidekiq::Web.use ActionDispatch::Session::CookieStore, key: "_interslice_session"
+
 Rails.application.routes.draw do
+
   devise_for :users,
              controllers: {
                  sessions: 'users/sessions',
@@ -15,4 +21,5 @@ Rails.application.routes.draw do
       get 'invitation_signup/:token' => 'invitations#invitation_signup'
     end
   end
+  mount Sidekiq::Web => '/sidekiq'
 end

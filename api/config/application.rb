@@ -15,6 +15,9 @@ module Api
     Rails.logger = Logger.new(STDOUT)
     config.logger = ActiveSupport::Logger.new("log/#{ENV["RAILS_ENV"]}.log")
 
+    # Using sidekiq
+    config.active_job.queue_adapter = :sidekiq
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
