@@ -57,6 +57,7 @@ services:
       REDIS_URL: ${REDIS_URL}
       GMAIL_SMTP_USER: ${GMAIL_SMTP_USER}
       GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
+      APP_NAME: ${APP_NAME}
     depends_on:
       - db
       - redis

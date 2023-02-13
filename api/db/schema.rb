@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_12_085129) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_13_195310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_085129) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_groups_on_admin_id"
+  end
+
+  create_table "icons", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -98,7 +105,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_085129) do
     t.datetime "updated_at", null: false
     t.string "jti", null: false
     t.string "username"
+    t.bigint "icon_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["icon_id"], name: "index_users_on_icon_id"
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -116,4 +125,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_085129) do
   add_foreign_key "tasks", "groups"
   add_foreign_key "tasks", "users"
   add_foreign_key "tasks", "users", column: "assignee_id"
+  add_foreign_key "users", "icons"
 end

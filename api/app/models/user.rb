@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :tags
   has_many :invitations, foreign_key: :sender_id
   has_many :invitations, foreign_key: :recipient_id
+  belongs_to :icon
 
   # Validations (Devise already takes care of things like password length or email format validation)
   validates :username, :email, :password, presence: true
@@ -20,6 +21,7 @@ class User < ApplicationRecord
   validates :username, length: { in: 3..15 }
 
   # Callbacks
+  before_validation :add_default_icon, on: :create
   after_create :send_registration_email
 
   # Check if user is the admin (creator) of a specific group
@@ -28,6 +30,11 @@ class User < ApplicationRecord
   end
 
   private
+
+  def add_default_icon
+    default_icon = Icon.find_by(name: 'default_icon')
+    self.icon = default_icon
+  end
 
   def send_registration_email
     UserConfirmationMailer.with(user: self).user_registration_email.deliver_later
