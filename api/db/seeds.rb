@@ -27,6 +27,17 @@ Group.destroy_all
 puts "Destroy Users"
 User.destroy_all
 
+puts "Creating Icons"
+
+default_icon = Icon::IMAGES[0]
+icons = Icon::IMAGES[1..-1]
+
+Icon.create!(name: "default_icon", url: default_icon)
+
+icons.each_with_index do |icon, idx|
+  Icon.create!(name: "icon#{idx}", url: icon)
+end
+
 puts "Creating Users"
 admin_one = User.create!(username: "jose", email: "jgarciaportillo@gmail.com", password: "123456")
 user_one = User.create!(username: "saki", email: "saki@test.io", password: "1234567")
