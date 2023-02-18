@@ -46,6 +46,7 @@ admin_two = User.create!(username: "joe", email: "joe@test.io", password: "12345
 # user_two = User.create!(username: "Jose", email: "joes@test.io", password: "1234567") # Test if case sensitive works for username
 # user_three = User.create!(username: "jjose", email: "Joe@test.io", password: "1234567") # Test if case sensitive works for email
 # user_four = User.create!(email: "jake@test.io", password: "1234567") # Test if user can be saved without username
+# user_five = User.create!(username: "Joseasdfasd", email: "jake@test.io", password: "12345") # Test if password can be less than 6 char
 
 
 puts "Creating Group"
