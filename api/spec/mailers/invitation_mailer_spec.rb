@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe InvitationMailer, type: :mailer do
   describe "#send_invite" do
 
-    let(:invitation) { create(:valid_invitation) }
+    let(:invitation) { create(:invitation) }
     let(:mail) { described_class.with(recipient: invitation.email, sender: invitation.sender, group: invitation.group).send_invite }
 
     it "renders the subject" do

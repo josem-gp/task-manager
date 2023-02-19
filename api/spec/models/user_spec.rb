@@ -2,46 +2,45 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe "model validation" do
-    subject { create :valid_user }
+    subject { create :user }
+    let(:duplicated_username) {build :user, username: subject.username.upcase }
+    let(:duplicated_email) {build :user, email: subject.email.upcase }
 
-    context "when not valid" do     
-      let(:user_without_username) {build :user_without_username }
-      let(:user_without_email) { build :user_without_email }
-      let(:user_without_password) { build :user_without_password }
-      let(:user_with_invalid_username) {build :user_with_invalid_username }
-      let(:user_with_invalid_password) {build :user_with_invalid_password }
-      let(:user_with_invalid_email) {build :user_with_invalid_email }
-      let(:duplicated_username) {build :valid_user, username: subject.username.upcase }
-      let(:duplicated_email) {build :valid_user, email: subject.email.upcase }
-
+    context "when not valid" do    
       it "lacks username" do
-        expect(user_without_username).to_not be_valid
-        expect(user_without_username.errors["username"]).to include("can't be blank")
+        subject.username = nil
+        expect(subject).to_not be_valid
+        expect(subject.errors["username"]).to include("can't be blank")
       end
 
       it "lacks email" do 
-        expect(user_without_email).to_not be_valid
-        expect(user_without_email.errors["email"]).to include("can't be blank")
+        subject.email = nil
+        expect(subject).to_not be_valid
+        expect(subject.errors["email"]).to include("can't be blank")
       end
 
       it "lacks password" do 
-        expect(user_without_password).to_not be_valid
-        expect(user_without_password.errors["password"]).to include("can't be blank")
+        subject.password = nil
+        expect(subject).to_not be_valid
+        expect(subject.errors["password"]).to include("can't be blank")
       end
 
       it "has invalid name" do
-        expect(user_with_invalid_username).to_not be_valid
-        expect(user_with_invalid_username.errors["username"]).to include("is too short (minimum is 3 characters)")
+        subject.username = "a"
+        expect(subject).to_not be_valid
+        expect(subject.errors["username"]).to include("is too short (minimum is 3 characters)")
       end
 
       it "has invalid password" do 
-        expect(user_with_invalid_password).to_not be_valid
-        expect(user_with_invalid_password.errors["password"]).to include("is too short (minimum is 6 characters)") # To test Devise password validation
+        subject.password = "12345"
+        expect(subject).to_not be_valid
+        expect(subject.errors["password"]).to include("is too short (minimum is 6 characters)") # To test Devise password validation
       end
 
       it "has invalid email" do 
-        expect(user_with_invalid_email).to_not be_valid
-        expect(user_with_invalid_email.errors["email"]).to include("is invalid") # To test Devise email validation
+        subject.email = "factorytest.io"
+        expect(subject).to_not be_valid
+        expect(subject.errors["email"]).to include("is invalid") # To test Devise email validation
       end
 
       it "has duplicated username" do
@@ -49,7 +48,7 @@ RSpec.describe User, type: :model do
         expect(duplicated_username).to_not be_valid
         expect(duplicated_username.errors["username"]).to include("has already been taken")
       end
-
+  
       it "has duplicated email" do
         # We create "subject" ahead and check if case sensitive validation works
         expect(duplicated_email).to_not be_valid
@@ -63,7 +62,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "#save" do
-    subject { create :valid_user }
+    subject { create :user }
 
     context "when user is created" do
       it "attachs a default icon" do

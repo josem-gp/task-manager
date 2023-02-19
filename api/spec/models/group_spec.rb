@@ -2,26 +2,25 @@ require 'rails_helper'
 
 RSpec.describe Group, type: :model do
   describe "model validation" do
-    subject { create :valid_group }
+    subject { create :group }
 
     context "when not valid" do     
-      let(:group_without_name) {build :group_without_name }
-      let(:group_with_invalid_name) { build :group_with_invalid_name }
-      let(:group_with_invalid_description) {build :group_with_invalid_description }
-
       it "lacks name" do
-        expect(group_without_name).to_not be_valid
-        expect(group_without_name.errors["name"]).to include("can't be blank")
+        subject.name = nil
+        expect(subject).to_not be_valid
+        expect(subject.errors["name"]).to include("can't be blank")
       end
 
-      it "has invalid name" do 
-        expect(group_with_invalid_name).to_not be_valid
-        expect(group_with_invalid_name.errors["name"]).to include("is too short (minimum is 2 characters)")
+      it "has invalid name" do
+        subject.name = "a" 
+        expect(subject).to_not be_valid
+        expect(subject.errors["name"]).to include("is too short (minimum is 2 characters)")
       end
 
       it "has invalid description" do
-        expect(group_with_invalid_description).to_not be_valid
-        expect(group_with_invalid_description.errors["description"]).to include("is too long (maximum is 30 characters)")
+        subject.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        expect(subject).to_not be_valid
+        expect(subject.errors["description"]).to include("is too long (maximum is 30 characters)")
       end
     end
 
@@ -31,7 +30,7 @@ RSpec.describe Group, type: :model do
   end
 
   describe "#save" do
-    subject { create :valid_group }
+    subject { create :group }
 
     context "when group is created" do
       let(:membership) { Membership.find_by(group: subject) }
@@ -45,7 +44,7 @@ RSpec.describe Group, type: :model do
 
   describe "#total_memberships" do
     it "counts memberships for a group" do
-      expect { create :valid_group }.to change { Membership.count }.by(1)
+      expect { create :group }.to change { Membership.count }.by(1)
     end
   end
 end

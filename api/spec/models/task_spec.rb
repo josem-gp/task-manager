@@ -2,21 +2,19 @@ require 'rails_helper'
 
 RSpec.describe Task, type: :model do
   describe "model validation" do
+    subject { create :task }
 
     context "when not valid" do     
-      subject { build :valid_task }
-
-      let(:task_without_name){ build :task_without_name}
-      let(:task_with_invalid_name){ build :task_with_invalid_name}
-
       it "lacks name" do
-        expect(task_without_name).to_not be_valid
-        expect(task_without_name.errors["name"]).to include("can't be blank")
+        subject.name = nil
+        expect(subject).to_not be_valid
+        expect(subject.errors["name"]).to include("can't be blank")
       end
 
       it "has invalid name" do 
-        expect(task_with_invalid_name).to_not be_valid
-        expect(task_with_invalid_name.errors["name"]).to include("is too long (maximum is 25 characters)")
+        subject.name = "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet"
+        expect(subject).to_not be_valid
+        expect(subject.errors["name"]).to include("is too long (maximum is 25 characters)")
       end
 
       it "has invalid date" do
@@ -31,8 +29,6 @@ RSpec.describe Task, type: :model do
     end
 
     context "when valid" do
-      subject { create :valid_task }
-
       it { is_expected.to be_valid }
     end
   end
