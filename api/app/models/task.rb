@@ -7,9 +7,10 @@ class Task < ApplicationRecord
   has_many :tagged_tasks
 
   # Validations
-  validates :name, presence: true, length: { maximum: 15 }
+  validates :name, presence: true, length: { maximum: 25 }
   validates :due_date, date: true 
-  validate :valid_task?
+  
+  # validate :valid_task?
 
   private
 

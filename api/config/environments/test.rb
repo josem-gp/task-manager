@@ -42,7 +42,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  config.active_job.queue_adapter = :inline
+  config.active_job.queue_adapter = :test
   config.action_mailer.default_url_options = { :host => "http://localhost:3000" }
 
   # Print deprecation notices to the stderr.
@@ -59,4 +59,5 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+  config.log_level = :warn
 end
