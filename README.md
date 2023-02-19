@@ -87,7 +87,7 @@ There are several tests put in place to make sure the `api` is running the way w
 To run the tests we run the following command:
 
 ```
-docker compose run --rm -e "RAILS_ENV=test" api bundle exec rspec
+docker compose run --rm -e RAILS_ENV=test api bundle exec rspec
 ```
 
 This will run the `api` container independently and pass the `test` environment as a variable for the database creation. The reason being that we want to separate the `development` database for when we interact with the `api` locally and use the `test` database when running tests.
