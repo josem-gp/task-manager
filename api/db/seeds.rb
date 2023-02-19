@@ -59,6 +59,7 @@ group_two = Group.create!(name: "Test Group Two", description: "blablabla", admi
 
 puts "Creating Memberships"
 participant_one = Membership.create!(user: user_one, group: group_one) # I can add any user to any group
+participant_one = Membership.create!(user: admin_two, group: group_one)
 
 puts "Creating Tasks"
 task_one = Task.create!(name: "Task 1", user: user_one, group: group_one, assignee: admin_one, due_date: "03/12/2024") 
