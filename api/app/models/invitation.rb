@@ -12,7 +12,8 @@ class Invitation < ApplicationRecord
   # Validations
   validates :email, presence: true
   validates :email, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "please input a valid email" } # Just confirms that email has @ in it
-  validate :valid_invitation?
+  
+  # validate :valid_invitation?
 
   # Callbacks
   after_create :generate_token_expiration 
