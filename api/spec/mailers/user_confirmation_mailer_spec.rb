@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe UserConfirmationMailer, type: :mailer do
   describe "#user_registration_email" do
 
-    let(:user) { create(:valid_user) }
+    let(:user) { create(:user) }
     let(:mail) { described_class.with(user: user).user_registration_email }
 
     it "renders the subject" do
