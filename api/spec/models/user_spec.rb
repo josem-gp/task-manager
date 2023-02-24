@@ -62,8 +62,16 @@ RSpec.describe User, type: :model do
   end
 
   describe "#save" do
-    subject { create :user }
+    subject { build :user }
+    let(:parameterized_mailer) { double('ActionMailer::Parameterized::Mailer') }
+    let(:parameterized_message) { double('ActionMailer::Parameterized::MessageDelivery') }
 
+    before do 
+      allow(UserConfirmationMailer).to receive(:with).and_return(parameterized_mailer)
+      allow(parameterized_mailer).to receive(:user_registration_email).and_return(parameterized_message)
+      allow(parameterized_message).to receive(:deliver_later)
+    end
+    
     context "when user is created" do
       it "attachs a default icon" do
         expect(subject.icon).to be_present
@@ -71,7 +79,12 @@ RSpec.describe User, type: :model do
       end
 
       it "enqueues welcome email" do
-        expect { subject }.to have_enqueued_mail(UserConfirmationMailer, :user_registration_email)
+        subject.icon.save!
+        subject.save!
+      
+        expect(UserConfirmationMailer).to have_received(:with).with(user: subject)
+        expect(parameterized_mailer).to have_received(:user_registration_email)
+        expect(parameterized_message).to have_received(:deliver_later)
       end
     end
 

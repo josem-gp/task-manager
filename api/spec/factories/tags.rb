@@ -3,6 +3,6 @@ FactoryBot.define do
     association :user
     association :group
 
-    name { "Factory tag" }
+    sequence(:name) { |n| "Factory tag #{n}" }
   end
 end

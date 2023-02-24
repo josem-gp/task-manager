@@ -40,6 +40,13 @@ RSpec.describe Group, type: :model do
         expect(membership.user).to eq(subject.admin)
       end
     end
+
+    context "when group is edited" do
+      it "doesn't create a new membership" do
+        subject.name = "Group 2"
+        expect { subject.save! }.to_not change { Membership.count }
+      end
+    end
   end
 
   describe "#total_memberships" do

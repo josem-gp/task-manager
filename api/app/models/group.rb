@@ -2,11 +2,11 @@ class Group < ApplicationRecord
 
   # Associations
   belongs_to :admin, class_name: "User", foreign_key: :admin_id
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
-  has_many :tasks
-  has_many :tags
-  has_many :invitations
+  has_many :tasks, dependent: :destroy
+  has_many :tags, dependent: :destroy
+  has_many :invitations, dependent: :destroy
 
   # Validations
   validates :name, presence: true, length: { in: 2..15 }

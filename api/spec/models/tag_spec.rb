@@ -29,7 +29,15 @@ RSpec.describe Tag, type: :model do
 
     context "when tag is created" do
       it "creates tag slug" do
-        expect(subject.slug).to eq("factory_tag")
+        expect subject.slug.to eq("factory_tag_#{subject.id}")
+      end
+    end
+
+    context "when tag is edited" do
+      it "updates tag slug" do
+        subject.name = "Factory Tag 2"
+        subject.save!
+        expect(subject.slug).to eq("factory_tag_2")
       end
     end
   end

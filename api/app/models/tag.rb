@@ -3,7 +3,7 @@ class Tag < ApplicationRecord
   # Associations
   belongs_to :group
   belongs_to :user
-  has_many :tagged_tasks
+  has_many :tagged_tasks, dependent: :destroy
 
   # Validations
   validates :name, presence: true, length: { maximum: 15 }
