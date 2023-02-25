@@ -2,7 +2,7 @@ class Api::V1::GroupsController < ApplicationController
   before_action :find_group, only: [ :send_invitation ]
 
   def index
-    render json: { status: 200, message: "Hello World!"}
+    render json: { message: "Hello World!"}
   end
 
   # Sends invitation
