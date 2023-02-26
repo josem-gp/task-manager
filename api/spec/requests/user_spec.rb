@@ -2,52 +2,23 @@ require 'rails_helper'
 require 'devise/jwt/test_helpers'
 
 RSpec.describe "Users", type: :request do
-  describe "GET /search_tasks" do
-    # CALL PARAMS: params[:query]
-    # 2xx RESPONSE: {"id": user_id, "tasks": [task_instances]}
-    # 4xx RESPONSE: {"id": user_id, "message": "The task you are searching doesn't exist"}
-    let(:tasks) { create_list(:task, 3)}
-    let(:user) { tasks.first.user }
+  describe "GET /index" do
+    # PARAMS: params[:group_id]
+    # 2xx RESPONSE: {"id": group_id, "users": [user_instances]}
+    let(:group) { create :group }
+    let(:user) { create :user }
 
     before do
       sign_in user
+      get api_v1_group_users_path(group.id)
     end
 
-    context "when search param exactly exists in task name or note" do
-      get api_v1_search_user_tasks_path(tasks.first.name)
+    it { expect(response).to have_http_status(:success) }
 
-      it { expect(response).to have_http_status(:success) }
+    it "returns a json with the users in the groups" do
+      json = JSON.parse(response.body)
 
-      it "returns a json with the user's tasks that matched the query" do
-        json = JSON.parse(response.body)
-
-        expect(json.tasks.length).to eq 1
-        expect(json.tasks.first["name"]).to eq(tasks.first.name)
-      end
-    end
-
-    context "when search param partially exists in task name or note" do
-      get api_v1_search_user_tasks_path("Task")
-
-      it { expect(response).to have_http_status(:success) }
-
-      it "returns a json with the user's tasks that matched the query" do
-        json = JSON.parse(response.body)
-        
-        expect(json.tasks.length).to eq 3
-      end
-    end
-
-    context "when search param doesn't exist in task name or note" do
-      get api_v1_search_user_tasks_path("rand")
-      
-      it { expect(response).to have_http_status(:error) }
-
-      it "returns a json with an error message" do
-        json = JSON.parse(response.body)
-
-        expect(json.message).to eq("The task you are searching doesn't exist")
-      end
+      expect(json.users.length).to eq 2
     end
   end
 
@@ -104,6 +75,55 @@ RSpec.describe "Users", type: :request do
         json = JSON.parse(response.body)
   
         expect(json.message).to eq("The user icon couldn't be updated")
+      end
+    end
+  end
+
+  describe "GET /search_tasks" do
+    # CALL PARAMS: params[:query]
+    # 2xx RESPONSE: {"id": user_id, "tasks": [task_instances]}
+    # 4xx RESPONSE: {"id": user_id, "message": "The task you are searching doesn't exist"}
+    let(:tasks) { create_list(:task, 3)}
+    let(:user) { tasks.first.user }
+
+    before do
+      sign_in user
+    end
+
+    context "when search param exactly exists in task name or note" do
+      get api_v1_search_user_tasks_path(tasks.first.name)
+
+      it { expect(response).to have_http_status(:success) }
+
+      it "returns a json with the user's tasks that matched the query" do
+        json = JSON.parse(response.body)
+
+        expect(json.tasks.length).to eq 1
+        expect(json.tasks.first["name"]).to eq(tasks.first.name)
+      end
+    end
+
+    context "when search param partially exists in task name or note" do
+      get api_v1_search_user_tasks_path("Task")
+
+      it { expect(response).to have_http_status(:success) }
+
+      it "returns a json with the user's tasks that matched the query" do
+        json = JSON.parse(response.body)
+        
+        expect(json.tasks.length).to eq 3
+      end
+    end
+
+    context "when search param doesn't exist in task name or note" do
+      get api_v1_search_user_tasks_path("rand")
+      
+      it { expect(response).to have_http_status(:error) }
+
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
+
+        expect(json.message).to eq("The task you are searching doesn't exist")
       end
     end
   end

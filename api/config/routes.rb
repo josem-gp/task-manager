@@ -17,13 +17,13 @@ Rails.application.routes.draw do
       resources :groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           post 'send_invitation', to: 'groups#send_invitation'
-          get 'fetch_group_users', to: 'groups#fetch_group_users'
           get 'filter_tasks', to: 'groups#filter_tasks'
           delete "remove_user/:user_id", to: "groups#remove_user", as: :remove_group_user
         end
         resources :tasks, only: [:index, :create], module: :groups
         resources :tags, only: [:index, :create, :update, :destroy]
         resources :invitations, only: [:index]
+        resources :users, only: [:index]
       end
       resources :tasks, only: [:index, :show, :create, :update, :destroy]
       get 'invitation_signup/:token', to: 'invitations#invitation_signup'

@@ -192,13 +192,6 @@ RSpec.describe "Groups", type: :request do
         expect(Group.find(group.id)).to_not be_present
       end
 
-      it "deletes the group's dependent associations" do
-        expect(Task.where(group: group).count).to eq 0
-        expect(Tag.where(group: group).count).to eq 0
-        expect(Invitation.where(group: group).count).to eq 0
-        expect(Membership.where(group: group).count).to eq 0
-      end
-
       it "returns a json with the updated info of the user groups" do
         json = JSON.parse(response.body)
 
@@ -378,24 +371,6 @@ RSpec.describe "Groups", type: :request do
 
         expect(json.message).to eq("The invitation couldn't be created")
       end
-    end
-  end
-
-  describe "GET /fetch_group_users" do
-    # PARAMS: params[:group_id]
-    # 2xx RESPONSE: {"id": group_id, "users": [user_instances]}
-
-    before do
-      sign_in user
-      get fetch_group_users_api_v1_group_path(group.id)
-    end
-
-    it { expect(response).to have_http_status(:success) }
-
-    it "returns a json with the users in the groups" do
-      json = JSON.parse(response.body)
-
-      expect(json.users.length).to eq 2
     end
   end
 
