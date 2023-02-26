@@ -2,7 +2,7 @@ class Api::V1::GroupsController < ApplicationController
   before_action :find_group, only: [ :send_invitation ]
 
   def index
-    render json: { status: 200, message: "Hello World!"}
+    render json: { message: "Hello World!"}
   end
 
   # Sends invitation
@@ -11,8 +11,7 @@ class Api::V1::GroupsController < ApplicationController
     if current_user.admin?
       @invitation.sender = current_user
       @invitation.group = @group
-      @invitation.save
-      InvitationMailer.with(recipient: @invitation.email, sender: @invitation.sender, group: @invitation.group).send_invite.deliver_later
+      InvitationMailer.with(recipient: @invitation.email, sender: @invitation.sender, group: @invitation.group).send_invite.deliver_later if @invitation.save
     else
       render_permission_error
     end

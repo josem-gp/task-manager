@@ -4,10 +4,10 @@ class Task < ApplicationRecord
   belongs_to :group
   belongs_to :user
   belongs_to :assignee, class_name: "User", foreign_key: :assignee_id
-  has_many :tagged_tasks
+  has_many :tagged_tasks, dependent: :destroy
 
   # Validations
-  validates :name, presence: true, length: { maximum: 25 }
+  validates :name, presence: true, length: { maximum: 25 }, uniqueness: { case_sensitive: false, scope: :group_id }
   validates :due_date, date: true 
   
   # validate :valid_task?
