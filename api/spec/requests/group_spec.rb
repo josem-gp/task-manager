@@ -33,6 +33,7 @@ RSpec.describe "Groups", type: :request do
     end
 
     it { expect(response).to have_http_status(:success) }
+
     it "returns a json with a specific group of the user" do
       json = JSON.parse(response.body)
 
@@ -59,6 +60,7 @@ RSpec.describe "Groups", type: :request do
       end
 
       it { expect(response).to have_http_status(:success) }
+
       it "creates the group" do
         expect(Group.find_by(name: "Spec Group")).to be_present
       end
@@ -66,7 +68,7 @@ RSpec.describe "Groups", type: :request do
       it "returns a json with the updated info of the user groups" do
         json = JSON.parse(response.body)
 
-        expect(json.groups.count).to eq 2
+        expect(json.groups.length).to eq 2
         expect(json.groups.last.name).to eq("Spec Group")
         expect(json.message).to eq("The group was succesfully created")
       end
@@ -118,6 +120,7 @@ RSpec.describe "Groups", type: :request do
         end
 
         it { expect(response).to have_http_status(:success) }
+
         it "updates the group" do
           expect(group.name).to eq("Updated Group")
         end
@@ -139,6 +142,7 @@ RSpec.describe "Groups", type: :request do
         end
 
         it { expect(response).to have_http_status(:error) }
+
         it "does not create the group" do
           expect(group.name).to_not eq("a")
         end
@@ -195,7 +199,7 @@ RSpec.describe "Groups", type: :request do
       it "returns a json with the updated info of the user groups" do
         json = JSON.parse(response.body)
 
-        expect(json.groups.count).to eq 0
+        expect(json.groups.length).to eq 0
         expect(json.message).to eq("The group was succesfully deleted")
       end
     end
@@ -232,7 +236,7 @@ RSpec.describe "Groups", type: :request do
       it "returns an array of all tasks for that group" do
         json = JSON.parse(response.body)
 
-        expect(json.task.count).to eq 3
+        expect(json.task.length).to eq 3
       end
     end
 
@@ -249,7 +253,7 @@ RSpec.describe "Groups", type: :request do
       it "returns an array the tasks that fit the search in the group" do
         json = JSON.parse(response.body)
 
-        expect(json.task.count).to eq 1
+        expect(json.task.length).to eq 1
       end
     end
 
@@ -266,7 +270,7 @@ RSpec.describe "Groups", type: :request do
       it "returns an array the tasks that fit the search in the group" do
         json = JSON.parse(response.body)
 
-        expect(json.task.count).to eq 2
+        expect(json.task.length).to eq 2
       end
     end
   end

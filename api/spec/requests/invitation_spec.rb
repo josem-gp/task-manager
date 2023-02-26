@@ -23,8 +23,7 @@ RSpec.describe "Invitations", type: :request do
 
   describe "GET /invitation_signup" do
     # PARAMS: params[:group_id]
-    # 2xx RESPONSE: {"id": group_id, "invitations": [invitation_instances]}
-    # 4xx RESPONSE: {"id": group_id, "message": "The invitation has expired already"}
+    # 4xx RESPONSE: {"id": invitation_id, "message": "The invitation has expired already"}
     let(:invitation) {create :invitation}
 
     context "when invitation has been disabled" do
