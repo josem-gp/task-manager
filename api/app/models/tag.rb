@@ -6,7 +6,7 @@ class Tag < ApplicationRecord
   has_many :tagged_tasks, dependent: :destroy
 
   # Validations
-  validates :name, presence: true, length: { maximum: 15 }
+  validates :name, presence: true, length: { maximum: 15 }, uniqueness: { case_sensitive: false, scope: :group_id }
 
   # validate :tag_validation
 

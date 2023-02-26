@@ -21,7 +21,7 @@ RSpec.describe "Tags", type: :request do
       json = JSON.parse(response.body)
 
       expect(json.tags.length).to eq 1
-      expect(json.tags.first.name).to eq(group.name)
+      expect(json.tags.first.name).to eq(tag.name)
     end
   end
 

@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Task, type: :model do
   describe "model validation" do
-    subject { create :task }
+    let(:first_task) { create :task, name: "Factory task"}
+    subject { create :task, name: first_task.name }
 
     context "when not valid" do     
       it "lacks name" do
@@ -25,6 +26,11 @@ RSpec.describe Task, type: :model do
       it "has invalid formatted date" do 
         subject.due_date = "07/25/2050"
         expect(subject).to_not be_valid
+      end
+      
+      it "has duplicated name in a group" do 
+        let(:second_task) { create :task, name: subject.name, group: subject.group}
+        expect(second_task).to_not be_valid
       end
     end
 

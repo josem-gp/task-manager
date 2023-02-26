@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
   describe "model validation" do
-
-    subject { create :tag }
+    let(:first_tag) { create :tag, name: "Factory tag"}
+    subject { create :tag, name: first_tag.name }
 
     context "when not valid" do     
       it "lacks name" do
@@ -16,6 +16,11 @@ RSpec.describe Tag, type: :model do
         subject.name = "Lorem ipsum dolor sit amet"
         expect(subject).to_not be_valid
         expect(subject.errors["name"]).to include("is too long (maximum is 15 characters)")
+      end
+
+      it "has duplicated name in a group" do 
+        let(:second_tag) { create :tag, name: subject.name, group: subject.group}
+        expect(second_tag).to_not be_valid
       end
     end
 
