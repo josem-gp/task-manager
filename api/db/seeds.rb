@@ -62,14 +62,14 @@ participant_one = Membership.create!(user: user_one, group: group_one) # I can a
 participant_one = Membership.create!(user: admin_two, group: group_one)
 
 puts "Creating Tasks"
-task_one = Task.create!(name: "Task 1", user: user_one, group: group_one, assignee: admin_one, due_date: "03/12/2024") 
-task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_one, due_date: "24/12/30")
+task_one = Task.create!(name: "Task 1", user: user_one, group: group_one, assignee: admin_one, due_date: "2024-12-30") 
+task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_one, due_date: "2030-12-03")
 
 # task_two = Task.create!(name: "Task 3", user: admin_one, group: group_two, assignee: user_one) # Test if we can create tasks for users not part of the group
 # task_two = Task.create!(name: "Task 4", user: admin_one, group: group_one, assignee: admin_two) # Test if we can create tasks for assignee not part of the group
 # task_two = Task.create!(user: admin_one, group: group_one, assignee: admin_one) # Test no name
 # task_two = Task.create!(name: "Task 2 ñalskdfjdsa lfakdjsfñlkasdj f ñlaskdfjasñld ñaslkdfj", user: admin_one, group: group_one, assignee: admin_one, due_date: "24/12/30") # Test name too long
-# task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_one, due_date: "12/24/2030") # Test due date format
+# task_two = Task.create!(name: "Task 2", user: admin_one, group: group_one, assignee: admin_one, due_date: "12-24-2030") # Test due date format
 
 puts "Creating Tags"
 tag_one = Tag.create!(name: "Tag 1", user: user_one, group: group_one)
