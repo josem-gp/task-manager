@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
-  describe "model validation" do
+  describe "validations" do
+    let(:second_tag) { build :tag, name: subject.name, group: subject.group}
     let(:first_tag) { create :tag, name: "Factory tag"}
     subject { create :tag, name: first_tag.name }
 
@@ -19,7 +20,6 @@ RSpec.describe Tag, type: :model do
       end
 
       it "has duplicated name in a group" do 
-        let(:second_tag) { create :tag, name: subject.name, group: subject.group}
         expect(second_tag).to_not be_valid
       end
     end
@@ -29,12 +29,16 @@ RSpec.describe Tag, type: :model do
     end
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:tagged_tasks).dependent(:destroy) }
+  end
+
   describe "#save" do
-    subject { create :tag }
+    subject { create :tag, name: "Factory Tag 1" }
 
     context "when tag is created" do
       it "creates tag slug" do
-        expect subject.slug.to eq("factory_tag_#{subject.id}")
+        expect(subject.slug).to eq("factory_tag_1")
       end
     end
 

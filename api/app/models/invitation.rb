@@ -35,7 +35,7 @@ class Invitation < ApplicationRecord
   # After validation, we generate the token expiration date
   def generate_token_expiration
     # Expiration date will be a week from the moment the class is instantiated
-    self.expiration_date = (DateTime.now + 7).strftime("%d/%m/%Y") 
+    self.expiration_date = Date.current + 7
     self.save!
   end
 end

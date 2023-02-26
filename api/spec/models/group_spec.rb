@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
-  describe "model validation" do
+  describe "validations" do
     subject { create :group }
 
     context "when not valid" do     
@@ -27,6 +27,13 @@ RSpec.describe Group, type: :model do
     context "when valid" do
       it { is_expected.to be_valid }
     end
+  end
+
+  describe 'associations' do
+    it { is_expected.to have_many(:invitations).dependent(:destroy) }
+    it { is_expected.to have_many(:tags).dependent(:destroy) }
+    it { is_expected.to have_many(:tasks).dependent(:destroy) }
+    it { is_expected.to have_many(:memberships).dependent(:destroy) }
   end
 
   describe "#save" do

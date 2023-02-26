@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Icon, type: :model do
-  describe "model validation" do
+  describe "validations" do
 
     subject { create :icon }
 

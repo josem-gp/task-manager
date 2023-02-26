@@ -64,4 +64,5 @@ end
 group :test do
   # Cleanup database when testing
   gem 'database_cleaner'
+  gem 'shoulda-matchers', '~> 5.0'
 end

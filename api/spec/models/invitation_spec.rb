@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Invitation, type: :model do
-  describe "model validation" do
+  describe "validations" do
     subject { create :invitation }
 
     context "when not valid" do     

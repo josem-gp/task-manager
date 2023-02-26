@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
-  describe "model validation" do
+  describe "validations" do
+    let(:second_task) { build :task, name: subject.name, group: subject.group}
     let(:first_task) { create :task, name: "Factory task"}
     subject { create :task, name: first_task.name }
 
@@ -29,7 +30,6 @@ RSpec.describe Task, type: :model do
       end
       
       it "has duplicated name in a group" do 
-        let(:second_task) { create :task, name: subject.name, group: subject.group}
         expect(second_task).to_not be_valid
       end
     end
@@ -37,5 +37,9 @@ RSpec.describe Task, type: :model do
     context "when valid" do
       it { is_expected.to be_valid }
     end
+  end
+
+  describe 'associations' do
+    it { is_expected.to have_many(:tagged_tasks).dependent(:destroy) }
   end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe "model validation" do
+  describe "validations" do
     subject { create :user }
     let(:duplicated_username) {build :user, username: subject.username.upcase }
     let(:duplicated_email) {build :user, email: subject.email.upcase }
@@ -90,6 +90,10 @@ RSpec.describe User, type: :model do
 
     context "when user is updated" do
       let(:updated_icon) {create :icon, name: "updated_icon", url: Icon::IMAGES[1] }
+      before do
+        subject.icon.save!
+        subject.save!
+      end
 
       it "preserves icon" do
         subject.icon = updated_icon

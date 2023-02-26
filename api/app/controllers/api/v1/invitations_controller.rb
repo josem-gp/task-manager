@@ -21,7 +21,7 @@ class Api::V1::InvitationsController < ApplicationController
   # Fetch invitation and check if the expired date has passed
   def oauth_token_confirmation
     @invitation = Invitation.find_by(oauth_token: params[:token])
-    unless Date.today < @invitation.expiration_date
+    unless Date.current < @invitation.expiration_date
       @invitation.disabled = true 
       @invitation.save!
     end
