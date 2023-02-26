@@ -88,6 +88,7 @@ RSpec.describe "Tasks", type: :request do
         it "returns a json with the updated info of the user tasks" do
           json = JSON.parse(response.body)
 
+          expect(json.task.keys).to contain_exactly('id', 'name', 'note', 'due_date', 'finished', 'user_id', 'group_id', 'assignee_id')
           expect(json.task.name).to eq("Spec Task")
           expect(json.message).to eq("The task was succesfully created")
         end
@@ -131,6 +132,7 @@ RSpec.describe "Tasks", type: :request do
         it "returns a json with the updated info of the user tasks in the group" do
           json = JSON.parse(response.body)
 
+          expect(json.task.keys).to contain_exactly('id', 'name', 'note', 'due_date', 'finished', 'user_id', 'group_id', 'assignee_id')
           expect(json.task.name).to eq("Spec Task")
           expect(json.message).to eq("The task was succesfully created")
         end
@@ -185,6 +187,7 @@ RSpec.describe "Tasks", type: :request do
       it "returns a json with the updated info of the user tasks" do
         json = JSON.parse(response.body)
 
+        expect(json.task.keys).to contain_exactly('id', 'name', 'note', 'due_date', 'finished', 'user_id', 'group_id', 'assignee_id')
         expect(json.task.name).to eq("Spec Task 2")
         expect(json.message).to eq("The task was succesfully updated")
       end

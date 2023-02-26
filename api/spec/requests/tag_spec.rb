@@ -27,7 +27,7 @@ RSpec.describe "Tags", type: :request do
 
   describe "POST /create" do
     # CALL PARAMS: {"tag": {"name": ...}}
-    # 2xx RESPONSE: {"id": group_id, "tags": [tag_instances], "message": "The tag was succesfully created"}
+    # 2xx RESPONSE: {"id": group_id, "tag": tag_instances, "message": "The tag was succesfully created"}
     # 4xx RESPONSE: {"id": group_id, "message": "The tag couldn't be created"}
     before do
       sign_in user
@@ -51,8 +51,8 @@ RSpec.describe "Tags", type: :request do
       it "returns a json with the updated info of the group tags" do
         json = JSON.parse(response.body)
 
-        expect(json.tags.length).to eq 2
-        expect(json.tags.last.name).to eq("Spec Tag")
+        expect(json.tag.keys).to contain_exactly('id', 'name', 'slug', 'user_id', 'group_id')
+        expect(json.tag.name).to eq("Spec Tag")
         expect(json.message).to eq("The tag was succesfully created")
       end
     end
@@ -80,7 +80,7 @@ RSpec.describe "Tags", type: :request do
 
   describe "PATCH /update" do
     # CALL PARAMS: {"tag": {"name": ...}}
-    # 2xx RESPONSE: {"id": group_id, "tags": [group_instances], "message": "The tag was succesfully updated"}
+    # 2xx RESPONSE: {"id": group_id, "tag": tag_instance, "message": "The tag was succesfully updated"}
     # 4xx RESPONSE: {"id": group_id, "message": "The tag couldn't be updated"}
     before do
       sign_in user
@@ -104,8 +104,8 @@ RSpec.describe "Tags", type: :request do
       it "returns a json with the updated info of the group tags" do
         json = JSON.parse(response.body)
 
-        expect(json.tags.length).to eq 1
-        expect(json.tags.first.name).to eq("Spec Tag 2")
+        expect(json.tag.keys).to contain_exactly('id', 'name', 'slug', 'user_id', 'group_id')
+        expect(json.tag.name).to eq("Spec Tag 2")
         expect(json.message).to eq("The tag was succesfully updated")
       end
     end
@@ -133,7 +133,7 @@ RSpec.describe "Tags", type: :request do
 
   describe "DELETE /destroy" do
     # CALL PARAMS: {"tag": {"group_id": ..., "tag_id": ...}}
-    # 2xx RESPONSE: {"id": group_id, "tags": [tag_instances], "message": "The tag was successfully deleted"}
+    # 2xx RESPONSE: {"id": group_id, "message": "The tag was successfully deleted"}
     before do
       sign_in user
       delete api_v1_group_tag_path(group.id, tag.id)
@@ -148,7 +148,6 @@ RSpec.describe "Tags", type: :request do
     it "returns a json with updated info of group tags" do
       json = JSON.parse(response.body)
 
-      expect(json.tags.length).to eq 0
       expect(json.message).to eq("The tag was succesfully deleted")
     end
   end

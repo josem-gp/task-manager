@@ -44,7 +44,7 @@ RSpec.describe "Groups", type: :request do
 
   describe "POST /create" do
     # CALL PARAMS: {"group": {"name": ..., "description": ...}}
-    # 2xx RESPONSE: {"id": group_id, "groups": [group_instances], "message": "The group was succesfully created"}
+    # 2xx RESPONSE: {"id": group_id, group: group_instance, "message": "The group was succesfully created"}
     # 4xx RESPONSE: {"id": group_id, "message": "The group couldn't be created"}
     before do
       sign_in user
@@ -68,8 +68,8 @@ RSpec.describe "Groups", type: :request do
       it "returns a json with the updated info of the user groups" do
         json = JSON.parse(response.body)
 
-        expect(json.groups.length).to eq 2
-        expect(json.groups.last.name).to eq("Spec Group")
+        expect(json.group.keys).to contain_exactly('id', 'name', 'description', 'admin_id')
+        expect(json.group.name).to eq("Spec Group")
         expect(json.message).to eq("The group was succesfully created")
       end
 
@@ -102,7 +102,7 @@ RSpec.describe "Groups", type: :request do
 
   describe "PATCH /update" do
     # CALL PARAMS: {"group": {"name": ..., "description": ...}}
-    # 2xx RESPONSE: {"id": group_id, "groups": [group_instances], "message": "The group was succesfully updated"}
+    # 2xx RESPONSE: {"id": group_id, groups: group_instance, "message": "The group was succesfully updated"}
     # 4xx RESPONSE: {"id": group_id, "message": "The group couldn't be updated"}
     # 4xx RESPONSE: {"id": group_id, "message": "You don't have authorization to update the group"}
     context "when user is admin" do
@@ -128,8 +128,8 @@ RSpec.describe "Groups", type: :request do
         it "returns a json with the updated info of the user groups" do
           json = JSON.parse(response.body)
 
-          expect(json.groups.first).to eq 1
-          expect(json.groups.first.name).to eq("Updated Group")
+          expect(json.group.keys).to contain_exactly('id', 'name', 'description', 'admin_id')
+          expect(json.group.name).to eq("Updated Group")
           expect(json.message).to eq("The group was succesfully updated")
         end
       end
@@ -182,7 +182,7 @@ RSpec.describe "Groups", type: :request do
 
   describe "DELETE /destroy" do
     # CALL PARAMS: {"group": {"name": ..., "description": ...}}
-    # 2xx RESPONSE: {"id": group_id, "groups": [group_instances], "message": "The group was successfully deleted"}
+    # 2xx RESPONSE: {"id": group_id, "message": "The group was successfully deleted"}
     # 4xx RESPONSE: {"id": group_id, "message": "The group couldn't be deleted"}
     context "when user is admin" do
       before do
@@ -199,7 +199,6 @@ RSpec.describe "Groups", type: :request do
       it "returns a json with the updated info of the user groups" do
         json = JSON.parse(response.body)
 
-        expect(json.groups.length).to eq 0
         expect(json.message).to eq("The group was succesfully deleted")
       end
     end
