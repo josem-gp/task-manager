@@ -5,6 +5,7 @@ FactoryBot.define do
     association :assignee, factory: :user
 
     sequence(:name) { |n| "Factory task #{n}" }
+    finished { false }
     due_date { "24/07/2050" }
   end
 end

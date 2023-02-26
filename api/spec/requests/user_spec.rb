@@ -5,7 +5,7 @@ RSpec.describe "Users", type: :request do
   describe "GET /search_tasks" do
     # CALL PARAMS: params[:query]
     # 2xx RESPONSE: {"id": user_id, "tasks": [task_instances]}
-    # 4xx RESPONSE: {"id": user_id, "error": "The task you are searching doesn't exist"}
+    # 4xx RESPONSE: {"id": user_id, "message": "The task you are searching doesn't exist"}
     let(:tasks) { create_list(:task, 3)}
     let(:user) { tasks.first.user }
 
@@ -14,21 +14,23 @@ RSpec.describe "Users", type: :request do
     end
 
     context "when search param exactly exists in task name or note" do
-      get api_v1_search_user_tasks(tasks.first.name)
+      get api_v1_search_user_tasks_path(tasks.first.name)
 
-      expect(response).to have_http_status(:success)
+      it { expect(response).to have_http_status(:success) }
+
       it "returns a json with the user's tasks that matched the query" do
         json = JSON.parse(response.body)
 
         expect(json.tasks.length).to eq 1
-        expect(json.tasks.first["name"]).to include(tasks.first.name)
+        expect(json.tasks.first["name"]).to eq(tasks.first.name)
       end
     end
 
     context "when search param partially exists in task name or note" do
-      get api_v1_search_user_tasks("Task")
+      get api_v1_search_user_tasks_path("Task")
 
-      expect(response).to have_http_status(:success)
+      it { expect(response).to have_http_status(:success) }
+
       it "returns a json with the user's tasks that matched the query" do
         json = JSON.parse(response.body)
         
@@ -37,21 +39,22 @@ RSpec.describe "Users", type: :request do
     end
 
     context "when search param doesn't exist in task name or note" do
-      get api_v1_search_user_tasks("rand")
+      get api_v1_search_user_tasks_path("rand")
+      
+      it { expect(response).to have_http_status(:error) }
 
-      expect(response).to have_http_status(:error)
       it "returns a json with an error message" do
         json = JSON.parse(response.body)
 
-        expect(json.error).to eq("The task you are searching doesn't exist")
+        expect(json.message).to eq("The task you are searching doesn't exist")
       end
     end
   end
 
   describe "PATCH /update" do
     # CALL PARAMS: {"icon": {"id": new_icon_id}}
-    # 2xx RESPONSE: {"id": user_id, "data": {"username": ....}}
-    # 4xx RESPONSE: {"id": user_id, "error": "The user's icon couldn't be updated"}
+    # 2xx RESPONSE: {"id": user_id, "user": {"username": ....}, "message": "The user icon was successfully updated"}
+    # 4xx RESPONSE: {"id": user_id, "message": "The user icon couldn't be updated"}
 
     let(:user) { create :user }
     let(:new_icon) { create :icon }
@@ -63,11 +66,13 @@ RSpec.describe "Users", type: :request do
     end
 
     context "with valid parameters" do
-      expect{
-        patch api_v1_user, 
+      before do
+        patch api_v1_user_path, 
         params: "{ 'icon': { 'id': #{new_icon.id} } }".to_json, 
         headers: auth_headers
-      }.to have_http_status(:success)
+      end
+
+      it { expect(response).to have_http_status(:success) }
 
       it "updates the user icon" do
         expect(user.icon.id).to eq(new_icon.id)
@@ -76,18 +81,20 @@ RSpec.describe "Users", type: :request do
       it "returns a json with the updated user info" do
         json = JSON.parse(response.body)
 
-        expect(json.data.keys).to contain_exactly('id', 'username', 'email', 'icon_id')
-        expect(json.data.id).to eq(user.id)
-        expect(json.data.new_icon).to eq(new_icon.id)
+        expect(json.user.keys).to contain_exactly('id', 'username', 'email', 'icon_id')
+        expect(json.user.new_icon).to eq(new_icon.id)
+        expect(json.message).to eq("The user icon was successfully updated")
       end
     end
 
     context "with invalid parameters" do
-      expect{
-        patch api_v1_user, 
+      before do
+        patch api_v1_user_path, 
         params: '{ "icon": { "id": 100 } }', 
         headers: auth_headers
-      }.to have_http_status(:error)
+      end
+      
+      it { expect(response).to have_http_status(:error) }
 
       it "does not update the user icon" do
         expect(user.icon.id).to_not eq(new_icon.id)
@@ -96,7 +103,7 @@ RSpec.describe "Users", type: :request do
       it "returns a json with an error message" do
         json = JSON.parse(response.body)
   
-        expect(json.error).to eq("The user's icon couldn't be updated")
+        expect(json.message).to eq("The user icon couldn't be updated")
       end
     end
   end

@@ -11,8 +11,7 @@ class Api::V1::GroupsController < ApplicationController
     if current_user.admin?
       @invitation.sender = current_user
       @invitation.group = @group
-      @invitation.save
-      InvitationMailer.with(recipient: @invitation.email, sender: @invitation.sender, group: @invitation.group).send_invite.deliver_later
+      InvitationMailer.with(recipient: @invitation.email, sender: @invitation.sender, group: @invitation.group).send_invite.deliver_later if @invitation.save
     else
       render_permission_error
     end
