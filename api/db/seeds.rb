@@ -38,10 +38,6 @@ icons.each_with_index do |icon, idx|
   Icon.create!(name: "icon#{idx}", url: icon)
 end
 
-curl -XPOST -i -H "Content-Type: application/json" -d '{ "user": { "email": "jgarciaportillo@gmail.com", "password": "123456" } }'http://localhost:3000/users/sign_in
-
-curl -XGET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2OGNkYzY5Zi1hY2QyLTQ3MDItYmIxNC0zZWZiOTc2NGNmOWMiLCJzdWIiOiIyNSIsInNjcCI6InVzZXIiLCJhdWQiOm51bGwsImlhdCI6MTY3NzQ5OTQyMSwiZXhwIjoxNjc4Nzk1NDIxfQ.9C5oGd5T5frFiA0h5qlb12cSxy01Bidd_iZE3EPYN6A" -H "Content-Type: application/json" http://localhost:3000/api/v1/groups
-
 puts "Creating Users"
 admin_one = User.create!(username: "jose", email: "jgarciaportillo@gmail.com", password: "123456")
 user_one = User.create!(username: "saki", email: "saki@test.io", password: "1234567")
