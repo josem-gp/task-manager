@@ -23,6 +23,6 @@ class ApplicationController < ActionController::API
   end
 
   def not_found(exception)
-    render json: { error: exception.message }, status: :not_found
+    render json: { message: "Record not found" }, status: :not_found
   end
 end

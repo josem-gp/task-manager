@@ -1,8 +1,17 @@
 class Api::V1::GroupsController < ApplicationController
-  before_action :find_group, only: [ :send_invitation ]
+  before_action :find_group, only: [ :send_invitation, :show ]
+  before_action :skip_authorization, only: [ :index ]
 
+  # GET /api/v1/group
   def index
-    render json: { message: "Hello World!"}
+    @groups = current_user.groups
+    render json: { groups: @groups }
+  end
+
+  # GET /api/v1/groups/:id
+  def show
+    authorize @group
+    render json: { group: @group }
   end
 
   # Sends invitation
@@ -34,9 +43,9 @@ class Api::V1::GroupsController < ApplicationController
     params.require(:invitation).permit(:email)
   end
 
-  def render_permission_error
+  def render_error(message)
     auth_error = {
-      error: "You don't have the permissions to send an invitation",
+      error: message,
       status: 400
     }
     render json: auth_error, status: :unprocessable_entity
