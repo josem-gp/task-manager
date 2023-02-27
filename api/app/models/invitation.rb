@@ -18,6 +18,10 @@ class Invitation < ApplicationRecord
   # Callbacks
   after_create :generate_token_expiration 
 
+  def disable_invitation
+    self.disabled = true
+  end
+
   private
 
   # Validate invitation before creation

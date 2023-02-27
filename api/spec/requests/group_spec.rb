@@ -294,6 +294,8 @@ RSpec.describe "Groups", type: :request do
       end
 
       context "when valid params" do
+        let(:invitation, recipient: "test@test.io", sender: group.admin, group: group)
+
         before do 
           post send_invitation_api_v1_group_path(group.id),
           params: '{ "group": { "email": "test@test.io" } }', 
@@ -307,9 +309,16 @@ RSpec.describe "Groups", type: :request do
         end
   
         it "enqueues an invitation" do
-          expect(InvitationMailer).to have_received(:with).with(recipient: "test@test.io", sender: group.email, group: group)
+          expect(InvitationMailer).to have_received(:with).with(recipient: invitation.recipient, sender: invitation.sender, group: invitation.group)
           expect(parameterized_mailer).to have_received(:send_invite)
           expect(parameterized_message).to have_received(:deliver_later)
+        end
+
+        it "enqueues a job to disable the invitation" do
+          expect { response }.to have_enqueued_job(DisableInvitationJob)
+          .with(invitation)
+          .on_queue("default")
+          .at(Date.current + 7)
         end
   
         it "returns a json with a success message" do

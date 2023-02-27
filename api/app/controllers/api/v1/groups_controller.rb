@@ -11,7 +11,12 @@ class Api::V1::GroupsController < ApplicationController
     if current_user.admin?
       @invitation.sender = current_user
       @invitation.group = @group
-      InvitationMailer.with(recipient: @invitation.email, sender: @invitation.sender, group: @invitation.group).send_invite.deliver_later if @invitation.save
+      if @invitation.save
+        # We send the invitation mailer
+        InvitationMailer.with(recipient: @invitation.email, sender: @invitation.sender, group: @invitation.group).send_invite.deliver_later
+        # We also enqueue the job to disable the invitation in a week
+        DisableInvitationJob.set(wait: 1.week).perform_later(@invitation)
+      end
     else
       render_permission_error
     end
