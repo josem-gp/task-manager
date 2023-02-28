@@ -1,8 +1,8 @@
 class Api::V1::GroupsController < ApplicationController
   before_action :find_group, only: [ :send_invitation, :show ]
-  before_action :skip_authorization, only: [ :index ]
+  before_action :skip_authorization, only: [ :index, :create ]
 
-  # GET /api/v1/group
+  # GET /api/v1/groups
   def index
     @groups = current_user.groups
     render json: { groups: @groups }
@@ -12,6 +12,21 @@ class Api::V1::GroupsController < ApplicationController
   def show
     authorize @group
     render json: { group: @group }
+  end
+
+  # POST /api/v1/groups
+  def create
+    @group = Group.new(group_params)
+    @group.admin = current_user
+    if @group.save
+      render json: { group: @group , message: "The group was succesfully created" }
+    else
+      error_message = @group.errors.objects.first.full_message
+      render_error(error_message, :bad_request)
+    end
+  rescue => e
+    logger.warn e
+    render_error("The group couldn't be created", :bad_request)
   end
 
   # Sends invitation
@@ -39,15 +54,15 @@ class Api::V1::GroupsController < ApplicationController
     @group = Group.find(params[:id])
   end
 
+  def group_params
+    params.require(:group).permit(:name, :description)
+  end
+
   def invitation_params
     params.require(:invitation).permit(:email)
   end
 
-  def render_error(message)
-    auth_error = {
-      error: message,
-      status: 400
-    }
-    render json: auth_error, status: :unprocessable_entity
+  def render_error(message, status)
+    render json: {message: message}, status: status
   end
 end

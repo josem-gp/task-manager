@@ -58,63 +58,55 @@ RSpec.describe "Groups", type: :request do
     end
   end
 
-  # describe "POST /create" do
-  #   # CALL PARAMS: {"group": {"name": ..., "description": ...}}
-  #   # 2xx RESPONSE: {"id": group_id, group: group_instance, "message": "The group was succesfully created"}
-  #   # 4xx RESPONSE: {"id": group_id, "message": "The group couldn't be created"}
-  #   before do
-  #     sign_in user
-  #     headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-  #     auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, user)
-  #   end
+  describe "POST /create" do
+    # CALL PARAMS: {"group": {"name": ..., "description": ...}}
+    # 2xx RESPONSE: {"group": group_instance, "message": "The group was succesfully created"}
+    # 4xx RESPONSE: {"message": error_message}
+    before do
+      sign_in user
+    end
 
-  #   context "with valid parameters" do 
-  #     before do
-  #       post api_v1_groups_path, 
-  #       params: '{ "group": { "name": "Spec Group", "description": "This is a spec group" } }', 
-  #       headers: auth_headers
-  #     end
+    context "with valid parameters" do 
+      before do
+        post api_v1_groups_path, 
+        params: { "group": { "name": "Spec Group", "description": "This is a spec group" } }
+      end
 
-  #     it { expect(response).to have_http_status(:success) }
+      it { expect(response).to have_http_status(:success) }
 
-  #     it "creates the group" do
-  #       expect(Group.find_by(name: "Spec Group")).to be_present
-  #     end
+      it "returns a json with the updated info of the user groups" do
+        json = JSON.parse(response.body)
 
-  #     it "returns a json with the updated info of the user groups" do
-  #       json = JSON.parse(response.body)
+        expect(json["group"]["name"]).to eq("Spec Group")
+        expect(json["message"]).to eq("The group was succesfully created")
+      end
 
-  #       expect(json.group.keys).to contain_exactly('id', 'name', 'description', 'admin_id')
-  #       expect(json.group.name).to eq("Spec Group")
-  #       expect(json.message).to eq("The group was succesfully created")
-  #     end
+      it "has the user set as the admin" do
+        json = JSON.parse(response.body)
 
-  #     it "has the user set as the admin" do
-  #       json = JSON.parse(response.body)
+        expect(Group.find_by(name: "Spec Group").admin.id).to eq(user.id)
+      end
+    end
 
-  #       expect(json.group.admin.id).to eq(user.id)
-  #     end
-  #   end
+    context "with invalid parameters" do 
+      before do
+        post api_v1_groups_path, 
+        params: { "group": { "name": "a", "description": "This is a spec 2 group" } }
+      end
 
-  #   context "with invalid parameters" do 
-  #     before do
-  #       post api_v1_groups_path, 
-  #       params: '{ "group": { "name": "a", "description": "This is a spec 2 group" } }', 
-  #       headers: auth_headers
-  #     end
+      it { expect(response.status).to eq(400) }
 
-  #     it { expect(response).to have_http_status(:error) }
-  #     it "does not creates the group" do
-  #       expect(Group.find_by(name: "a")).to_not be_present
-  #     end
+      it "does not creates the group" do
+        expect(Group.find_by(name: "a")).to_not be_present
+      end
 
-  #     it "returns a json with an error message" do
-  #       json = JSON.parse(response.body)
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
 
-  #       expect(json.message).to eq("The group couldn't be created")
-  #     end
-  #   end
-  # end
+        expect(json["message"]).to match("Name is too short")
+      end
+    end
+  end
 
   # describe "PATCH /update" do
   #   # CALL PARAMS: {"group": {"name": ..., "description": ...}}
