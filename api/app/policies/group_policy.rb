@@ -9,4 +9,9 @@ class GroupPolicy < ApplicationPolicy
   def show?
     record.users.include?(user)
   end
+
+  # Only admin can update it
+  def update?
+    record.admin == user
+  end
 end

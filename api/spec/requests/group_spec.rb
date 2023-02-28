@@ -4,8 +4,9 @@ RSpec.describe "Groups", type: :request do
   # This creates a group with an admin on one side (and all associations in the Factory model) 
   # and also a user that is then added to the group
   let(:groups) { create_list :group, 3 }
+  let(:group) { groups.first }
   let(:user) { create :user }
-  let!(:membership) {create :membership, user: user, group: groups.first}
+  let!(:membership) {create :membership, user: user, group: group}
 
   describe "GET /index" do
     # 2xx RESPONSE: {"groups": [group_instances]}
@@ -20,7 +21,7 @@ RSpec.describe "Groups", type: :request do
       json = JSON.parse(response.body)
 
       expect(json["groups"].length).to eq 1
-      expect(json["groups"].first["name"]).to eq(groups.first.name)
+      expect(json["groups"].first["name"]).to eq(group.name)
     end
   end
 
@@ -30,7 +31,7 @@ RSpec.describe "Groups", type: :request do
     context "with valid parameters" do 
       before do
         sign_in user
-        get api_v1_group_path(groups.first.id)
+        get api_v1_group_path(group.id)
       end
 
       it { expect(response).to have_http_status(:success) }
@@ -38,7 +39,7 @@ RSpec.describe "Groups", type: :request do
       it "returns a json with a specific group of the user" do
         json = JSON.parse(response.body)
 
-        expect(json["group"]["name"]).to eq(groups.first.name)
+        expect(json["group"]["name"]).to eq(group.name)
       end
     end
 
@@ -59,7 +60,6 @@ RSpec.describe "Groups", type: :request do
   end
 
   describe "POST /create" do
-    # CALL PARAMS: {"group": {"name": ..., "description": ...}}
     # 2xx RESPONSE: {"group": group_instance, "message": "The group was succesfully created"}
     # 4xx RESPONSE: {"message": error_message}
     before do
@@ -108,85 +108,78 @@ RSpec.describe "Groups", type: :request do
     end
   end
 
-  # describe "PATCH /update" do
-  #   # CALL PARAMS: {"group": {"name": ..., "description": ...}}
-  #   # 2xx RESPONSE: {"id": group_id, groups: group_instance, "message": "The group was succesfully updated"}
-  #   # 4xx RESPONSE: {"id": group_id, "message": "The group couldn't be updated"}
-  #   # 4xx RESPONSE: {"id": group_id, "message": "You don't have authorization to update the group"}
-  #   context "when user is admin" do
-  #     before do
-  #       sign_in group.admin
-  #       headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-  #       auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, group.admin)
-  #     end
+  describe "PATCH /update" do
+    # 2xx RESPONSE: {"group": group_instance, "message": "The group was succesfully updated"}
+    # 4xx RESPONSE: {"message": error_message}
+    # 4xx RESPONSE: {"message": "You don't have authorization to update the group"}
+    context "when user is admin" do
+      before do
+        sign_in group.admin
+      end
 
-  #     context "with valid parameters" do
-  #       before do
-  #         patch api_v1_group_path(group.id), 
-  #         params: '{"group": {"name": "Updated Group"}}', 
-  #         headers: auth_headers
-  #       end
+      context "with valid parameters" do
+        before do
+          patch api_v1_group_path(group.id), 
+          params: {"group": {"name": "Updated Group"}}
+        end
 
-  #       it { expect(response).to have_http_status(:success) }
+        it { expect(response).to have_http_status(:success) }
 
-  #       it "updates the group" do
-  #         expect(group.name).to eq("Updated Group")
-  #       end
+        it "updates the group" do
+          group.reload
+          expect(group["name"]).to eq("Updated Group")
+        end
 
-  #       it "returns a json with the updated info of the user groups" do
-  #         json = JSON.parse(response.body)
+        it "returns a json with the updated info of the user groups" do
+          json = JSON.parse(response.body)
 
-  #         expect(json.group.keys).to contain_exactly('id', 'name', 'description', 'admin_id')
-  #         expect(json.group.name).to eq("Updated Group")
-  #         expect(json.message).to eq("The group was succesfully updated")
-  #       end
-  #     end
+          expect(json["group"]["name"]).to eq("Updated Group")
+          expect(json["message"]).to eq("The group was succesfully updated")
+        end
+      end
 
-  #     context "with invalid parameters" do
-  #       before do
-  #         patch api_v1_group_path(group.id), 
-  #         params: '{"group": {"name": "a"}}', 
-  #         headers: auth_headers
-  #       end
+      context "with invalid parameters" do
+        before do
+          patch api_v1_group_path(group.id), 
+          params: {"group": {"name": "a"}}
+        end
 
-  #       it { expect(response).to have_http_status(:error) }
+        it { expect(response).to have_http_status(400) }
 
-  #       it "does not create the group" do
-  #         expect(group.name).to_not eq("a")
-  #       end
+        it "does not create the group" do
+          group.reload
+          expect(group["name"]).to_not eq("a")
+        end
 
-  #       it "returns a json with an error message" do
-  #         json = JSON.parse(response.body)
+        it "returns a json with an error message" do
+          json = JSON.parse(response.body)
 
-  #         expect(json.message).to eq("The group couldn't be updated")
-  #       end
-  #     end
-  #   end
+          expect(json["message"]).to match("Name is too short")
+        end
+      end
+    end
 
-  #   context "when user is not admin" do
-  #     before do
-  #       sign_in user
-  #       headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-  #       auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, user)
-  #     end
+    context "when user is not admin" do
+      before do
+        sign_in user
+        patch api_v1_group_path(group.id), 
+        params: {"group": {"name": "Spec Group"}}
+      end
 
-  #     expect{
-  #       patch api_v1_group_path(group.id), 
-  #       params: '{"group": {"name": "Spec Group"}}', 
-  #       headers: auth_headers
-  #     }.to have_http_status(:error)
+      it {expect(response).to have_http_status(401)}
 
-  #     it "does not update the group" do
-  #       expect(group.name).to_not eq("Spec Group")
-  #     end
+      it "does not update the group" do
+        group.reload
+        expect(group["name"]).to_not eq("Spec Group")
+      end
 
-  #     it "returns a json with an error message" do
-  #       json = JSON.parse(response.body)
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
 
-  #       expect(json.message).to eq("You don't have authorization to update the group")
-  #     end
-  #   end
-  # end
+        expect(json["message"]).to eq("Unauthorized access or action")
+      end
+    end
+  end
 
   # describe "DELETE /destroy" do
   #   # CALL PARAMS: {"group": {"name": ..., "description": ...}}

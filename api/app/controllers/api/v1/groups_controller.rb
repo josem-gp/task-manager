@@ -1,5 +1,5 @@
 class Api::V1::GroupsController < ApplicationController
-  before_action :find_group, only: [ :send_invitation, :show ]
+  before_action :find_group, only: [ :send_invitation, :show, :update ]
   before_action :skip_authorization, only: [ :index, :create ]
 
   # GET /api/v1/groups
@@ -24,9 +24,17 @@ class Api::V1::GroupsController < ApplicationController
       error_message = @group.errors.objects.first.full_message
       render_error(error_message, :bad_request)
     end
-  rescue => e
-    logger.warn e
-    render_error("The group couldn't be created", :bad_request)
+  end
+
+  # PATCH /api/v1/groups/:id
+  def update
+    authorize @group
+    if @group.update(group_params)
+      render json: { group: @group , message: "The group was succesfully updated" }
+    else
+      error_message = @group.errors.objects.first.full_message
+      render_error(error_message, :bad_request)
+    end
   end
 
   # Sends invitation
