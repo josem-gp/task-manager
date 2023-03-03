@@ -181,42 +181,64 @@ RSpec.describe "Groups", type: :request do
     end
   end
 
-  # describe "DELETE /destroy" do
-  #   # CALL PARAMS: {"group": {"name": ..., "description": ...}}
-  #   # 2xx RESPONSE: {"id": group_id, "message": "The group was successfully deleted"}
-  #   # 4xx RESPONSE: {"id": group_id, "message": "The group couldn't be deleted"}
-  #   context "when user is admin" do
-  #     before do
-  #       sign_in group.admin
-  #       delete api_v1_group_path(group.id)
-  #     end
+  describe "DELETE /destroy" do
+    # 2xx RESPONSE: {"message": "The group was successfully deleted"}
+    # 4xx RESPONSE: {"message": "The group couldn't be deleted"}
+    context "when user is admin" do
+      before do
+        sign_in group.admin
+      end
 
-  #     it { expect(response).to have_http_status(:success) }
+      context "when valid params" do
+        before do
+          delete api_v1_group_path(group.id)
+        end
 
-  #     it "deletes the group" do
-  #       expect(Group.find(group.id)).to_not be_present
-  #     end
+        it { expect(response).to have_http_status(:success) }
 
-  #     it "returns a json with the updated info of the user groups" do
-  #       json = JSON.parse(response.body)
+        it { expect{ group.reload }.to raise_error(ActiveRecord::RecordNotFound) }
 
-  #       expect(json.message).to eq("The group was succesfully deleted")
-  #     end
-  #   end
+        it "returns a json with the updated info of the user groups" do
+          json = JSON.parse(response.body)
 
-  #   context "when user is not admin" do
-  #     expect(response).to have_http_status(:error)
-  #     it "does not delete the group" do
-  #       expect(Group.find(group.id)).to be_present
-  #     end
+          expect(json["message"]).to eq("The group was succesfully deleted")
+        end
+      end
 
-  #     it "returns a json with an error message" do
-  #       json = JSON.parse(response.body)
+      context "when invalid params" do
+        before do
+          delete api_v1_group_path(1234)
+        end
+        
+        it { expect(response).to have_http_status(404) }
 
-  #       expect(json.message).to eq("The group couldn't be deleted")
-  #     end
-  #   end
-  # end
+        it "returns a json with an error message" do
+          json = JSON.parse(response.body)
+
+          expect(json["message"]).to eq("Record not found")
+        end
+      end
+    end
+
+    context "when user is not admin" do
+      before do
+        sign_in user
+        delete api_v1_group_path(group.id)
+      end
+
+      it { expect(response).to have_http_status(401) }
+
+      it "does not delete the group" do
+        expect(Group.find(group.id)).to be_present
+      end
+
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
+
+        expect(json["message"]).to eq("Unauthorized access or action")
+      end
+    end
+  end
 
   # describe "GET /filter_tasks" do
   #   # CALL PARAMS: {"task": {"name": "", "assignee": "", "finished": "true or false", "due_date": ""}}

@@ -1,6 +1,6 @@
 class Api::V1::GroupsController < ApplicationController
-  before_action :find_group, only: [ :send_invitation, :show, :update ]
-  before_action :skip_authorization, only: [ :index, :create ]
+  before_action :find_group, only: [:send_invitation, :show, :update, :destroy]
+  before_action :skip_authorization, only: [:index, :create]
 
   # GET /api/v1/groups
   def index
@@ -35,6 +35,13 @@ class Api::V1::GroupsController < ApplicationController
       error_message = @group.errors.objects.first.full_message
       render_error(error_message, :bad_request)
     end
+  end
+
+  # DELETE /api/v1/groups/:id
+  def destroy
+    authorize @group
+    @group.destroy
+    render json: { message: "The group was succesfully deleted" }
   end
 
   # Sends invitation

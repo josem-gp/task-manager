@@ -14,4 +14,9 @@ class GroupPolicy < ApplicationPolicy
   def update?
     record.admin == user
   end
+
+  # Only admin can destroy it
+  def destroy?
+    record.admin == user
+  end
 end
