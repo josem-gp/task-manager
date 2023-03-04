@@ -4,7 +4,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       t.string :name
       t.text :note
       t.date :due_date
-      t.boolean :finished
+      t.boolean :finished, default: false
       t.references :group, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
       t.references :assignee, null: false, foreign_key: { to_table: :users}

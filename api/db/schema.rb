@@ -84,7 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_13_195310) do
     t.string "name"
     t.text "note"
     t.date "due_date"
-    t.boolean "finished"
+    t.boolean "finished", default: false
     t.bigint "group_id", null: false
     t.bigint "user_id", null: false
     t.bigint "assignee_id", null: false

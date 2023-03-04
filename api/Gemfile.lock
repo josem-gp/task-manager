@@ -128,7 +128,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.17.0)
-    msgpack (1.6.0)
+    msgpack (1.6.1)
     net-imap (0.3.4)
       date
       net-protocol
@@ -148,7 +148,7 @@ GEM
     pundit (2.3.0)
       activesupport (>= 3.0.0)
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-cors (2.0.0)
       rack (>= 2.0.0)
     rack-test (2.0.2)
@@ -180,7 +180,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
-    redis-client (0.12.2)
+    redis-client (0.13.0)
       connection_pool
     reline (0.3.2)
       io-console (~> 0.5)
@@ -216,6 +216,8 @@ GEM
       spring (>= 0.9.1)
     thor (1.2.1)
     timeout (0.3.2)
+    toschas-filterable (1.0.2)
+      activerecord (>= 3.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     warden (1.2.9)
@@ -250,6 +252,7 @@ DEPENDENCIES
   sidekiq
   spring
   spring-commands-rspec
+  toschas-filterable
   tzinfo-data
   warden-jwt_auth
 

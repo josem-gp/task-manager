@@ -240,62 +240,77 @@ RSpec.describe "Groups", type: :request do
     end
   end
 
-  # describe "GET /filter_tasks" do
-  #   # CALL PARAMS: {"task": {"name": "", "assignee": "", "finished": "true or false", "due_date": ""}}
-  #   # 2xx RESPONSE: {"id": group_id, "tasks": [group_instances]}
+  describe "POST /filter_tasks" do
+    # 2xx RESPONSE: {"tasks": [group_instances]}
 
-  #   before do
-  #     sign_in user
-  #   end
+    before do
+      create :task, group: group, finished: true, due_date: "2030-12-24"
+      create :task, group: group, due_date: "2030-11-30"
+      create :task, group: group, finished: true, due_date: "2031-01-10"
 
-  #   context "when filter param is empty" do
-  #     before do
-  #       get filter_tasks_api_v1_group_path(group.id)
-  #     end
+      sign_in user
+    end
+
+    context "when filter param is empty" do
+      before do
+        post filter_tasks_api_v1_group_path(group.id),
+        params: {}
+      end
       
-  #     it { expect(response).to have_http_status(:success) }
+      it { expect(response).to have_http_status(:success) }
 
-  #     it "returns an array of all tasks for that group" do
-  #       json = JSON.parse(response.body)
+      it "returns an array of all tasks for that group" do
+        json = JSON.parse(response.body)
 
-  #       expect(json.task.length).to eq 3
-  #     end
-  #   end
+        expect(json["tasks"].length).to eq 6 # Because of the callback in the group factory
+      end
+    end
 
-  #   context "when filter param has only one param" do
-  #     let!(:task) {create :task, group: group, finished: true}
+    context "when filter param has only one param" do
+      before do
+        post filter_tasks_api_v1_group_path(group.id),
+        params: {"by_finished": "true"}
+      end
 
-  #     before do
-  #       get filter_tasks_api_v1_group_path(group.id),
-  #       params: '{"task": {"name": "", "assignee": "", "finished": "true", "due_date": ""}', 
-  #     end
+      it { expect(response).to have_http_status(:success) }
 
-  #     it { expect(response).to have_http_status(:success) }
+      it "returns an array the tasks that fit the search in the group" do
+        json = JSON.parse(response.body)
 
-  #     it "returns an array the tasks that fit the search in the group" do
-  #       json = JSON.parse(response.body)
+        expect(json["tasks"].length).to eq 2
+      end
+    end
 
-  #       expect(json.task.length).to eq 1
-  #     end
-  #   end
+    context "when filter param has more than one param" do
+      before do
+        post filter_tasks_api_v1_group_path(group.id),
+        params: {"by_fuzzy_name": "Factory task", "by_finished": "false", "from_due_date": "", "to_due_date": ""} 
+      end
 
-  #   context "when filter param has more than one param" do
-  #     let!(:task) {create_list :task, group: group, finished: true, 2}
+      it { expect(response).to have_http_status(:success) }
 
-  #     before do
-  #       get filter_tasks_api_v1_group_path(group.id),
-  #       params: '{"task": {"name": "Factory task", "assignee": "", "finished": "true", "due_date": "24/07/2050"}', 
-  #     end
+      it "returns an array the tasks that fit the search in the group" do
+        json = JSON.parse(response.body)
 
-  #     it { expect(response).to have_http_status(:success) }
+        expect(json["tasks"].length).to eq 4
+      end
+    end
 
-  #     it "returns an array the tasks that fit the search in the group" do
-  #       json = JSON.parse(response.body)
+    context "when filtering by ranged date" do
+      before do
+        post filter_tasks_api_v1_group_path(group.id),
+        params: {"by_fuzzy_name": "Factory task", "from_due_date": "2030-11-30", "to_due_date": "2030-12-24"} 
+      end
 
-  #       expect(json.task.length).to eq 2
-  #     end
-  #   end
-  # end
+      it { expect(response).to have_http_status(:success) }
+
+      it "returns an array the tasks that fit the search in the group" do
+        json = JSON.parse(response.body)
+
+        expect(json["tasks"].length).to eq 2
+      end
+    end
+  end
 
   # describe "POST /send_invitation" do
   #   # PARAMS: params[:group_id] && '{"group": {"email": "xxxx@test.io"}}'

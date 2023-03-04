@@ -19,4 +19,9 @@ class GroupPolicy < ApplicationPolicy
   def destroy?
     record.admin == user
   end
+
+  # Only users belonging to the group can filter tasks
+  def filter_tasks?
+    record.users.include?(user)
+  end
 end

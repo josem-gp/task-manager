@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe Tag, type: :model do
   describe "validations" do
     let(:second_tag) { build :tag, name: subject.name, group: subject.group}
-    let(:first_tag) { create :tag, name: "Factory tag"}
-    subject { create :tag, name: first_tag.name }
+    subject { create :tag, name: "Factory tag" }
 
     context "when not valid" do     
       it "lacks name" do

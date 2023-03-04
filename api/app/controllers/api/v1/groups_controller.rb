@@ -1,5 +1,5 @@
 class Api::V1::GroupsController < ApplicationController
-  before_action :find_group, only: [:send_invitation, :show, :update, :destroy]
+  before_action :find_group, only: [:send_invitation, :show, :update, :destroy, :filter_tasks]
   before_action :skip_authorization, only: [:index, :create]
 
   # GET /api/v1/groups
@@ -44,6 +44,13 @@ class Api::V1::GroupsController < ApplicationController
     render json: { message: "The group was succesfully deleted" }
   end
 
+  # POST /api/v1/groups/:id/filter_tasks
+  def filter_tasks
+    authorize @group
+    response = Task.filter(filter_params).where(group: @group)
+    render json: { tasks: response }
+  end
+
   # Sends invitation
   def send_invitation
     @invitation = Invitation.new(invitation_params)
@@ -75,6 +82,10 @@ class Api::V1::GroupsController < ApplicationController
 
   def invitation_params
     params.require(:invitation).permit(:email)
+  end
+
+  def filter_params
+    params.permit(:by_fuzzy_name, :by_assignee_id, :by_finished, :from_due_date, :to_due_date)
   end
 
   def render_error(message, status)
