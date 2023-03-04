@@ -24,4 +24,14 @@ class GroupPolicy < ApplicationPolicy
   def filter_tasks?
     record.users.include?(user)
   end
+
+  # Only admin can send invitation
+  def send_invitation?
+    record.admin == user
+  end
+
+  # Only admin can remove user from group
+  def remove_user?
+    record.admin == user
+  end
 end

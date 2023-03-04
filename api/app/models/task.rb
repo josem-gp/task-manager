@@ -14,7 +14,7 @@ class Task < ApplicationRecord
   # Associations
   belongs_to :group
   belongs_to :user
-  belongs_to :assignee, class_name: "User", foreign_key: :assignee_id
+  belongs_to :assignee, class_name: "User", foreign_key: :assignee_id, optional: true
   has_many :tagged_tasks, dependent: :destroy
 
   # Validations
@@ -22,6 +22,11 @@ class Task < ApplicationRecord
   validates :due_date, date: true 
   
   # validate :valid_task?
+
+  # Find all tasks where user is the creator or assignee for a group
+  def self.find_user_tasks(group, user)
+    return self.where(group: group).and(self.where(user: user).or(self.where(assignee: user)))
+  end
 
   private
 

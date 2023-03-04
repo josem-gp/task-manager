@@ -60,7 +60,7 @@ RSpec.describe "Groups", type: :request do
   end
 
   describe "POST /create" do
-    # 2xx RESPONSE: {"group": group_instance, "message": "The group was succesfully created"}
+    # 2xx RESPONSE: {"group": group_instance, "message": "The group was successfully created"}
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
@@ -78,7 +78,7 @@ RSpec.describe "Groups", type: :request do
         json = JSON.parse(response.body)
 
         expect(json["group"]["name"]).to eq("Spec Group")
-        expect(json["message"]).to eq("The group was succesfully created")
+        expect(json["message"]).to eq("The group was successfully created")
       end
 
       it "has the user set as the admin" do
@@ -109,7 +109,7 @@ RSpec.describe "Groups", type: :request do
   end
 
   describe "PATCH /update" do
-    # 2xx RESPONSE: {"group": group_instance, "message": "The group was succesfully updated"}
+    # 2xx RESPONSE: {"group": group_instance, "message": "The group was successfully updated"}
     # 4xx RESPONSE: {"message": error_message}
     # 4xx RESPONSE: {"message": "You don't have authorization to update the group"}
     context "when user is admin" do
@@ -134,7 +134,7 @@ RSpec.describe "Groups", type: :request do
           json = JSON.parse(response.body)
 
           expect(json["group"]["name"]).to eq("Updated Group")
-          expect(json["message"]).to eq("The group was succesfully updated")
+          expect(json["message"]).to eq("The group was successfully updated")
         end
       end
 
@@ -201,7 +201,7 @@ RSpec.describe "Groups", type: :request do
         it "returns a json with the updated info of the user groups" do
           json = JSON.parse(response.body)
 
-          expect(json["message"]).to eq("The group was succesfully deleted")
+          expect(json["message"]).to eq("The group was successfully deleted")
         end
       end
 
@@ -245,8 +245,8 @@ RSpec.describe "Groups", type: :request do
 
     before do
       create :task, group: group, finished: true, due_date: "2030-12-24"
-      create :task, group: group, due_date: "2030-11-30"
-      create :task, group: group, finished: true, due_date: "2031-01-10"
+      create :task, group: group, user: user, due_date: "2030-11-30"
+      create :task, group: group, assignee: user, finished: true, due_date: "2031-01-10"
 
       sign_in user
     end
@@ -262,7 +262,7 @@ RSpec.describe "Groups", type: :request do
       it "returns an array of all tasks for that group" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 6 # Because of the callback in the group factory
+        expect(json["tasks"].length).to eq 2 # Because of the callback in the group factory
       end
     end
 
@@ -277,7 +277,7 @@ RSpec.describe "Groups", type: :request do
       it "returns an array the tasks that fit the search in the group" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 2
+        expect(json["tasks"].length).to eq 1
       end
     end
 
@@ -292,7 +292,7 @@ RSpec.describe "Groups", type: :request do
       it "returns an array the tasks that fit the search in the group" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 4
+        expect(json["tasks"].length).to eq 1
       end
     end
 
@@ -307,182 +307,166 @@ RSpec.describe "Groups", type: :request do
       it "returns an array the tasks that fit the search in the group" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 2
+        expect(json["tasks"].length).to eq 1
       end
     end
   end
 
-  # describe "POST /send_invitation" do
-  #   # PARAMS: params[:group_id] && '{"group": {"email": "xxxx@test.io"}}'
-  #   # 2xx RESPONSE: {"id": group_id, "message": "The invitation was successfully created and enqueued"}
-  #   # 4xx RESPONSE: {"id": group_id, "message": "The invitation couldn't be created"}
+  describe "POST /send_invitation" do
+    # 2xx RESPONSE: {"id": group_id, "message": "The invitation was successfully created"}
+    # 4xx RESPONSE: {"id": group_id, "message": "The invitation couldn't be created"}
+    let(:parameterized_mailer) { double('ActionMailer::Parameterized::Mailer') }
+    let(:parameterized_message) { double('ActionMailer::Parameterized::MessageDelivery') }
 
-  #   context "when user is admin" do
-  #     let(:parameterized_mailer) { double('ActionMailer::Parameterized::Mailer') }
-  #     let(:parameterized_message) { double('ActionMailer::Parameterized::MessageDelivery') }
+    before do
+      allow(InvitationMailer).to receive(:with).and_return(parameterized_mailer)
+      allow(parameterized_mailer).to receive(:send_invite).and_return(parameterized_message)
+      allow(parameterized_message).to receive(:deliver_later)
+    end
 
-  #     before do
-  #       sign_in group.admin
-  #       headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-  #       auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, group.admin)
+    context "when user is admin" do
+      before do
+        sign_in group.admin
+      end
 
-  #       allow(InvitationMailer).to receive(:with).and_return(parameterized_mailer)
-  #       allow(parameterized_mailer).to receive(:user_registration_email).and_return(parameterized_message)
-  #       allow(parameterized_message).to receive(:deliver_later)
-  #     end
-
-  #     context "when valid params" do
-  #       let(:invitation, recipient: "test@test.io", sender: group.admin, group: group)
-
-  #       before do 
-  #         post send_invitation_api_v1_group_path(group.id),
-  #         params: '{ "group": { "email": "test@test.io" } }', 
-  #         headers: auth_headers
-  #       end
+      context "when valid params" do
+        before do 
+          post send_invitation_api_v1_group_path(group.id),
+          params: { "invitation": { "email": "test@test.io" } }
+        end
   
-  #       it { expect(response).to have_http_status(:success) }
+        it { expect(response).to have_http_status(:success) }
 
-  #       it "creates an invitation" do
-  #         expect(Invitation.find_by(email: "test@test.io")).to be_present
-  #       end
+        it "creates an invitation" do
+          expect(Invitation.find_by(email: "test@test.io")).to be_present
+        end
   
-  #       it "enqueues an invitation" do
-  #         expect(InvitationMailer).to have_received(:with).with(recipient: invitation.recipient, sender: invitation.sender, group: invitation.group)
-  #         expect(parameterized_mailer).to have_received(:send_invite)
-  #         expect(parameterized_message).to have_received(:deliver_later)
-  #       end
+        it "enqueues an invitation" do
+          expect(InvitationMailer).to have_received(:with).with(recipient: "test@test.io", sender: group.admin, group: group)
+          expect(parameterized_mailer).to have_received(:send_invite)
+          expect(parameterized_message).to have_received(:deliver_later)
+        end
 
-  #       it "enqueues a job to disable the invitation" do
-  #         expect { response }.to have_enqueued_job(DisableInvitationJob)
-  #         .with(invitation)
-  #         .on_queue("default")
-  #         .at(Date.current + 7)
-  #       end
+        it "enqueues a job to disable the invitation" do
+          expect(DisableInvitationJob).to have_been_enqueued
+          .with(invitation: Invitation.last)
+          .on_queue("default")
+          # .at(7.days.from_now.change(:usec => 0))
+          .exactly(:once)
+        end
   
-  #       it "returns a json with a success message" do
-  #         json = JSON.parse(response.body)
+        it "returns a json with a success message" do
+          json = JSON.parse(response.body)
 
-  #         expect(json.message).to eq("The invitation was successfully created and enqueued")
-  #       end
-  #     end
+          expect(json["message"]).to eq("The invitation was successfully sent")
+        end
+      end
 
-  #     context "when invalid params" do
-  #       before do
-  #         post send_invitation_api_v1_group_path(group.id),
-  #         params: '{ "group": { "email": "test.io" } }', 
-  #         headers: auth_headers
-  #       end
+      context "when invalid params" do
+        before do
+          post send_invitation_api_v1_group_path(group.id),
+          params: { "invitation": { "email": "test.io" } }
+        end
 
-  #       it { expect(response).to have_http_status(:error) }
+        it { expect(response).to have_http_status(400) }
 
-  #       it "does not create any invitation" do
-  #         expect(Invitation.find_by(email: "test.io")).to_not be_present
-  #       end
+        it "does not create any invitation" do
+          expect(Invitation.find_by(email: "test.io")).to_not be_present
+        end
 
-  #       it "does not enqueue any invitation" do
-  #         expect(InvitationMailer).to_not have_received(:with).with(recipient: "test.io", sender: group.email, group: group)
-  #         expect(parameterized_mailer).to_not have_received(:send_invite)
-  #         expect(parameterized_message).to_not have_received(:deliver_later)
-  #       end
+        it "does not enqueue any invitation" do
+          expect(InvitationMailer).to_not have_received(:with).with(recipient: "test.io", sender: group.admin, group: group)
+          expect(parameterized_mailer).to_not have_received(:send_invite)
+          expect(parameterized_message).to_not have_received(:deliver_later)
+        end
 
-  #       it "returns a json with an error message" do
-  #         json = JSON.parse(response.body)
+        it "does not enqueues a job to disable the invitation" do
+          expect(DisableInvitationJob).to_not have_been_enqueued
+        end
 
-  #         expect(json.message).to eq("The invitation couldn't be created")
-  #       end
-  #     end
-  #   end
+        it "returns a json with an error message" do
+          json = JSON.parse(response.body)
 
-  #   context "when user is not admin" do
-  #     before do
-  #       sign_in user
-  #       headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-  #       auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, user)
+          expect(json["message"]).to eq("The invitation couldn't be created")
+        end
+      end
+    end
 
-  #       post send_invitation_api_v1_group_path(group.id),
-  #       params: '{ "group": { "email": "test@test.io" } }',
-  #       headers: auth_headers
-  #     end
+    context "when user is not admin" do
+      before do
+        sign_in user
 
-  #     it { expect(response).to have_http_status(:error) }
+        post send_invitation_api_v1_group_path(group.id),
+        params: { "invitation": { "email": "test@test.io" } }
+      end
 
-  #     it "does not create any invitation" do
-  #       expect(Invitation.find_by(email: "test@test.io")).to_not be_present
-  #     end
+      it { expect(response).to have_http_status(401) }
 
-  #     it "does not enqueue any invitation" do
-  #       expect(InvitationMailer).to_not have_received(:with).with(recipient: "test@test.io", sender: group.email, group: group)
-  #       expect(parameterized_mailer).to_not have_received(:send_invite)
-  #       expect(parameterized_message).to_not have_received(:deliver_later)
-  #     end
+      it "does not create any invitation" do
+        expect(Invitation.find_by(email: "test@test.io")).to_not be_present
+      end
 
-  #     it "returns a json with an error message" do
-  #       json = JSON.parse(response.body)
+      it "does not enqueue any invitation" do
+        expect(InvitationMailer).to_not have_received(:with).with(recipient: "test@test.io", sender: user, group: group)
+        expect(parameterized_mailer).to_not have_received(:send_invite)
+        expect(parameterized_message).to_not have_received(:deliver_later)
+      end
 
-  #       expect(json.message).to eq("The invitation couldn't be created")
-  #     end
-  #   end
-  # end
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
 
-  # describe "DELETE /remove_user" do
-  #   # PARAMS: params[:group_id, :user_id]
-  #   # 2xx RESPONSE: {"id": group_id, "user": [user_instances] , "message": "The user was successfully removed"}
-  #   # 4xx RESPONSE: {"id": group_id, "message": "The user couldn't be removed"}
-  #   let(:new_user) {create :user}
+        expect(json["message"]).to eq("Unauthorized access or action")
+      end
+    end
+  end
 
-  #   before do
-  #     create(:task, name: "User task", user: user, group: group)
-  #     create(:tag, name: "User tag", user: user, group: group)
-  #     create(:membership, user: new_user, group: group)
-  #   end
+  describe "DELETE /remove_user" do
+    # 2xx RESPONSE: {"message": "The user was successfully removed"}
+    # 4xx RESPONSE: {"message": "The user couldn't be removed"}
+    let(:new_user) {create :user}
 
-  #   context "when user is admin" do
-  #     before do
-  #       sign_in group.admin
-  #       get remove_group_user_api_v1_group_path(group.id, user)
-  #     end
+    before do
+      create(:task, name: "User task", user: new_user, group: group)
+      create(:tag, name: "User tag", user: new_user, group: group)
+      create(:membership, user: new_user, group: group)
+    end
 
-  #     it { expect(response).to have_http_status(:success) }
+    context "when user is admin" do
+      before do
+        sign_in group.admin
+        delete remove_group_user_api_v1_group_path(id: group.id, user_id: new_user.id)
+      end
 
-  #     it "deletes the user" do
-  #       expect(Group.find(group.id).users.where(id: user.id).count).to eq 0
-  #     end
+      it { expect(response).to have_http_status(:success) }
 
-  #     it "changes the ownership of user's tasks to group admin" do
-  #       expect(Task.where(group: g).and(Task.where(user: user)).count).to eq 0
-  #       expect(Task.where(group: g).and(Task.where(user: group.admin)).count).to eq 1
-  #     end
+      it "deletes the user" do
+        expect(Group.find(group.id).users.where(id: new_user.id).count).to eq 0
+      end
 
-  #     it "changes the ownership of user's tags to group admin" do
-  #       expect(Tag.where(group: g).and(Tag.where(user: user)).count).to eq 0
-  #       expect(Tag.where(group: g).and(Tag.where(user: group.admin)).count).to eq 1
-  #     end
+      it "returns a json with the updated list of users in the group" do
+        json = JSON.parse(response.body)
 
-  #     it "returns a json with the updated list of users in the group" do
-  #       json = JSON.parse(response.body)
+        expect(json["message"]).to eq("The user was successfully removed")
+      end
+    end
 
-  #       expect(json.users.length).to eq 2
-  #       expect(json.message).to eq("The user was successfully removed")
-  #     end
-  #   end
+    context "when user is not admin" do
+      before do
+        sign_in user
+        delete remove_group_user_api_v1_group_path(id: group.id, user_id: new_user.id)
+      end
 
-  #   context "when user is not admin" do
-  #     before do
-  #       sign_in user
-  #       get remove_group_user_api_v1_group_path(group.id, new_user)
-  #     end
+      it { expect(response).to have_http_status(401) }
 
-  #     it { expect(response).to have_http_status(:error) }
+      it "does not delete the user" do
+        expect(Group.find(group.id).users.where(id: new_user.id).count).to eq 1
+      end
 
-  #     it "does not delete the user" do
-  #       expect(Group.find(group.id).users.where(id: new_user.id).count).to eq 1
-  #     end
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
 
-  #     it "returns a json with an error message" do
-  #       json = JSON.parse(response.body)
-
-  #       expect(json.message).to eq("The user couldn't be removed")
-  #     end
-  #   end
-  # end
+        expect(json["message"]).to eq("Unauthorized access or action")
+      end
+    end
+  end
 end

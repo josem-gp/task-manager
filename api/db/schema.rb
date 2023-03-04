@@ -87,7 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_13_195310) do
     t.boolean "finished", default: false
     t.bigint "group_id", null: false
     t.bigint "user_id", null: false
-    t.bigint "assignee_id", null: false
+    t.bigint "assignee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
