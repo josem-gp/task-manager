@@ -1,25 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe "Invitations", type: :request do
-  # describe "GET /index" do
-  #   # PARAMS: params[:group_id]
-  #   # 2xx RESPONSE: {"id": group_id, "invitations": [invitation_instances]}
-  #   let(:group) { create :group }
-  #   let(:user) { create :user }
+  describe "GET /index" do
+    # 2xx RESPONSE: {"invitations": [invitation_instances]}
+    let(:group) { create :group } # creates an invitation in the factory callback
+    let(:user) { create :user }
 
-  #   before do
-  #     sign_in user
-  #     get api_v1_group_invitation_path(group.id)
-  #   end
+    before do
+      create :membership, user: user, group: group
 
-  #   it { expect(response).to have_http_status(:success) }
+      sign_in group.admin
+      get api_v1_group_invitations_path(group.id)
+    end
 
-  #   it "returns a json with the invitations in the groups" do
-  #     json = JSON.parse(response.body)
+    it { expect(response).to have_http_status(:success) }
 
-  #     expect(json.invitations.length).to eq 1
-  #   end
-  # end
+    it "returns a json with the invitations in the groups" do
+      json = JSON.parse(response.body)
+
+      expect(json["invitations"].length).to eq 1
+    end
+  end
 
   # describe "GET /invitation_signup" do
   #   # PARAMS: params[:group_id]

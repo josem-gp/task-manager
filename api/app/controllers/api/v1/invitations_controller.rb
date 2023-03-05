@@ -1,6 +1,14 @@
 class Api::V1::InvitationsController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :invitation_signup ]
-  before_action :oauth_token_confirmation
+  before_action :find_group, only: [:index]
+  before_action :oauth_token_confirmation, only: [:invitation_signup]
+
+  # Fetch all the invitations of the group
+  # GET /api/v1/groups/:group_id/invitations
+  def index
+    invitations = @group.invitations
+    render json: { invitations: invitations }
+  end
 
   # Render signup page or redirects to root path
   def invitation_signup
@@ -17,6 +25,11 @@ class Api::V1::InvitationsController < ApplicationController
   end
 
   private 
+
+  def find_group
+    @group = Group.find(params[:group_id])
+    authorize @group
+  end
 
   # Fetch invitation and check if the expired date has passed
   def oauth_token_confirmation
