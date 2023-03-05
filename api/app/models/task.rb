@@ -19,7 +19,7 @@ class Task < ApplicationRecord
 
   # Validations
   validates :name, presence: true, length: { maximum: 25 }, uniqueness: { case_sensitive: false, scope: :group_id }
-  validates :due_date, date: true 
+  validates :due_date, presence: true, date: true 
   
   # validate :valid_task?
 

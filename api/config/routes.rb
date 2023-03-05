@@ -20,7 +20,7 @@ Rails.application.routes.draw do
           post 'filter_tasks', to: 'groups#filter_tasks'
           delete "remove_user/:user_id", to: "groups#remove_user", as: :remove_group_user
         end
-        resources :tasks, only: [:index, :create], module: :groups
+        resources :tasks, only: [:index, :create], module: :groups # we only need these 2 actions to be done inside a group (this way if we are inside a group the group_id will be already given to the user by default)
         resources :tags, only: [:index, :create, :update, :destroy]
         resources :invitations, only: [:index]
         resources :users, only: [:index]

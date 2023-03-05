@@ -9,7 +9,7 @@ RSpec.describe "Tags", type: :request do
   let!(:membership) {create :membership, user: user, group: group}
 
   describe "GET /index" do
-    # 2xx RESPONSE: {"id": group_id, "tags": [tag_instances]}
+    # 2xx RESPONSE: {"tags": [tag_instances]}
     before do
       sign_in user
       get api_v1_group_tags_path(group.id)

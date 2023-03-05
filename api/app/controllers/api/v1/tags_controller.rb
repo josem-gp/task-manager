@@ -1,6 +1,7 @@
 class Api::V1::TagsController < ApplicationController
   before_action :find_group
   before_action :find_tag, only: [:update, :destroy]
+  
   # Fetch all the tags in a group
   # GET /api/v1/groups/:group_id/tags
   def index
