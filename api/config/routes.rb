@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           post 'send_invitation', to: 'groups#send_invitation'
-          get 'filter_tasks', to: 'groups#filter_tasks'
+          post 'filter_tasks', to: 'groups#filter_tasks'
           delete "remove_user/:user_id", to: "groups#remove_user", as: :remove_group_user
         end
         resources :tasks, only: [:index, :create], module: :groups

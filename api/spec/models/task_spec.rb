@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe Task, type: :model do
   describe "validations" do
     let(:second_task) { build :task, name: subject.name, group: subject.group}
-    let(:first_task) { create :task, name: "Factory task"}
-    subject { create :task, name: first_task.name }
+    subject { create :task, name: "Factory task" }
 
     context "when not valid" do     
       it "lacks name" do
