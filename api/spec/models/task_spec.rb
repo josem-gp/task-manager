@@ -12,6 +12,12 @@ RSpec.describe Task, type: :model do
         expect(subject.errors["name"]).to include("can't be blank")
       end
 
+      it "lacks due date" do
+        subject.due_date = nil
+        expect(subject).to_not be_valid
+        expect(subject.errors["due_date"]).to include("can't be blank")
+      end
+
       it "has invalid name" do 
         subject.name = "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet"
         expect(subject).to_not be_valid

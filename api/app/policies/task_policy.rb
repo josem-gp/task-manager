@@ -1,0 +1,31 @@
+class TaskPolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
+  end
+
+  # Only users belonging to the group can see the task
+  def show?
+    record.group.users.include?(user)
+  end
+
+  # Only users belonging to the group can create a task
+  def create?
+    if record.group
+      record.group.users.include?(user) 
+    else
+      false
+    end
+  end
+
+  # Only users belonging to the group can update a task
+  def update?
+    record.group.users.include?(user)
+  end
+
+  # Only users belonging to the group can destroy a task
+  def destroy?
+    record.group.users.include?(user)
+  end
+end

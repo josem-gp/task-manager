@@ -6,6 +6,6 @@ FactoryBot.define do
 
     sequence(:name) { |n| "Factory task #{n}" }
     finished { false }
-    due_date { "24/07/2050" }
+    due_date { Date.current + 10 }
   end
 end
