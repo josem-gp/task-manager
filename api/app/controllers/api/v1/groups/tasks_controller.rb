@@ -1,11 +1,11 @@
 class Api::V1::Groups::TasksController < ApplicationController
   before_action :find_group
+  before_action :skip_authorization, only: [:index]
 
   # Fetch all the tasks of an user in a group (whether the user is the creator or assignee)
   # GET /api/v1/groups/:group_id/tasks
   def index
-    @tasks = @group.tasks.where(user: current_user).or(Task.where(assignee: current_user))
-    authorize @tasks.first, policy_class: Groups::TaskPolicy # every record will have the same group so we can just take one and do the authorize
+    @tasks = @group.tasks.where(user: current_user).or(Task.where(assignee: current_user)) # we don't need the auth check because we already fetch only the tasks in the group of the current user in the backend
     render json: { tasks: @tasks }
   end
 

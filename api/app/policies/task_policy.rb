@@ -10,9 +10,9 @@ class TaskPolicy < ApplicationPolicy
     record.group.users.include?(user)
   end
 
-  # Only users belonging to the group can create a task
+  # Only users belonging to the group can create a task for that group
   def create?
-    if record.group
+    if record.group # if user doesn't add a group to the task when creating it, we return false (which gives auth error)
       record.group.users.include?(user) 
     else
       false

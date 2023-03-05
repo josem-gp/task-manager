@@ -5,7 +5,7 @@ class Api::V1::GroupsController < ApplicationController
   # Fetch all the groups of the current user
   # GET /api/v1/groups
   def index
-    groups = current_user.groups
+    groups = current_user.groups # we don't need the auth check because we already fetch only the groups of the current user in the backend
     render json: { groups: groups }
   end
 
@@ -18,7 +18,7 @@ class Api::V1::GroupsController < ApplicationController
   # Create a group
   # POST /api/v1/groups
   def create
-    group = Group.new(group_params)
+    group = Group.new(group_params) # we don't need the auth check because any user can create a group
     group.admin = current_user
     if group.save
       render json: { group: group , message: "The group was successfully created" }

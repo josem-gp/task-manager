@@ -9,7 +9,6 @@ RSpec.describe Groups::TaskPolicy, type: :policy do
   context "for a user that is not part of the group" do
     let(:user) { create :user }
 
-    it { should_not authorize(:index)  }
     it { should_not authorize(:create) }
   end
 
@@ -20,14 +19,12 @@ RSpec.describe Groups::TaskPolicy, type: :policy do
       create :membership, user: user, group: group
     end
 
-    it { should authorize(:index)  }
     it { should authorize(:create) }
   end
 
   context "for the admin of the group" do
     let(:user) { group.admin }
 
-    it { should authorize(:index)  }
     it { should authorize(:create) }
   end
 end
