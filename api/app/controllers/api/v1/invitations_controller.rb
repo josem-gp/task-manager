@@ -7,7 +7,7 @@ class Api::V1::InvitationsController < ApplicationController
   # GET /api/v1/groups/:group_id/invitations
   def index
     @invitations = @group.invitations
-    authorize @invitations
+    authorize @invitations.first # every record will have the same group so we can just take one and do the authorize
     render json: { invitations: @invitations }
   end
 
