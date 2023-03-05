@@ -5,7 +5,7 @@ class Api::V1::TasksController < ApplicationController
   # Fetch all the tasks of a user (whether the user is the creator or assignee)
   # GET /api/v1/tasks
   def index
-    tasks = Task.where(user: current_user).or(Task.where(assignee: current_user))
+    tasks = Task.where(user: current_user).or(Task.where(assignee: current_user)) # we don't need the auth check because we already fetch only the tasks of the current user in the backend
     render json: { tasks: tasks }
   end
 
