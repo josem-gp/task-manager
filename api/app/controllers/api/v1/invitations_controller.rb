@@ -6,8 +6,9 @@ class Api::V1::InvitationsController < ApplicationController
   # Fetch all the invitations of the group
   # GET /api/v1/groups/:group_id/invitations
   def index
-    invitations = @group.invitations
-    render json: { invitations: invitations }
+    @invitations = @group.invitations
+    authorize @invitations
+    render json: { invitations: @invitations }
   end
 
   # Render signup page or redirects to root path after user clicks on invitation link
@@ -29,7 +30,6 @@ class Api::V1::InvitationsController < ApplicationController
 
   def find_group
     @group = Group.find(params[:group_id])
-    authorize @group
   end
 
   # Fetch invitation and check if the expired date has passed
