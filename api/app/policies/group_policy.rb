@@ -5,11 +5,6 @@ class GroupPolicy < ApplicationPolicy
     end
   end
 
-  # Only users belonging to the group can see the invitations (linked with Invitation controller and not with Group controller)
-  def index?
-    record.users.include?(user)
-  end
-
   # Only users belonging to the group can see it
   def show?
     record.users.include?(user)
