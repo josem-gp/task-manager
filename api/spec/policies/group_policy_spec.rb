@@ -8,6 +8,7 @@ RSpec.describe GroupPolicy, type: :policy do
   context "for a user that is not part of the group" do
     let(:user) { create :user }
 
+    it { should_not authorize(:index)    }
     it { should_not authorize(:show)    }
     it { should_not authorize(:update)  }
     it { should_not authorize(:destroy) }
@@ -23,6 +24,7 @@ RSpec.describe GroupPolicy, type: :policy do
       create :membership, user: user, group: group
     end
 
+    it { should authorize(:index)    }
     it { should authorize(:show)    }
     it { should_not authorize(:update)  }
     it { should_not authorize(:destroy) }
@@ -34,6 +36,7 @@ RSpec.describe GroupPolicy, type: :policy do
   context "for the admin of the group" do
     let(:user) { group.admin }
 
+    it { should authorize(:index)    }
     it { should authorize(:show)    }
     it { should authorize(:update)  }
     it { should authorize(:destroy) }
