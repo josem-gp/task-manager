@@ -12,7 +12,6 @@ class Api::V1::GroupsController < ApplicationController
   # Fetch one of the groups of the current user
   # GET /api/v1/groups/:id
   def show
-    authorize @group
     render json: { group: @group }
   end
 
@@ -32,7 +31,6 @@ class Api::V1::GroupsController < ApplicationController
   # Update a group only if current user is admin of group
   # PATCH /api/v1/groups/:id
   def update
-    authorize @group
     if @group.update(group_params)
       render json: { group: @group , message: "The group was successfully updated" }
     else
@@ -44,7 +42,6 @@ class Api::V1::GroupsController < ApplicationController
   # Destroy a group only if current user is admin of group
   # DELETE /api/v1/groups/:id
   def destroy
-    authorize @group
     if @group.destroy
       render json: { message: "The group was successfully deleted" }
     else 
@@ -55,7 +52,6 @@ class Api::V1::GroupsController < ApplicationController
   # Filter tasks thats belong to the group and whose user is either the creator or assignee
   # POST /api/v1/groups/:id/filter_tasks
   def filter_tasks
-    authorize @group
     response = Task.filter(filter_params).where(group: @group).and(Task.where(user: current_user).or(Task.where(assignee: current_user)))
     render json: { tasks: response }
   end
@@ -63,7 +59,6 @@ class Api::V1::GroupsController < ApplicationController
   # Sends invitation to lead only if current user is admin of group
   # POST /api/v1/groups/:id/send_invitation
   def send_invitation
-    authorize @group
     invitation = Invitation.new(invitation_params)
     invitation.sender = current_user
     invitation.group = @group
@@ -81,7 +76,6 @@ class Api::V1::GroupsController < ApplicationController
   # Deletes user in the group only if current user is admin of group
   # DELETE /api/v1/groups/:id/remove_user/:user_id
   def remove_user
-    authorize @group
     member = Membership.find_by(user: params[:user_id], group: params[:id])
     if member.destroy
       render json: { message: "The user was successfully removed" }
@@ -94,6 +88,7 @@ class Api::V1::GroupsController < ApplicationController
 
   def find_group
     @group = Group.find(params[:id])
+    authorize @group
   end
 
   def group_params
