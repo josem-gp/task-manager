@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Tasks", type: :request do
+RSpec.describe "Api::V1::Tasks", type: :request do
   let(:group) { create :group }
   let(:user) { create :user }
   let!(:membership) {create :membership, user: user, group: group}

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe GroupPolicy, type: :policy do
+RSpec.describe Api::V1::GroupPolicy, type: :policy do
   subject { described_class.new(user, group) }
 
   let(:group) { create :group }

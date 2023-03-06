@@ -88,7 +88,7 @@ class Api::V1::GroupsController < ApplicationController
 
   def find_group
     @group = Group.find(params[:id])
-    authorize @group
+    authorize @group, policy_class: Api::V1::GroupPolicy
   end
 
   def group_params

@@ -1,7 +1,6 @@
 require 'rails_helper'
-require 'devise/jwt/test_helpers'
 
-RSpec.describe "Users", type: :request do
+RSpec.describe "Api::V1::Users", type: :request do
   # describe "GET /index" do
   #   # PARAMS: params[:group_id]
   #   # 2xx RESPONSE: {"id": group_id, "users": [user_instances]}

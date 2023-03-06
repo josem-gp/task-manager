@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Groups", type: :request do
+RSpec.describe "Api::V1::Groups", type: :request do
   # This creates a group with an admin on one side (and all associations in the Factory model) 
   # and also a user that is then added to the group
   let(:groups) { create_list :group, 3 }

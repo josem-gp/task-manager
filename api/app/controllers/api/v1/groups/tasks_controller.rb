@@ -15,7 +15,7 @@ class Api::V1::Groups::TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.user = current_user
     @task.group = @group
-    authorize @task, policy_class: Groups::TaskPolicy
+    authorize @task, policy_class: Api::V1::Groups::TaskPolicy
     if @task.save
       render json: { task: @task , message: "The task was successfully created" }
     else

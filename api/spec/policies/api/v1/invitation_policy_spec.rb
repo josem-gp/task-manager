@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe InvitationPolicy, type: :policy do
+RSpec.describe Api::V1::InvitationPolicy, type: :policy do
   subject { described_class.new(user, invitation) }
 
   let(:group) { create :group }

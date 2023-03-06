@@ -6,7 +6,7 @@ class Api::V1::TagsController < ApplicationController
   # GET /api/v1/groups/:group_id/tags
   def index
     @tags = @group.tags
-    authorize @tags.first # every record will have the same group so we can just take one and do the authorize
+    authorize @tags.first, policy_class: Api::V1::TagPolicy # every record will have the same group so we can just take one and do the authorize
     render json: { tags: @tags }
   end
 
@@ -16,7 +16,7 @@ class Api::V1::TagsController < ApplicationController
     @tag = Tag.new(tag_params)
     @tag.user = current_user
     @tag.group = @group
-    authorize @tag
+    authorize @tag, policy_class: Api::V1::TagPolicy
     if @tag.save
       render json: { tag: @tag , message: "The tag was successfully created" }
     else
@@ -54,7 +54,7 @@ class Api::V1::TagsController < ApplicationController
 
   def find_tag
     @tag = Tag.find(params[:id])
-    authorize @tag
+    authorize @tag, policy_class: Api::V1::TagPolicy
   end
 
   def tag_params

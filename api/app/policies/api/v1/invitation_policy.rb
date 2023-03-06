@@ -1,4 +1,4 @@
-class InvitationPolicy < ApplicationPolicy
+class Api::V1::InvitationPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.all

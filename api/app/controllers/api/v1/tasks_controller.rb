@@ -20,7 +20,7 @@ class Api::V1::TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user = current_user
-    authorize @task
+    authorize @task, policy_class: Api::V1::TaskPolicy
     if @task.save
       render json: { task: @task , message: "The task was successfully created" }
     else
@@ -54,7 +54,7 @@ class Api::V1::TasksController < ApplicationController
 
   def find_task
     @task = Task.find(params[:id])
-    authorize @task
+    authorize @task, policy_class: Api::V1::TaskPolicy
   end
 
   def task_params
