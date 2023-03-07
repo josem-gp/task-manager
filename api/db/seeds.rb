@@ -48,6 +48,7 @@ admin_two = User.create!(username: "joe", email: "joe@test.io", password: "12345
 # user_four = User.create!(email: "jake@test.io", password: "1234567") # Test if user can be saved without username
 # user_five = User.create!(username: "Joseasdfasd", email: "jake@test.io", password: "12345") # Test if password can be less than 6 char
 # user_six = User.create!(email: "jake123@test.io", username: "Joñasdfseas") # Test if user can be saved without password
+# user_seven = User.create!(username: "JJon", password: "123456") # Test if user can be saved without email
 
 
 puts "Creating Group"
