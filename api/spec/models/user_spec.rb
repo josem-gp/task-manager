@@ -19,12 +19,6 @@ RSpec.describe User, type: :model do
         expect(subject.errors["email"]).to include("can't be blank")
       end
 
-      it "lacks password" do 
-        subject.password = nil
-        expect(subject).to_not be_valid
-        expect(subject.errors["password"]).to include("can't be blank")
-      end
-
       it "has invalid name" do
         subject.username = "a"
         expect(subject).to_not be_valid

@@ -22,11 +22,14 @@ gem "sidekiq"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
+# Search functionality for PostegreSQL
+gem "pg_search"
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
 # Object oriented authorization for Rails applications
-gem 'pundit'
+gem "pundit"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -41,7 +44,7 @@ gem 'pundit'
 # gem "bcrypt", "~> 3.1.7"
 
 # Filterable gem
-gem 'toschas-filterable'
+gem "toschas-filterable"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
@@ -69,6 +72,6 @@ end
 
 group :test do
   # Cleanup database when testing
-  gem 'database_cleaner'
-  gem 'shoulda-matchers', '~> 5.0'
+  gem "database_cleaner"
+  gem "shoulda-matchers", "~> 5.0"
 end

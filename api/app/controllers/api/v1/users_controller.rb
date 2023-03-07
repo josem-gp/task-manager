@@ -16,7 +16,7 @@ class Api::V1::UsersController < ApplicationController
 
   def find_user
     @user = User.find(params[:id])
-    authorize @user
+    authorize @user, policy_class: Api::V1::UserPolicy
   end
 
   def user_params

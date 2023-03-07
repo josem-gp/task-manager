@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       end
       resources :tasks, only: [:index, :show, :create, :update, :destroy]
       get 'invitation_signup/:token', to: 'invitations#invitation_signup'
-      get 'search_tasks/:search_id', to: 'users#search_tasks', as: :search_user_tasks
+      get 'search_tasks/:search_id', to: 'tasks#search_tasks', as: :search_user_tasks
     end
   end
   mount Sidekiq::Web => '/sidekiq'

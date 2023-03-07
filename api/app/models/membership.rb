@@ -13,7 +13,7 @@ class Membership < ApplicationRecord
     group = self.group
     user = self.user
 
-    tasks = Task.find_user_tasks(group, user)
+    tasks = Task.find_user_group_tasks(group, user)
     tags = Tag.where(group: group).where(user: user)
 
     tasks.each do |task|

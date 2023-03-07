@@ -16,7 +16,7 @@ class User < ApplicationRecord
   belongs_to :icon
 
   # Validations (Devise already takes care of things like password length or email format validation)
-  validates :username, :email, :password, presence: true
+  validates :username, presence: true
   validates :username, :email, uniqueness: { case_sensitive: false }
   validates :username, length: { in: 3..15 }
 
