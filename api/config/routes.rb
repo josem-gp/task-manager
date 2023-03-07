@@ -7,8 +7,8 @@ Rails.application.routes.draw do
 
   devise_for :users,
              controllers: {
-                 sessions: 'users/sessions',
-                 registrations: 'users/registrations'
+                sessions: 'users/sessions',
+                registrations: 'users/registrations'
              }
 
   namespace :api, defaults: { format: :json } do
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
         resources :tasks, only: [:index, :create], module: :groups # we only need these 2 actions to be done inside a group (this way if we are inside a group the group_id will be already given to the user by default)
         resources :tags, only: [:index, :create, :update, :destroy]
         resources :invitations, only: [:index]
-        resources :users, only: [:index]
+        resources :users, only: [:index], module: :groups
       end
       resources :tasks, only: [:index, :show, :create, :update, :destroy]
       get 'invitation_signup/:token', to: 'invitations#invitation_signup'

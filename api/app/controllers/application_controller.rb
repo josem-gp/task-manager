@@ -7,10 +7,9 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def configure_permitted_parameters
-    # For additional fields in app/views/devise/registrations/new.html.erb
+    # Permit the `username` parameter along with the other user parameters
+    # (https://www.rubydoc.info/github/plataformatec/devise/Devise/ParameterSanitizer)
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
-
-    # For additional in app/views/devise/registrations/edit.html.erb
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
   end
 
