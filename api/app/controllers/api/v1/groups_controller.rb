@@ -53,7 +53,7 @@ class Api::V1::GroupsController < ApplicationController
   # POST /api/v1/groups/:id/filter_tasks
   def filter_tasks
     response = Task.filter(filter_params).where(group: @group).and(Task.where(user: current_user).or(Task.where(assignee: current_user)))
-    render json: { tasks: response }
+    render json: { group: @group, tasks: response }
   end
 
   # Sends invitation to lead only if current user is admin of group
@@ -82,6 +82,13 @@ class Api::V1::GroupsController < ApplicationController
     else 
       render_error("The user couldn't be removed", :bad_request)
     end
+  end
+
+  # Fetch all users in the group
+  # GET /api/v1/groups/:id/fetch_users
+  def fetch_users
+    users = @group.users
+    render json: { group: @group, users: users }
   end
 
   private

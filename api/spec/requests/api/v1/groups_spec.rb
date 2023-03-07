@@ -469,4 +469,21 @@ RSpec.describe "Api::V1::Groups", type: :request do
       end
     end
   end
+
+  describe "GET /fetch_users" do
+    # 2xx RESPONSE: {"group": group_instances, "users": [user_instances]}
+    before do
+      sign_in user
+      get fetch_users_api_v1_group_path(group.id)
+    end
+
+    it { expect(response).to have_http_status(:success) }
+
+    it "returns a json with the info of the users" do
+      json = JSON.parse(response.body)
+
+      expect(json["users"].length).to eq 2
+      expect(json["group"]["name"]).to eq(group.name)
+    end
+  end
 end

@@ -1,6 +1,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
+  # Users sign up
+  # POST /users
   def create
     super
     if @user
