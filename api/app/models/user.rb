@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
-  devise :database_authenticatable, :validatable,
+  devise :database_authenticatable, :validatable, :registerable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   # Associations
@@ -16,7 +16,7 @@ class User < ApplicationRecord
   belongs_to :icon
 
   # Validations (Devise already takes care of things like password length or email format validation)
-  validates :username, :email, :password, presence: true
+  validates :username, presence: true
   validates :username, :email, uniqueness: { case_sensitive: false }
   validates :username, length: { in: 3..15 }
 

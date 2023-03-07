@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Invitations", type: :request do
+RSpec.describe "Api::V1::Invitations", type: :request do
   describe "GET /index" do
     # 2xx RESPONSE: {"invitations": [invitation_instances]}
     let(:group) { create :group } # creates an invitation in the factory callback

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TagPolicy, type: :policy do
+RSpec.describe Api::V1::TagPolicy, type: :policy do
   subject { described_class.new(user, tag) }
 
   let(:group) { create :group }

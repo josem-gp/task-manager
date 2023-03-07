@@ -1,4 +1,4 @@
-class TagPolicy < ApplicationPolicy
+class Api::V1::TagPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.all

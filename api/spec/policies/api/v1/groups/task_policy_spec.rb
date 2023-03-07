@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Groups::TaskPolicy, type: :policy do
+RSpec.describe Api::V1::Groups::TaskPolicy, type: :policy do
   subject { described_class.new(user, task) }
 
   let(:group) { create :group }

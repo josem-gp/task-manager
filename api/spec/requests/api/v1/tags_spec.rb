@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Tags", type: :request do
+RSpec.describe "Api::V1::Tags", type: :request do
   # This creates a group with an admin on one side (and all associations in the Factory model) 
   # and also a user that is then added to the group
   let(:group) { create :group }

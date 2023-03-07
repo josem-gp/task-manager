@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Groups", type: :request do
+RSpec.describe "Api::V1::Groups", type: :request do
   # This creates a group with an admin on one side (and all associations in the Factory model) 
   # and also a user that is then added to the group
   let(:groups) { create_list :group, 3 }
@@ -467,6 +467,23 @@ RSpec.describe "Groups", type: :request do
 
         expect(json["message"]).to eq("Unauthorized access or action")
       end
+    end
+  end
+
+  describe "GET /fetch_users" do
+    # 2xx RESPONSE: {"group": group_instances, "users": [user_instances]}
+    before do
+      sign_in user
+      get fetch_users_api_v1_group_path(group.id)
+    end
+
+    it { expect(response).to have_http_status(:success) }
+
+    it "returns a json with the info of the users" do
+      json = JSON.parse(response.body)
+
+      expect(json["users"].length).to eq 2
+      expect(json["group"]["name"]).to eq(group.name)
     end
   end
 end

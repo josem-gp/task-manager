@@ -1,4 +1,4 @@
-class GroupPolicy < ApplicationPolicy
+class Api::V1::GroupPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.all
@@ -33,5 +33,10 @@ class GroupPolicy < ApplicationPolicy
   # Only admin can remove user from group
   def remove_user?
     record.admin == user
+  end
+
+  # Only users belonging to the group can see all the members in the group
+  def fetch_users?
+    record.users.include?(user)
   end
 end

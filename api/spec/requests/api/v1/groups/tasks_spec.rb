@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 # To test when actions come from a specific group
-RSpec.describe "Groups::Tasks", type: :request do
+RSpec.describe "Api::V1::Groups::Tasks", type: :request do
   let(:group) { create :group }
   let(:user) { create :user }
   let!(:membership) {create :membership, user: user, group: group}
