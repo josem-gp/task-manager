@@ -27,6 +27,10 @@ Group.destroy_all
 puts "Destroy Users"
 User.destroy_all
 
+puts "Deleting all Icons"
+
+Icon.destroy_all
+
 puts "Creating Icons"
 
 default_icon = Icon::IMAGES[0]
