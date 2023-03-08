@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "Users::Registrations", type: :request do
   describe "POST /create" do
+    before do
+       # We need to create an icon so that we can attach it to the use when created
+       create :icon
+    end
     context "when valid params" do
       context "when user signs up directly" do
         before do
-          # We need to create an icon so that we can attach it to the use when created
-          create :icon
-  
           post user_registration_path,
           params: { "user": { "username": "test", "email": "myemail@email.com", "password": "mypassword" }}
         end
@@ -35,8 +36,6 @@ RSpec.describe "Users::Registrations", type: :request do
         let(:group) {create :group}
         
         before do
-          # We need to create an icon so that we can attach it to the use when created
-          create :icon
           # We create a session with the group id
           session = { group: group.id }
           allow_any_instance_of(Users::RegistrationsController).to receive(:session).and_return(session)
