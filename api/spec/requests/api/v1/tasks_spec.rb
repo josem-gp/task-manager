@@ -44,13 +44,12 @@ RSpec.describe "Api::V1::Tasks", type: :request do
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
+      post api_v1_tasks_path, 
+      params: params
     end
 
     context "with valid parameters" do
-      before do
-        post api_v1_tasks_path, 
-        params: { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "2050-12-10", "group_id": group.id } }
-      end
+      let(:params) { { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "2050-12-10", "group_id": group.id } } }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -68,10 +67,7 @@ RSpec.describe "Api::V1::Tasks", type: :request do
 
     context "with invalid parameters" do
       context "without needed params" do
-        before do
-          post api_v1_tasks_path, 
-          params: { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "", "group_id": group.id } }
-        end
+        let(:params) { { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "", "group_id": group.id } } }
 
         it { expect(response).to have_http_status(400) }
 
@@ -87,10 +83,7 @@ RSpec.describe "Api::V1::Tasks", type: :request do
       end
 
       context "without group params" do # it doesn't pass the Pundit filtering
-        before do
-          post api_v1_tasks_path, 
-          params: { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "2050-12-10" } }
-        end
+        let(:params) { { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "2050-12-10" } } }
 
         it { expect(response).to have_http_status(401) }
 
@@ -112,13 +105,12 @@ RSpec.describe "Api::V1::Tasks", type: :request do
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
+      patch api_v1_task_path(task.id), 
+      params: params
     end
 
     context "with valid parameters" do
-      before do
-        patch api_v1_task_path(task.id), 
-        params: { "task": { "name": "Spec Task 2" } }
-      end
+      let(:params) { { "task": { "name": "Spec Task 2" } } }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -136,10 +128,7 @@ RSpec.describe "Api::V1::Tasks", type: :request do
     end
 
     context "with invalid parameters" do
-      before do
-        patch api_v1_task_path(task.id), 
-        params: { "task": { "due_date": "" } }
-      end
+      let(:params) { { "task": { "due_date": "" } } }
 
       it { expect(response).to have_http_status(400) }
 
@@ -159,11 +148,13 @@ RSpec.describe "Api::V1::Tasks", type: :request do
   describe "DELETE /destroy" do
     # 2xx RESPONSE: {"message": "The task was successfully deleted"}
     # 4xx RESPONSE: {"message": "The task couldn't be deleted"}
+    before do
+      sign_in user
+      delete api_v1_task_path(param)
+    end
+
     context "with valid params" do
-      before do
-        sign_in user
-        delete api_v1_task_path(task.id)
-      end
+      let(:param) {task.id}
 
       it { expect(response).to have_http_status(:success) }
 
@@ -177,10 +168,7 @@ RSpec.describe "Api::V1::Tasks", type: :request do
     end
 
     context "with invalid params" do
-      before do
-        sign_in user
-        delete api_v1_task_path(1234)
-      end
+      let(:param) {1234}
 
       it { expect(response).to have_http_status(404) }
 
@@ -194,7 +182,7 @@ RSpec.describe "Api::V1::Tasks", type: :request do
 
   describe "GET /search_tasks" do
     # 2xx RESPONSE: {"tasks": [task_instances]}
-    # 2xx Empty RESPONSE: {"message": "There are no matches for your search"}
+    # 4xx RESPONSE: {"message": "There are no matches for your search"}
     before do
       # We create 3 out of 4 tasks with the same user
       create :task, user: user, name: "Task 2", note: "The first note"

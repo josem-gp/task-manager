@@ -28,11 +28,13 @@ RSpec.describe "Api::V1::Groups", type: :request do
   describe "GET /show" do
     # 2xx RESPONSE: {"group": group_instance}
     # 4xx RESPONSE: {"message": "Record not found"} -> comes from our customized Pundit exception handler
+    before do
+      sign_in user
+      get api_v1_group_path(param)
+    end
+
     context "with valid parameters" do 
-      before do
-        sign_in user
-        get api_v1_group_path(group.id)
-      end
+      let(:param) {group.id}
 
       it { expect(response).to have_http_status(:success) }
 
@@ -44,10 +46,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
     end
 
     context "with invalid parameters" do 
-      before do
-        sign_in user
-        get api_v1_group_path(100)
-      end
+      let(:param) {1234}
 
       it { expect(response).to have_http_status(:missing) }
 
@@ -64,13 +63,12 @@ RSpec.describe "Api::V1::Groups", type: :request do
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
+      post api_v1_groups_path, 
+      params: params
     end
 
     context "with valid parameters" do 
-      before do
-        post api_v1_groups_path, 
-        params: { "group": { "name": "Spec Group", "description": "This is a spec group" } }
-      end
+      let(:params) { { "group": { "name": "Spec Group", "description": "This is a spec group" } } }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -89,10 +87,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
     end
 
     context "with invalid parameters" do 
-      before do
-        post api_v1_groups_path, 
-        params: { "group": { "name": "a", "description": "This is a spec 2 group" } }
-      end
+      let(:params) { { "group": { "name": "a", "description": "This is a spec 2 group" } } }
 
       it { expect(response.status).to eq(400) }
 
@@ -115,13 +110,12 @@ RSpec.describe "Api::V1::Groups", type: :request do
     context "when user is admin" do
       before do
         sign_in group.admin
+        patch api_v1_group_path(group.id), 
+        params: params
       end
 
       context "with valid parameters" do
-        before do
-          patch api_v1_group_path(group.id), 
-          params: {"group": {"name": "Updated Group"}}
-        end
+        let(:params) { {"group": {"name": "Updated Group"}} }
 
         it { expect(response).to have_http_status(:success) }
 
@@ -139,10 +133,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
       end
 
       context "with invalid parameters" do
-        before do
-          patch api_v1_group_path(group.id), 
-          params: {"group": {"name": "a"}}
-        end
+        let(:params) { {"group": {"name": "a"}} }
 
         it { expect(response).to have_http_status(400) }
 
@@ -187,12 +178,11 @@ RSpec.describe "Api::V1::Groups", type: :request do
     context "when user is admin" do
       before do
         sign_in group.admin
+        delete api_v1_group_path(param)
       end
 
       context "when valid params" do
-        before do
-          delete api_v1_group_path(group.id)
-        end
+        let(:param) {group.id}
 
         it { expect(response).to have_http_status(:success) }
 
@@ -206,9 +196,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
       end
 
       context "when invalid params" do
-        before do
-          delete api_v1_group_path(1234)
-        end
+        let(:param) {1234}
         
         it { expect(response).to have_http_status(404) }
 
@@ -249,13 +237,13 @@ RSpec.describe "Api::V1::Groups", type: :request do
       create :task, group: group, assignee: user, finished: true, due_date: "2031-01-10"
 
       sign_in user
+
+      post filter_tasks_api_v1_group_path(group.id),
+      params: params
     end
 
     context "when filter param is empty" do
-      before do
-        post filter_tasks_api_v1_group_path(group.id),
-        params: {}
-      end
+      let(:params) { {} }
       
       it { expect(response).to have_http_status(:success) }
 
@@ -267,10 +255,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
     end
 
     context "when filter param has only one param" do
-      before do
-        post filter_tasks_api_v1_group_path(group.id),
-        params: {"by_finished": "true"}
-      end
+      let(:params) { {"by_finished": "true"} }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -282,10 +267,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
     end
 
     context "when filter param has more than one param" do
-      before do
-        post filter_tasks_api_v1_group_path(group.id),
-        params: {"by_fuzzy_name": "Factory task", "by_finished": "false", "from_due_date": "", "to_due_date": ""} 
-      end
+      let(:params) { {"by_fuzzy_name": "Factory task", "by_finished": "false", "from_due_date": "", "to_due_date": ""}  }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -297,10 +279,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
     end
 
     context "when filtering by ranged date" do
-      before do
-        post filter_tasks_api_v1_group_path(group.id),
-        params: {"by_fuzzy_name": "Factory task", "from_due_date": "2030-11-30", "to_due_date": "2030-12-24"} 
-      end
+      let(:params) { {"by_fuzzy_name": "Factory task", "from_due_date": "2030-11-30", "to_due_date": "2030-12-24"} }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -327,13 +306,12 @@ RSpec.describe "Api::V1::Groups", type: :request do
     context "when user is admin" do
       before do
         sign_in group.admin
+        post send_invitation_api_v1_group_path(group.id),
+        params: params
       end
 
       context "when valid params" do
-        before do 
-          post send_invitation_api_v1_group_path(group.id),
-          params: { "invitation": { "email": "test@test.io" } }
-        end
+        let(:params) { { "invitation": { "email": "test@test.io" } } }
   
         it { expect(response).to have_http_status(:success) }
 
@@ -363,10 +341,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
       end
 
       context "when invalid params" do
-        before do
-          post send_invitation_api_v1_group_path(group.id),
-          params: { "invitation": { "email": "test.io" } }
-        end
+        let(:params) { { "invitation": { "email": "test.io" } } }
 
         it { expect(response).to have_http_status(400) }
 

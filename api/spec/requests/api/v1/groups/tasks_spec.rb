@@ -32,13 +32,12 @@ RSpec.describe "Api::V1::Groups::Tasks", type: :request do
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
+      post api_v1_group_tasks_path(group.id), 
+      params: params
     end
 
     context "with valid parameters" do
-      before do
-        post api_v1_group_tasks_path(group.id), 
-        params: { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "10-12-2050" } } 
-      end
+      let(:params) { { "task": { "name": "Spec Task", "note": "This is a note", "due_date": "10-12-2050" } } }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -55,10 +54,7 @@ RSpec.describe "Api::V1::Groups::Tasks", type: :request do
     end
 
     context "with invalid parameters" do
-      before do
-        post api_v1_group_tasks_path(group.id), 
-        params: { "task": { "note": "This is a note", "due_date": "10-12-2050" } }
-      end
+      let(:params) { { "task": { "note": "This is a note", "due_date": "10-12-2050" } } }
 
       it { expect(response).to have_http_status(400) }
 

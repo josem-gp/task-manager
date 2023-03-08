@@ -30,13 +30,12 @@ RSpec.describe "Api::V1::Tags", type: :request do
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
+      post api_v1_group_tags_path(group.id), 
+      params: params
     end
 
     context "with valid parameters" do
-      before do
-        post api_v1_group_tags_path(group.id), 
-        params: { "tag": { "name": "Spec Tag" } }
-      end
+      let(:params) { { "tag": { "name": "Spec Tag" } } }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -53,10 +52,7 @@ RSpec.describe "Api::V1::Tags", type: :request do
     end
 
     context "with invalid parameters" do
-      before do
-        post api_v1_group_tags_path(group.id), 
-        params: { "tag": { "name": "Lorem ipsum dolor sit amet" } }
-      end
+      let(:params) { { "tag": { "name": "Lorem ipsum dolor sit amet" } } }
 
       it { expect(response).to have_http_status(400) }
 
@@ -77,13 +73,12 @@ RSpec.describe "Api::V1::Tags", type: :request do
     # 4xx RESPONSE: {"message": error_message}
     before do
       sign_in user
+      patch api_v1_group_tag_path(group.id, tag.id), 
+      params: params
     end
 
     context "with valid parameters" do
-      before do
-        patch api_v1_group_tag_path(group.id, tag.id), 
-        params: { "tag": { "name": "Spec Tag 2" } }
-      end
+      let(:params) { { "tag": { "name": "Spec Tag 2" } } }
 
       it { expect(response).to have_http_status(:success) }
 
@@ -101,10 +96,7 @@ RSpec.describe "Api::V1::Tags", type: :request do
     end
 
     context "with invalid parameters" do
-      before do
-        patch api_v1_group_tag_path(group.id, tag.id), 
-        params: { "tag": { "name": "Lorem ipsum dolor sit amet" } }
-      end
+      let(:params) { { "tag": { "name": "Lorem ipsum dolor sit amet" } } }
 
       it { expect(response).to have_http_status(400) }
 
@@ -125,11 +117,13 @@ RSpec.describe "Api::V1::Tags", type: :request do
   describe "DELETE /destroy" do
     # 2xx RESPONSE: {"message": "The tag was successfully deleted"}
     # 4xx RESPONSE: {"message": "The tag couldn't be deleted"}
+    before do
+      sign_in user
+      delete api_v1_group_tag_path(group.id, param)
+    end
+
     context "with valid params" do
-      before do
-        sign_in user
-        delete api_v1_group_tag_path(group.id, tag.id)
-      end
+      let(:param) {tag.id}
 
       it { expect(response).to have_http_status(:success) }
 
@@ -143,10 +137,7 @@ RSpec.describe "Api::V1::Tags", type: :request do
     end
 
     context "with invalid params" do
-      before do
-        sign_in user
-        delete api_v1_group_tag_path(group.id, 1234)
-      end
+      let(:param) {1234}
       
       it { expect(response).to have_http_status(404) }
 

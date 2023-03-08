@@ -26,13 +26,15 @@ RSpec.describe "Api::V1::Invitations", type: :request do
     # PARAMS: params[:group_id]
     # 4xx RESPONSE: {"id": invitation_id, "message": "The invitation has expired already"}
     let(:invitation) {create :invitation}
+    before do
+      prev_action
+      get api_v1_path(invitation.oauth_token)
+    end
 
     context "when invitation has been disabled" do
-      before do
+      let(:prev_action) do
         invitation.disabled = true
         invitation.save  
-
-        get api_v1_path(invitation.oauth_token)
       end
 
       it { expect(response).to have_http_status(:redirect) }
@@ -46,11 +48,9 @@ RSpec.describe "Api::V1::Invitations", type: :request do
 
     context "when invitation not disabled" do
       context "when expiration date has already passed" do
-        before do
+        let(:prev_action) do
           invitation.expiration_date = DateTime.now - 8
           invitation.save
-
-          get api_v1_path(invitation.oauth_token)
         end
   
         it { expect(response).to have_http_status(:redirect) }
@@ -63,9 +63,7 @@ RSpec.describe "Api::V1::Invitations", type: :request do
       end
 
       context "when expiration date has still not passed" do
-        before do
-          get api_v1_path(invitation.oauth_token)
-        end
+        let(:prev_action) {nil}
 
         it { expect(response).to have_http_status(:redirect) }
 
