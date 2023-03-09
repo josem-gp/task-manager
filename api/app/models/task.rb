@@ -36,6 +36,7 @@ class Task < ApplicationRecord
   belongs_to :user
   belongs_to :assignee, class_name: "User", foreign_key: :assignee_id, optional: true
   has_many :tagged_tasks, dependent: :destroy
+  has_many :tags, through: :tagged_tasks
 
   # Validations
   validates :name, presence: true, length: { maximum: 25 }, uniqueness: { case_sensitive: false, scope: :group_id }
