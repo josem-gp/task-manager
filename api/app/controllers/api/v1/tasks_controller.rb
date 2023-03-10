@@ -6,23 +6,25 @@ class Api::V1::TasksController < ApplicationController
   # Fetch all the tasks of a user (whether the user is the creator or assignee)
   # GET /api/v1/tasks
   def index
-    render json: { tasks: @user_tasks } # we don't need the auth check because we already fetch only the tasks of the current user in the backend
+    render json: { task_value: build_json(@user_tasks) } # we don't need the auth check because we already fetch only the tasks of the current user in the backend
   end
 
   # Fetch one specific task
   # GET /api/v1/tasks/:id
   def show
-    render json: { task: @task }
+    render json: { task_value: { task: @task, task_tags: @task.tags } }
   end
 
   # Create a task
   # POST /api/v1/tasks
   def create
-    @task = Task.new(task_params)
+    @task = Task.new(task_params.except(:tag_ids))
     @task.user = current_user
     authorize @task, policy_class: Api::V1::TaskPolicy
     if @task.save
-      render json: { task: @task , message: "The task was successfully created" }
+      # Create the tagged_tasks if the tags param is not empty
+      @task.create_tagged_tasks(task_params[:tag_ids]) unless task_params[:tag_ids].empty?
+      render json: { task_value: { task: @task, task_tags: @task.tags }, message: "The task was successfully created" }
     else
       error_message = @task.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -32,8 +34,10 @@ class Api::V1::TasksController < ApplicationController
   # Update a task 
   # PATCH /api/v1/tasks/:id
   def update
-    if @task.update(task_params)
-      render json: { task: @task , message: "The task was successfully updated" }
+    if @task.update(task_params.except(:tag_ids))
+      # Create the tagged_tasks if the tags param is not empty
+      @task.create_tagged_tasks(task_params[:tag_ids]) unless task_params[:tag_ids].empty?
+      render json: { task_value: { task: @task, task_tags: @task.tags }, message: "The task was successfully updated" }
     else
       error_message = @task.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -43,7 +47,7 @@ class Api::V1::TasksController < ApplicationController
   # Destroy a task
   # DELETE /api/v1/tasks/:id
   def destroy
-    if @task.destroy
+    if @task.destroy # this will also delete the tagged_tasks associated
       render json: { message: "The task was successfully deleted" }
     else 
       render_error("The task couldn't be deleted", :bad_request)
@@ -57,7 +61,7 @@ class Api::V1::TasksController < ApplicationController
     if searched_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
-      render json: { tasks: searched_tasks }
+      render json: { task_value: build_json(searched_tasks) }
     end
   end
 
@@ -72,8 +76,12 @@ class Api::V1::TasksController < ApplicationController
     authorize @task, policy_class: Api::V1::TaskPolicy
   end
 
+  def build_json(tasks)
+    tasks.map { |t|  { task: t, task_tags: t.tags } }
+  end
+
   def task_params
-    params.require(:task).permit(:name, :note, :finished, :due_date, :assignee_id, :group_id)
+    params.require(:task).permit(:name, :note, :finished, :due_date, :assignee_id, :group_id, tag_ids: [])
   end
 
   def render_error(message, status)

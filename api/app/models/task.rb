@@ -49,6 +49,26 @@ class Task < ApplicationRecord
     return self.where(group: group).and(self.where(user: user).or(self.where(assignee: user)))
   end
 
+  # Create tagged_tasks for a task that has received one or more tags on create/edit
+  def create_tagged_tasks(tag_ids)
+    # We first need to reset the tagged_tasks for the task. Then create from scratch 
+    # (in case the user is removing tags on Task edit) 
+    # -> we could loop and see the difference between the tags now and before but just deleting everything is less consuming
+    TaggedTask.where(task: self).destroy_all
+
+    # We loop around the tag_ids and checked if they exist in the db. If they don't we move to the next id.
+    # If we do, we create the TaggedTask instance
+    tag_ids.each do |id|
+      begin
+        t = Tag.find(id)
+      rescue ActiveRecord::RecordNotFound
+        next
+      else
+        TaggedTask.create!(tag: t, task: self)
+      end
+    end
+  end
+
   private
 
   # Validate task before creation
