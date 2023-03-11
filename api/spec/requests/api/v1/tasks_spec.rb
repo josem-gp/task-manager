@@ -30,6 +30,7 @@ RSpec.describe "Api::V1::Tasks", type: :request do
     it "returns a json with all the tags of each task" do
       json = JSON.parse(response.body)
 
+      expect(json["task_value"].first["task_tags"].count).to eq 1
       expect(json["task_value"].first["task_tags"].first["name"]).to eq(tags.first.name)
     end
   end
