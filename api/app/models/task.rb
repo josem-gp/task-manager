@@ -36,6 +36,7 @@ class Task < ApplicationRecord
   belongs_to :user
   belongs_to :assignee, class_name: "User", foreign_key: :assignee_id, optional: true
   has_many :tagged_tasks, dependent: :destroy
+  has_many :tags, through: :tagged_tasks
 
   # Validations
   validates :name, presence: true, length: { maximum: 25 }, uniqueness: { case_sensitive: false, scope: :group_id }
@@ -46,6 +47,26 @@ class Task < ApplicationRecord
   # Find all tasks where user is the creator or assignee for a group
   def self.find_user_group_tasks(group, user)
     return self.where(group: group).and(self.where(user: user).or(self.where(assignee: user)))
+  end
+
+  # Create tagged_tasks for a task that has received one or more tags on create/edit
+  def create_tagged_tasks(tag_ids)
+    # We first need to reset the tagged_tasks for the task. Then create from scratch 
+    # (in case the user is removing tags on Task edit) 
+    # -> we could loop and see the difference between the tags now and before but just deleting everything is less consuming
+    TaggedTask.where(task: self).destroy_all
+
+    # We loop around the tag_ids and checked if they exist in the db. If they don't we move to the next id.
+    # If we do, we create the TaggedTask instance
+    tag_ids.each do |id|
+      begin
+        t = Tag.find(id)
+      rescue ActiveRecord::RecordNotFound
+        next
+      else
+        TaggedTask.create!(tag: t, task: self)
+      end
+    end
   end
 
   private

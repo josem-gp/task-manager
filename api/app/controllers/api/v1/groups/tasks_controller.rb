@@ -6,18 +6,20 @@ class Api::V1::Groups::TasksController < ApplicationController
   # GET /api/v1/groups/:group_id/tasks
   def index
     @tasks = @group.tasks.where(user: current_user).or(Task.where(assignee: current_user)) # we don't need the auth check because we already fetch only the tasks in the group of the current user in the backend
-    render json: { tasks: @tasks }
+    render json: { task_value: build_json(@tasks) }
   end
 
   # Create a task in a group
   # POST /api/v1/groups/:group_id/tasks
   def create
-    @task = Task.new(task_params)
+    @task = Task.new(task_params.except(:tag_ids))
     @task.user = current_user
     @task.group = @group
     authorize @task, policy_class: Api::V1::Groups::TaskPolicy
     if @task.save
-      render json: { task: @task , message: "The task was successfully created" }
+      # Create the tagged_tasks if the tags param is not empty
+      @task.create_tagged_tasks(task_params[:tag_ids]) unless task_params[:tag_ids].empty?
+      render json: { task_value: { task: @task, task_tags: @task.tags }, message: "The task was successfully created" }
     else
       error_message = @task.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -30,8 +32,12 @@ class Api::V1::Groups::TasksController < ApplicationController
     @group = Group.find(params[:group_id])
   end
 
+  def build_json(tasks)
+    tasks.map { |t|  { task: t, task_tags: t.tags } }
+  end
+
   def task_params
-    params.require(:task).permit(:name, :note, :finished, :due_date, :assignee_id)
+    params.require(:task).permit(:name, :note, :finished, :due_date, :assignee_id, tag_ids: [])
   end
 
   def render_error(message, status)
