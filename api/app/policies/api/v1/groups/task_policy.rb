@@ -7,6 +7,10 @@ class Api::V1::Groups::TaskPolicy < ApplicationPolicy
 
   # Only users belonging to the group can create a task
   def create?
-    record.group.users.include?(user) 
+    if record.assignee
+      record.group.users.include?(user) && record.group.users.include?(record.assignee) 
+    else
+      record.group.users.include?(user)
+    end
   end
 end

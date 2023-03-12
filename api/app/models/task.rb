@@ -41,8 +41,6 @@ class Task < ApplicationRecord
   # Validations
   validates :name, presence: true, length: { maximum: 25 }, uniqueness: { case_sensitive: false, scope: :group_id }
   validates :due_date, presence: true, date: true 
-  
-  # validate :valid_task?
 
   # Find all tasks where user is the creator or assignee for a group
   def self.find_user_group_tasks(group, user)
@@ -61,26 +59,17 @@ class Task < ApplicationRecord
     tag_ids.each do |id|
       begin
         t = Tag.find(id)
+        begin
+          TaggedTask.create!(tag: t, task: self)
+          next # Used to jump to the next element in the loop
+        rescue ActiveRecord::RecordInvalid
+          next
+        end
       rescue ActiveRecord::RecordNotFound
         next
       else
         TaggedTask.create!(tag: t, task: self)
       end
-    end
-  end
-
-  private
-
-  # Validate task before creation
-  def valid_task?
-    task_user = self.user
-    task_group = self.group
-    task_assignee = self.assignee
-
-    if !task_user.groups.include?(task_group)
-      errors.add(:user, "doesn't belong to this task's group.")
-    elsif !task_group.users.include?(task_assignee)
-      errors.add(:assignee, "doesn't belong to this task's group.")
     end
   end
 end

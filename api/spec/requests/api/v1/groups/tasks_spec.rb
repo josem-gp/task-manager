@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Groups::Tasks", type: :request do
   let(:group) { create :group }
   let(:user) { create :user }
   let(:tags) { create_list :tag, 3, group: group }
-  let!(:group_task) { create :task, user: user, group: group }
+  let!(:group_task) { create :task, user: user, group: group, assignee: nil }
   before do
     create :membership, user: user, group: group
     create :tagged_task, task: group_task, tag: tags.first

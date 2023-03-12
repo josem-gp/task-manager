@@ -232,8 +232,8 @@ RSpec.describe "Api::V1::Groups", type: :request do
     # 2xx RESPONSE: {"tasks": [group_instances]}
 
     before do
-      create :task, group: group, finished: true, due_date: "2030-12-24"
-      create :task, group: group, user: user, due_date: "2030-11-30"
+      create :task, group: group, assignee: nil, finished: true, due_date: "2030-12-24"
+      create :task, group: group, user: user, assignee: nil, due_date: "2030-11-30"
       create :task, group: group, assignee: user, finished: true, due_date: "2031-01-10"
 
       sign_in user

@@ -62,7 +62,7 @@ class Api::V1::GroupsController < ApplicationController
     invitation = Invitation.new(invitation_params)
     invitation.sender = current_user
     invitation.group = @group
-    if invitation.save
+    if invitation.save # We already do the (group) Pundit auth check on sender being admin of the group we are sending it from
       # We send the invitation mailer
       InvitationMailer.with(recipient: invitation.email, sender: invitation.sender, group: invitation.group).send_invite.deliver_later
       # We also enqueue the job to disable the invitation in a week

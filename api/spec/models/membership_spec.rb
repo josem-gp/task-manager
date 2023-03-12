@@ -5,7 +5,7 @@ RSpec.describe Membership, type: :model do
     let(:user) {create :user}
     let(:group) {create :group}
     let!(:task_one) {create :task, user: group.admin, group: group, assignee: user}
-    let!(:task_two) {create :task, user: user, group: group}
+    let!(:task_two) {create :task, user: user, group: group, assignee: nil}
     let!(:tag) {create :tag, user: user, group: group}
     subject { create :membership, user: user, group: group }
     
