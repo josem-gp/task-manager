@@ -12,7 +12,7 @@ class Group < ApplicationRecord
   validates :name, presence: true, length: { in: 2..15 }
   validates :description, length: { maximum: 30 }
 
-
+  # Callbacks
   after_create :create_membership
 
   # Return the total members of a group
