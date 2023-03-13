@@ -45,40 +45,37 @@
     <!-- Welcome message section -->
     <mj-section background-color="#ffffff">
       <mj-column>
-        <mj-text font-size="14px">
-          <p>Dear <%= @user.username %>,</p>
-          <p>
-            We are excited to welcome you to <%= ENV['SHOP_NAME'] %>, your
-            ultimate task management solution!
-          </p>
-          <p>
-            <%= ENV['SHOP_NAME'] %> is a platform designed to help you
-            streamline your workday and increase your productivity. Whether you
-            are a freelancer, small business owner, or part of a large
-            organization, <%= ENV['SHOP_NAME'] %> provides you with a
-            user-friendly interface that simplifies task management and ensures
-            efficient collaboration with your team.
-          </p>
-          <p>
-            With <%= ENV['SHOP_NAME'] %>, , you can easily create tasks, assign
-            them to team members, set deadlines, and track progress. Our
-            platform also comes with various features such as time tracking,
-            file sharing, and team communication to help you achieve your goals
-            effectively.
-          </p>
-          <p>
-            Our team is committed to providing you with the best experience
-            possible, and we are constantly improving our platform to meet your
-            needs. And if you ever have any questions or run into any issues,
-            our customer support team is always here to help.
-          </p>
-          <p>
-            Again, welcome to <%= ENV['SHOP_NAME'] %>! We're looking forward to
-            helping you stay on top of your tasks and achieve your goals.
-          </p>
-          <p>Best,</p>
-          <p>The <%= ENV['SHOP_NAME'] %> Team</p>
+        <mj-text font-size="14px">Dear <%= @user.username %>,</mj-text>
+        <mj-text font-size="14px"
+          >We are excited to welcome you to <%= ENV['SHOP_NAME'] %>, your
+          ultimate task management solution</mj-text
+        >
+        <mj-text>
+          <%= ENV['SHOP_NAME'] %> is a platform designed to help you streamline
+          your workday and increase your productivity. Whether you are a
+          freelancer, small business owner, or part of a large organization, <%=
+          ENV['SHOP_NAME'] %> provides you with a user-friendly interface that
+          simplifies task management and ensures efficient collaboration with
+          your team.
         </mj-text>
+        <mj-text>
+          With <%= ENV['SHOP_NAME'] %>, , you can easily create tasks, assign
+          them to team members, set deadlines, and track progress. Our platform
+          also comes with various features such as time tracking, file sharing,
+          and team communication to help you achieve your goals effectively.
+        </mj-text>
+        <mj-text>
+          Our team is committed to providing you with the best experience
+          possible, and we are constantly improving our platform to meet your
+          needs. And if you ever have any questions or run into any issues, our
+          customer support team is always here to help.
+        </mj-text>
+        <mj-text>
+          Again, welcome to <%= ENV['SHOP_NAME'] %>! We're looking forward to
+          helping you stay on top of your tasks and achieve your goals.
+        </mj-text>
+        <mj-text>Best,</mj-text>
+        <mj-text>The <%= ENV['SHOP_NAME'] %> Team</mj-text>
       </mj-column>
     </mj-section>
     <mj-section background-color="#ffffff">
