@@ -1,12 +1,12 @@
 Welcome to <%= ENV['APP_NAME'] %>!
 
-We are delighted to let you know that you have been invited by <%= @sender.username %> to join their <%= ENV['SHOP_NAME'] %> group! <%= ENV['SHOP_NAME'] %> is a powerful task manager that helps teams stay organized and focused on what matters most.
-Please click <%= link_to "here", "#{ENV['SHOP_BASE_URL']}/invitation_signup/#{@token}"%> to sign up and join your <%= ENV['SHOP_NAME'] %> group:
+We are delighted to let you know that you have been invited by <%= @sender.username %> to join their <%= ENV['APP_NAME'] %> group! <%= ENV['APP_NAME'] %> is a powerful task manager that helps teams stay organized and focused on what matters most.
+Please click <%= link_to "here", "#{ENV['SHOP_BASE_URL']}/api/v1/invitation_signup/#{@url}"%> to sign up and join your <%= ENV['APP_NAME'] %> group:
 Once you've created your account, you'll be able to start adding tasks, assigning them to team members, and tracking progress towards your goals. Our intuitive user interface and powerful collaboration tools will help you stay on top of everything and get things done faster.
 If you have any questions or need help getting started, please don't hesitate to contact us. We're here to help!
-Thank you for joining <%= ENV['SHOP_NAME'] %>, and we look forward to helping you and your team be more productive and successful.
+Thank you for joining <%= ENV['APP_NAME'] %>, and we look forward to helping you and your team be more productive and successful.
 Best,
-The <%= ENV['SHOP_NAME'] %> Team
+The <%= ENV['APP_NAME'] %> Team
 
 For any questions or concerns, please reach out to our customer service team at support@taskup.com.
-© <%= Time.new.year %> <%= ENV['SHOP_NAME'] %> All rights reserved.
+© <%= Time.new.year %> <%= ENV['APP_NAME'] %> All rights reserved.
