@@ -28,7 +28,7 @@
           Welcome Aboard
         </mj-text>
         <mj-text color="#280b45" align="center" font-size="18px">
-          See you around!
+          You have been invited!
         </mj-text>
         <mj-button
           text-transform="uppercase"
@@ -36,7 +36,7 @@
           border="1px solid #280b45"
           color="#0e0419"
           background-color="#ffe98a"
-          href="<%= ENV['SHOP_BASE_URL'] %>"
+          href="<%= ENV['SHOP_BASE_URL'] %>/invitation_signup/<%= @token %>"
           >Get Started</mj-button
         >
       </mj-column>
@@ -45,34 +45,31 @@
     <!-- Welcome message section -->
     <mj-section background-color="#ffffff">
       <mj-column>
-        <mj-text font-size="14px">Dear <%= @user.username %>,</mj-text>
+        <mj-text font-size="14px">Hi there,</mj-text>
         <mj-text font-size="14px">
-          We are excited to welcome you to <%= ENV['SHOP_NAME'] %>, your
-          ultimate task management solution.
+          We are delighted to let you know that you have been invited by <%=
+          @sender.username %> to join their <%= ENV['SHOP_NAME'] %> group! <%=
+          ENV['SHOP_NAME'] %> is a powerful task manager that helps teams stay
+          organized and focused on what matters most.
         </mj-text>
         <mj-text>
-          <%= ENV['SHOP_NAME'] %> is a platform designed to help you streamline
-          your workday and increase your productivity. Whether you are a
-          freelancer, small business owner, or part of a large organization, <%=
-          ENV['SHOP_NAME'] %> provides you with a user-friendly interface that
-          simplifies task management and ensures efficient collaboration with
-          your team.
+          Please click on the "Get Started" button above to sign up and join
+          your <%= ENV['SHOP_NAME'] %> group.
         </mj-text>
         <mj-text>
-          With <%= ENV['SHOP_NAME'] %>, , you can easily create tasks, assign
-          them to team members, set deadlines, and track progress. Our platform
-          also comes with various features such as time tracking, file sharing,
-          and team communication to help you achieve your goals effectively.
+          Once you've created your account, you'll be able to start adding
+          tasks, assigning them to team members, and tracking progress towards
+          your goals. Our intuitive user interface and powerful collaboration
+          tools will help you stay on top of everything and get things done
+          faster.
         </mj-text>
         <mj-text>
-          Our team is committed to providing you with the best experience
-          possible, and we are constantly improving our platform to meet your
-          needs. And if you ever have any questions or run into any issues, our
-          customer support team is always here to help.
+          If you have any questions or need help getting started, please don't
+          hesitate to contact us. We're here to help!
         </mj-text>
         <mj-text>
-          Again, welcome to <%= ENV['SHOP_NAME'] %>! We're looking forward to
-          helping you stay on top of your tasks and achieve your goals.
+          Thank you for joining <%= ENV['SHOP_NAME'] %>, and we look forward to
+          helping you and your team be more productive and successful.
         </mj-text>
         <mj-text>Best,</mj-text>
         <mj-text>The <%= ENV['SHOP_NAME'] %> Team</mj-text>
