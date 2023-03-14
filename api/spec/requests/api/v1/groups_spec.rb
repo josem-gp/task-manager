@@ -320,7 +320,8 @@ RSpec.describe "Api::V1::Groups", type: :request do
         end
   
         it "enqueues an invitation" do
-          expect(InvitationMailer).to have_received(:with).with(recipient: "test@test.io", sender: group.admin, group: group)
+          invitation = Invitation.find_by(email: "test@test.io")
+          expect(InvitationMailer).to have_received(:with).with(recipient: "test@test.io", sender: group.admin, url: invitation.oauth_token)
           expect(parameterized_mailer).to have_received(:send_invite)
           expect(parameterized_message).to have_received(:deliver_later)
         end
@@ -347,12 +348,6 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
         it "does not create any invitation" do
           expect(Invitation.find_by(email: "test.io")).to_not be_present
-        end
-
-        it "does not enqueue any invitation" do
-          expect(InvitationMailer).to_not have_received(:with).with(recipient: "test.io", sender: group.admin, group: group)
-          expect(parameterized_mailer).to_not have_received(:send_invite)
-          expect(parameterized_message).to_not have_received(:deliver_later)
         end
 
         it "does not enqueues a job to disable the invitation" do

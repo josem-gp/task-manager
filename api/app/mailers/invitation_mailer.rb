@@ -4,7 +4,7 @@ class InvitationMailer < ApplicationMailer
   def send_invite
     @recipient= params[:recipient]
     @sender= params[:sender]
-    @group= params[:group]
+    @url= params[:url]
 
     mail(to: @recipient, subject: "You have been invited to #{ENV['APP_NAME']}!")
   end

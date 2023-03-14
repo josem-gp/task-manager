@@ -19,11 +19,11 @@ RSpec.describe InvitationMailer, type: :mailer do
     end
 
     it "renders the body" do
-      expect(mail.body.encoded).to match("Welcome to #{ENV['APP_NAME']}!")
+      expect(mail.body.encoded).to match("You have been invited!")
     end
 
-    it 'assigns @sender and @group' do
-      expect(mail.body.encoded).to match("You have been invited by #{invitation.sender.username} to #{invitation.group.name}")
+    it 'assigns @sender' do
+      expect(mail.body.encoded).to match("you have been invited by #{invitation.sender.username} to join their #{ENV['APP_NAME']} group")
     end
   end
 end
