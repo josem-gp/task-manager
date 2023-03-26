@@ -1,24 +1,4 @@
 class Task < ApplicationRecord
-  # Use PgSearch
-  include PgSearch::Model
-  pg_search_scope :search_by_name_and_description,
-  against: [ :name, :note ],
-  using: {
-    tsearch: { 
-      prefix: true,
-      highlight: {
-        StartSel: '<b>',
-        StopSel: '</b>',
-        MaxWords: 123,
-        MinWords: 456,
-        ShortWord: 0,
-        HighlightAll: true,
-        MaxFragments: 3,
-        FragmentDelimiter: '&hellip;'
-      }
-    }
-  }
-
   # Using filterable gem (https://github.com/toschas/filterable)
   filter_by :assignee_id, :finished
   # We want the filter by name to be broader (instead of a specific name, we search by regex) so we customize it

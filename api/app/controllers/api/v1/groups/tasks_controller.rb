@@ -32,6 +32,7 @@ class Api::V1::Groups::TasksController < ApplicationController
     @group = Group.find(params[:group_id])
   end
 
+  # We want to return each task and their tags
   def build_json(tasks)
     tasks.map { |t|  { task: t, task_tags: t.tags } }
   end

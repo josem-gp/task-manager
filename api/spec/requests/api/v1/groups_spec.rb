@@ -229,12 +229,15 @@ RSpec.describe "Api::V1::Groups", type: :request do
   end
 
   describe "POST /filter_tasks" do
-    # 2xx RESPONSE: {"tasks": [group_instances]}
-
+    # 2xx RESPONSE: {"tasks": [{ task: task_instance, task_tags: [task_instance.tags] }]}
+    let(:task_one) {create :task, group: group, user: user, assignee: nil, due_date: "2030-11-30"} 
+    let(:task_two) {create :task, group: group, assignee: user, finished: true, due_date: "2031-01-10"}
+    let(:tags) {create_list :tag, 3, group: group}
     before do
       create :task, group: group, assignee: nil, finished: true, due_date: "2030-12-24"
-      create :task, group: group, user: user, assignee: nil, due_date: "2030-11-30"
-      create :task, group: group, assignee: user, finished: true, due_date: "2031-01-10"
+      create :tagged_task, task: task_one, tag: tags.first
+      create :tagged_task, task: task_one, tag: tags.last
+      create :tagged_task, task: task_two, tag: tags.second
 
       sign_in user
 
@@ -250,7 +253,9 @@ RSpec.describe "Api::V1::Groups", type: :request do
       it "returns an array of all tasks for that group" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 2 # Because of the callback in the group factory
+        expect(json["tasks"].length).to eq 2
+        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"].first["task_tags"].length).to eq 2
       end
     end
 
@@ -263,6 +268,8 @@ RSpec.describe "Api::V1::Groups", type: :request do
         json = JSON.parse(response.body)
 
         expect(json["tasks"].length).to eq 1
+        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"].first["task_tags"].length).to eq 1
       end
     end
 
@@ -275,6 +282,8 @@ RSpec.describe "Api::V1::Groups", type: :request do
         json = JSON.parse(response.body)
 
         expect(json["tasks"].length).to eq 1
+        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"].first["task_tags"].length).to eq 2
       end
     end
 
@@ -287,6 +296,20 @@ RSpec.describe "Api::V1::Groups", type: :request do
         json = JSON.parse(response.body)
 
         expect(json["tasks"].length).to eq 1
+        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"].first["task_tags"].length).to eq 2
+      end
+    end
+
+    context "when filtering doesn't return any values" do
+      let(:params) { {"by_fuzzy_name": "rand", "from_due_date": "2030-11-30", "to_due_date": "2030-12-24"} }
+      
+      it { expect(response).to have_http_status(404) }
+
+      it "returns a json with an error message" do
+        json = JSON.parse(response.body)
+
+        expect(json["message"]).to eq("There are no matches for your search")
       end
     end
   end
