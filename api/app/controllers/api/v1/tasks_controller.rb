@@ -1,7 +1,7 @@
 class Api::V1::TasksController < ApplicationController
   before_action :find_task, only: [:show, :update, :destroy]
-  before_action :find_all_user_tasks, only: [:index, :search_tasks]
-  before_action :skip_authorization, only: [:index, :search_tasks]
+  before_action :find_all_user_tasks, only: [:index]
+  before_action :skip_authorization, only: [:index]
   
   # Fetch all the tasks of a user (whether the user is the creator or assignee)
   # GET /api/v1/tasks
@@ -51,17 +51,6 @@ class Api::V1::TasksController < ApplicationController
       render json: { message: "The task was successfully deleted" }
     else 
       render_error("The task couldn't be deleted", :bad_request)
-    end
-  end
-
-  # Fetch all tasks where user is creator or assignee
-  # GET /api/v1/search_tasks/:search_id
-  def search_tasks
-    searched_tasks = @user_tasks.search_by_name_and_description(params[:search_id])
-    if searched_tasks.empty?
-      render_error("There are no matches for your search", :not_found)
-    else
-      render json: { task_value: build_json(searched_tasks) }
     end
   end
 

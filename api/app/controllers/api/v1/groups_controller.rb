@@ -52,8 +52,12 @@ class Api::V1::GroupsController < ApplicationController
   # Filter tasks thats belong to the group and whose user is either the creator or assignee
   # POST /api/v1/groups/:id/filter_tasks
   def filter_tasks
-    response = Task.filter(filter_params).where(group: @group).and(Task.where(user: current_user).or(Task.where(assignee: current_user)))
-    render json: { group: @group, tasks: response }
+    filtered_tasks = Task.filter(filter_params).where(group: @group).and(Task.where(user: current_user).or(Task.where(assignee: current_user)))
+    if filtered_tasks.empty?
+      render_error("There are no matches for your search", :not_found)
+    else
+      render json: { tasks: build_json(filtered_tasks) }
+    end
   end
 
   # Sends invitation to lead only if current user is admin of group
@@ -112,5 +116,9 @@ class Api::V1::GroupsController < ApplicationController
 
   def render_error(message, status)
     render json: {message: message}, status: status
+  end
+
+  def build_json(tasks)
+    tasks.map { |t|  { task: t, task_tags: t.tags } }
   end
 end

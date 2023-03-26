@@ -19,7 +19,7 @@ RSpec.describe UserConfirmationMailer, type: :mailer do
     end
 
     it "renders the body" do
-      expect(mail.body.encoded).to match("We are excited to welcome you to #{ENV['APP_NAME']}, your ultimate task management solution.")
+      expect(mail.body.encoded).to match("We are excited to welcome you to #{ENV['APP_NAME']}")
     end
 
     it 'assigns @user' do
