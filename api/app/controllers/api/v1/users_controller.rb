@@ -5,7 +5,10 @@ class Api::V1::UsersController < ApplicationController
   # PATCH /api/v1/users/:id
   def update
     if @user.update(user_params)
-      render json: { user: @user , message: "The user was successfully updated" }
+      render json: { 
+        user: except_attributes(@user, ['jti', 'created_at', 'updated_at']), 
+        message: "The user was successfully updated"
+      }
     else
       error_message = @user.errors.objects.first.full_message
       render_error(error_message, :bad_request)

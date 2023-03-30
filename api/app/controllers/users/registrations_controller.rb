@@ -1,4 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  include ApiHelper
   respond_to :json
 
   # Users sign up
@@ -20,7 +21,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def register_success
-    render json: { message: "Signed up succesfully", user: current_user }
+    render json: { message: "Signed up succesfully", user: select_attributes(current_user, ['id', 'username', 'email', 'icon_id']) }
   end
 
   def register_failed
