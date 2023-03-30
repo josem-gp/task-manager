@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include Pundit::Authorization
+  include ApiHelper
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
 

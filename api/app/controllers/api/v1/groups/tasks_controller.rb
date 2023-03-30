@@ -19,7 +19,13 @@ class Api::V1::Groups::TasksController < ApplicationController
     if @task.save
       # Create the tagged_tasks if the tags param is not empty
       @task.create_tagged_tasks(task_params[:tag_ids]) if task_params[:tag_ids]
-      render json: { task_value: { task: @task, task_tags: @task.tags }, message: "The task was successfully created" }
+      render json: { 
+        task_value: { 
+          task: except_attributes(@task, ['created_at', 'updated_at']), 
+          task_tags: except_attributes(@task.tags, ['created_at', 'updated_at'])
+          }, 
+        message: "The task was successfully created" 
+      }
     else
       error_message = @task.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -30,11 +36,6 @@ class Api::V1::Groups::TasksController < ApplicationController
 
   def find_group
     @group = Group.find(params[:group_id])
-  end
-
-  # We want to return each task and their tags
-  def build_json(tasks)
-    tasks.map { |t|  { task: t, task_tags: t.tags } }
   end
 
   def task_params
