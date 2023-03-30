@@ -1,7 +1,5 @@
-export type ApiAuthResponse = {
-  headers: {
-    authorization: string;
-    "cache-control": string;
-    "content-type": string;
-  };
+export type UseApiProps<T> = {
+  method: "post" | "get" | "patch" | "delete";
+  url: string;
+  data?: T;
 };
