@@ -6,13 +6,13 @@ class Api::V1::GroupsController < ApplicationController
   # GET /api/v1/groups
   def index
     groups = current_user.groups # we don't need the auth check because we already fetch only the groups of the current user in the backend
-    render json: { groups: groups }
+    render json: { groups: except_attributes(groups, ['created_at', 'updated_at']) } 
   end
 
   # Fetch one of the groups of the current user
   # GET /api/v1/groups/:id
   def show
-    render json: { group: @group }
+    render json: { group: except_attributes(@group, ['created_at', 'updated_at']) }
   end
 
   # Create a group
@@ -21,7 +21,10 @@ class Api::V1::GroupsController < ApplicationController
     group = Group.new(group_params) # we don't need the auth check because any user can create a group
     group.admin = current_user
     if group.save
-      render json: { group: group , message: "The group was successfully created" }
+      render json: { 
+        group: except_attributes(group, ['created_at', 'updated_at']), 
+        message: "The group was successfully created" 
+      }
     else
       error_message = group.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -32,7 +35,10 @@ class Api::V1::GroupsController < ApplicationController
   # PATCH /api/v1/groups/:id
   def update
     if @group.update(group_params)
-      render json: { group: @group , message: "The group was successfully updated" }
+      render json: { 
+        group: except_attributes(@group, ['created_at', 'updated_at']), 
+        message: "The group was successfully updated" 
+      }
     else
       error_message = @group.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -92,7 +98,10 @@ class Api::V1::GroupsController < ApplicationController
   # GET /api/v1/groups/:id/fetch_users
   def fetch_users
     users = @group.users
-    render json: { group: @group, users: users }
+    render json: { 
+      group: except_attributes(@group, ['created_at', 'updated_at']), 
+      users: except_attributes(users, ['jti', 'created_at', 'updated_at'])
+    }
   end
 
   private
@@ -116,9 +125,5 @@ class Api::V1::GroupsController < ApplicationController
 
   def render_error(message, status)
     render json: {message: message}, status: status
-  end
-
-  def build_json(tasks)
-    tasks.map { |t|  { task: t, task_tags: t.tags } }
   end
 end
