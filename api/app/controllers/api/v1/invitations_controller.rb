@@ -8,7 +8,7 @@ class Api::V1::InvitationsController < ApplicationController
   def index
     @invitations = @group.invitations
     authorize @invitations.first, policy_class: Api::V1::InvitationPolicy # every record will have the same group so we can just take one and do the authorize
-    render json: { invitations: @invitations }
+    render json: { invitations: except_attributes(@invitations, ['oauth_token', 'created_at', 'updated_at']) }
   end
 
   # Render signup page or redirects to root path after user clicks on invitation link

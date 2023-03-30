@@ -1,8 +1,16 @@
-import React from "react";
-// import './App.css';
+import React, { useContext } from "react";
+import { AuthContext } from "./context/auth/AuthContext";
+import Form from "./components/authForm/AuthForm";
+import Group from "./Group";
 
 function App() {
-  return <p>Hello there from the React Component</p>;
+  const authContext = useContext(AuthContext);
+
+  if (authContext.error) {
+    return <div>{authContext.error}</div>;
+  }
+
+  return <>{!authContext.auth ? <Form /> : <Group />}</>;
 }
 
 export default App;

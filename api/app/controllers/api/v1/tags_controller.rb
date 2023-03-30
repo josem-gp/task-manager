@@ -7,7 +7,7 @@ class Api::V1::TagsController < ApplicationController
   def index
     @tags = @group.tags
     authorize @tags.first, policy_class: Api::V1::TagPolicy # every record will have the same group so we can just take one and do the authorize
-    render json: { tags: @tags }
+    render json: { tags: except_attributes(@tags, ['created_at', 'updated_at']) }
   end
 
   # Create a tag
@@ -18,7 +18,10 @@ class Api::V1::TagsController < ApplicationController
     @tag.group = @group
     authorize @tag, policy_class: Api::V1::TagPolicy
     if @tag.save
-      render json: { tag: @tag , message: "The tag was successfully created" }
+      render json: { 
+        tag: except_attributes(@tag, ['created_at', 'updated_at']), 
+        message: "The tag was successfully created" 
+      }
     else
       error_message = @tag.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -29,7 +32,10 @@ class Api::V1::TagsController < ApplicationController
   # PATCH /api/v1/groups/:group_id/tags/:id
   def update
     if @tag.update(tag_params)
-      render json: { tag: @tag , message: "The tag was successfully updated" }
+      render json: { 
+        tag: except_attributes(@tag, ['created_at', 'updated_at']), 
+        message: "The tag was successfully updated"
+      }
     else
       error_message = @tag.errors.objects.first.full_message
       render_error(error_message, :bad_request)

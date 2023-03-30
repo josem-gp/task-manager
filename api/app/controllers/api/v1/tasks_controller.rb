@@ -12,7 +12,7 @@ class Api::V1::TasksController < ApplicationController
   # Fetch one specific task
   # GET /api/v1/tasks/:id
   def show
-    render json: { task_value: { task: @task, task_tags: @task.tags } }
+    render json: { task_value: build_json(@task) }
   end
 
   # Create a task
@@ -24,7 +24,7 @@ class Api::V1::TasksController < ApplicationController
     if @task.save
       # Create the tagged_tasks if the tags param is not empty
       @task.create_tagged_tasks(task_params[:tag_ids]) if task_params[:tag_ids]
-      render json: { task_value: { task: @task, task_tags: @task.tags }, message: "The task was successfully created" }
+      render json: { task_value: build_json(@task), message: "The task was successfully created" }
     else
       error_message = @task.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -37,7 +37,7 @@ class Api::V1::TasksController < ApplicationController
     if @task.update(task_params.except(:tag_ids))
       # Create the tagged_tasks if the tags param is not empty
       @task.create_tagged_tasks(task_params[:tag_ids]) if task_params[:tag_ids]
-      render json: { task_value: { task: @task, task_tags: @task.tags }, message: "The task was successfully updated" }
+      render json: { task_value: build_json(@task), message: "The task was successfully updated" }
     else
       error_message = @task.errors.objects.first.full_message
       render_error(error_message, :bad_request)
@@ -63,10 +63,6 @@ class Api::V1::TasksController < ApplicationController
   def find_task
     @task = Task.find(params[:id])
     authorize @task, policy_class: Api::V1::TaskPolicy
-  end
-
-  def build_json(tasks)
-    tasks.map { |t|  { task: t, task_tags: t.tags } }
   end
 
   def task_params

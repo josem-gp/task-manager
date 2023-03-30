@@ -1,8 +1,10 @@
 class Users::SessionsController < Devise::SessionsController
+  include ApiHelper
   respond_to :json
+  
   private
   def respond_with(resource, _opts = {})
-    render json: { message: 'Logged.', user: current_user }, status: :ok
+    render json: { message: 'Logged.', user: select_attributes(current_user, ['id', 'username', 'email', 'icon_id']) }, status: :ok
   end
   def respond_to_on_destroy
     current_user ? log_out_success : log_out_failure
