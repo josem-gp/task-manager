@@ -13,7 +13,6 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
   function fetchAuthToken() {
     try {
       const token = Cookies.get("auth_token") || null;
-
       setAuth(token);
     } catch (error) {
       setError("Error fetching auth token from cookie");

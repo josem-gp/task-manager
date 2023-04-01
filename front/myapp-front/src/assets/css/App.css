@@ -1,0 +1,96 @@
+.homepage-main-grid {
+  background-image: url("../images/oooscillate.svg");
+  background-size: cover;
+}
+
+.react-calendar {
+  border: none !important;
+  margin-top: 30px;
+}
+
+.react-calendar abbr,
+.react-calendar span {
+  font-family: "Montserrat";
+}
+
+.react-calendar__month-view__days,
+.react-calendar__month-view__weekdays {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+
+.react-calendar__tile {
+  max-height: 37px;
+  max-width: 37px !important;
+  border-radius: 50%;
+}
+
+.react-calendar__tile--now {
+  color: #f9bb19 !important;
+  background-color: transparent !important;
+  font-weight: bold;
+  position: relative;
+}
+
+button[class*="react-calendar__tile--now"][class*="react-calendar__tile--active"]:after {
+  content: "\A";
+  background: white !important;
+}
+
+.react-calendar__tile--now:after {
+  content: "\A";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f9bb19;
+  position: inline;
+  display: block;
+  position: absolute;
+  left: 16px;
+  right: 0;
+  bottom: 5px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+  border-radius: 50%;
+}
+
+.react-calendar__tile--active {
+  border-radius: 50%;
+  background-color: #f9bb19 !important;
+  color: white !important;
+}
+
+.react-calendar__navigation__label {
+  pointer-events: none;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: transparent !important;
+  transform: scale(1.5);
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none !important;
+  text-transform: capitalize !important;
+}
+
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button {
+  display: none;
+}
+
+/* Tab */
+
+.css-zruke8-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #f9bb19 !important;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  background-color: #f9bb19 !important;
+}
