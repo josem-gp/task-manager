@@ -1,37 +1,49 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { ElementSelectProps } from "./ElementSelect.types";
+import { colors } from "../../utils/colors";
 
-function ElementSelect() {
+export function ElementSelect({ name }: ElementSelectProps) {
   return (
     <FormControl
       fullWidth
       sx={{
         marginBottom: { xs: "20px", lg: "40px" },
         marginTop: { xs: "20px", lg: "0" },
+        "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+          borderColor: `${colors.primary} !important`,
+        },
       }}
     >
       <InputLabel
-        id="demo-simple-select-label"
         sx={{
           background: "white",
           paddingRight: "6px",
+          "&.Mui-focused": {
+            color: colors.primary,
+            fontWeight: "bold",
+          },
         }}
       >
-        Choose group
+        {name}
       </InputLabel>
       <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
         // value={userGroups.selectedGroupId}
-        label="Age"
         // onChange={chooseGroup}
+        sx={{
+          color: colors.textDark,
+        }}
       >
         {/* {groupMap} */}
-        <MenuItem key="test" value="test">
+        <MenuItem
+          key="test"
+          value="test"
+          sx={{
+            color: colors.textLight,
+          }}
+        >
           Harcoded test
         </MenuItem>
       </Select>
     </FormControl>
   );
 }
-
-export default ElementSelect;

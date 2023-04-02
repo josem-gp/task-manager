@@ -30,7 +30,7 @@ function TasksMenu() {
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>
-      <FilterTasks />
+      {/* <FilterTasks /> */}
       <Typography
         variant="h4"
         marginTop="60px"
