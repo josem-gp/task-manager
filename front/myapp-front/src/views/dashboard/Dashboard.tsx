@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../sidebar/Sidebar";
 import MainMenu from "../mainMenu/MainMenu";
 import SupportMenu from "../supportMenu/SupportMenu";
-import SidebarBtnProvider from "../../context/sidebarBtn/SidebarBtnProvider";
+import SidebarBtnContextProvider from "../../context/sidebarBtn/SidebarBtnContextProvider";
 
 function Dashboard() {
   return (
@@ -12,7 +12,7 @@ function Dashboard() {
         {/* To show in mobile only */}
         <Navbar />
       </Box>
-      <SidebarBtnProvider>
+      <SidebarBtnContextProvider>
         <Grid
           container
           spacing={2}
@@ -33,7 +33,7 @@ function Dashboard() {
             {/* <SupportMenu /> */}
           </Grid>
         </Grid>
-      </SidebarBtnProvider>
+      </SidebarBtnContextProvider>
     </>
   );
 }

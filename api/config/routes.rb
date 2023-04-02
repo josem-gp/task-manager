@@ -13,7 +13,11 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :users, only: [:update] 
+      resources :users, only: [:update] do
+        member do
+          get 'fetch_user_info', to: 'users#fetch_user_info'
+        end
+      end
       resources :groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           get 'fetch_users', to: 'groups#fetch_users'

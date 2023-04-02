@@ -5,11 +5,13 @@ import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-type SidebarBtnProviderProps = {
+type SidebarBtnContextProviderProps = {
   children: React.ReactNode;
 };
 
-function SidebarBtnProvider({ children }: SidebarBtnProviderProps) {
+function SidebarBtnContextProvider({
+  children,
+}: SidebarBtnContextProviderProps) {
   const initialSidebarBtns: SidebarBtn[] = [
     {
       id: 1,
@@ -41,4 +43,4 @@ function SidebarBtnProvider({ children }: SidebarBtnProviderProps) {
   );
 }
 
-export default SidebarBtnProvider;
+export default SidebarBtnContextProvider;
