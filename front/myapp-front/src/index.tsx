@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./assets/css/index.css";
+import "./assets/css/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import AuthContextProvider from "./context/auth/AuthContextProvider";
-import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./assets/theme/ThemeProvider";
+import { theme, ThemeProvider } from "./assets/theme/ThemeProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
