@@ -1,12 +1,13 @@
 import { Button } from "@mui/material";
+import { SidebarIconBtnProps } from "./SidebarIconBtn.types";
 
-function SidebarIconBtn() {
+function SidebarIconBtn({ name, icon, checked, onClick }: SidebarIconBtnProps) {
   return (
     <Button
       name="profile"
-      // variant={selectedBtn === "profile" ? "contained" : ""}
-      // startIcon={<SettingsIcon />}
-      // onClick={dynamicButtonStyle}
+      variant={checked ? "contained" : "text"}
+      startIcon={icon}
+      onClick={onClick}
       sx={{
         color: "#515151",
         fontWeight: "bold",
@@ -20,7 +21,7 @@ function SidebarIconBtn() {
         // },
       }}
     >
-      Test Name
+      {name}
     </Button>
   );
 }

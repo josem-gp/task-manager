@@ -25,10 +25,10 @@ function Dashboard() {
           sx={{ display: { xs: "none", md: "block", lg: "none" } }}
         ></Grid>
         <Grid item xs={12} md={6}>
-          <MainMenu />
+          {/* <MainMenu /> */}
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <SupportMenu />
+          {/* <SupportMenu /> */}
         </Grid>
       </Grid>
     </>
