@@ -1,13 +1,6 @@
 class Api::V1::GroupsController < ApplicationController
-  before_action :find_group, except: [:index, :create]
-  before_action :skip_authorization, only: [:index, :create]
-
-  # Fetch all the groups of the current user
-  # GET /api/v1/groups
-  def index
-    groups = current_user.groups # we don't need the auth check because we already fetch only the groups of the current user in the backend
-    render json: { groups: except_attributes(groups, ['created_at', 'updated_at']) } 
-  end
+  before_action :find_group, except: [:create]
+  before_action :skip_authorization, only: [:create]
 
   # Fetch one of the groups of the current user
   # GET /api/v1/groups/:id
@@ -100,7 +93,7 @@ class Api::V1::GroupsController < ApplicationController
     users = @group.users
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']), 
-      users: except_attributes(users, ['jti', 'created_at', 'updated_at'])
+      users: select_attributes(current_user, ['id', 'username', 'email', 'icon_id'])
     }
   end
 

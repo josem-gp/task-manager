@@ -6,8 +6,8 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ElementSelect from "../elementSelect/ElementSelect";
 import ActionBtn from "../actionBtn/ActionBtn";
+import { ElementSelect } from "../elementSelect/ElementSelect";
 
 function FilterBar() {
   return (
@@ -63,7 +63,7 @@ function FilterBar() {
         spacing={1}
         marginLeft="8px"
       >
-        <ElementSelect />
+        {/* <ElementSelect /> */}
       </Stack>
     </>
   );

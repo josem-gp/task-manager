@@ -9,16 +9,18 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { AuthContext } from "../../context/auth/AuthContext";
 import { setAuthToken } from "../../utils/setAuthToken";
-import { UserAuth, UserFormDetails } from "../../types/interfaces";
+import { UserFormDetails, UserResponse } from "../../types/interfaces";
 import { AuthFormProps } from "./AuthForm.types";
 import { fetchData } from "../../utils/fetchApiData";
 import { UseApiProps } from "../../types/types";
 import { AxiosError, AxiosResponse } from "axios";
+import { UserContext } from "../../context/user/UserContext";
+import { ErrorContext } from "../../context/error/ErrorContext";
 
 function AuthFormLogin({ setIsLogin }: AuthFormProps) {
-  const authContext = useContext(AuthContext);
+  const { state, dispatch } = useContext(UserContext);
+  const errorContext = useContext(ErrorContext);
   const [data, setData] = useState<UserFormDetails>({
     user: { email: "", password: "" },
   });
@@ -43,20 +45,24 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
       data: data,
     };
 
-    fetchData<UserFormDetails, UserAuth>(params)
-      .then((response: AxiosResponse<UserAuth> | AxiosError) => {
+    fetchData<UserFormDetails, UserResponse>(params)
+      .then((response: AxiosResponse<UserResponse> | AxiosError) => {
         if ("headers" in response) {
           const token = response.headers.authorization.split(" ")[1];
+          // To set the Cookie
           setAuthToken(token);
-          authContext.setAuth(token);
+          // To set the token in the context
+          dispatch({ type: "SET_USER_AUTH", payload: token });
+          // To set the user info in the context
+          dispatch({ type: "SET_USER", payload: response.data.user });
         } else {
-          authContext.setError(
+          errorContext.setError(
             response.response?.data as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        authContext.setError(
+        errorContext.setError(
           error.response?.data as React.SetStateAction<string | null>
         );
       });

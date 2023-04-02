@@ -1,11 +1,20 @@
 import { Stack } from "@mui/material";
-import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
-import GroupsIcon from "@mui/icons-material/Groups";
-import SettingsIcon from "@mui/icons-material/Settings";
-import IconBtn from "../../components/sidebarIconBtn/SidebarIconBtn";
-import GroupSelect from "../../components/elementSelect/ElementSelect";
+import SidebarIconBtn from "../../components/sidebarIconBtn/SidebarIconBtn";
+import { ElementSelect as GroupSelect } from "../../components/elementSelect/ElementSelect";
+import { useContext } from "react";
+import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
 
 function Sidebar() {
+  const sidebarBtnContext = useContext(SidebarBtnContext);
+
+  function handleSidebarIconBtn(id: number) {
+    sidebarBtnContext.setSidebarBtns((prevState) =>
+      prevState.map((btn) =>
+        btn.id === id ? { ...btn, checked: true } : { ...btn, checked: false }
+      )
+    );
+  }
+
   return (
     <Stack
       justifyContent="space-between"
@@ -18,9 +27,17 @@ function Sidebar() {
       }}
     >
       <Stack spacing={4} sx={{ paddingTop: { xs: "0", lg: "120px" } }}>
-        <IconBtn />
+        {sidebarBtnContext.sidebarBtns.map((el) => (
+          <SidebarIconBtn
+            key={el.id}
+            name={el.name}
+            icon={el.icon}
+            checked={el.checked}
+            onClick={() => handleSidebarIconBtn(el.id)}
+          />
+        ))}
       </Stack>
-      <GroupSelect />
+      <GroupSelect name={"Choose group"} />
     </Stack>
   );
 }
