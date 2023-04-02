@@ -6,26 +6,24 @@ export interface UserFormDetails {
   };
 }
 
-export interface UserAuth {
-  headers: {
-    authorization: string;
-  };
+export interface UserResponse {
+  user: UserDetails;
 }
 
-interface UserDetails {
+export interface UserDetails {
   id: number;
   username: string;
   email: string;
+  icon_id: number;
 }
-
-interface GroupDetails {
+export interface GroupDetails {
   id: number;
   name: string;
   description: string;
   admin_id: number;
 }
 
-interface TaskDetails {
+export interface TaskDetails {
   id: number;
   name: string;
   note: string;
@@ -55,37 +53,8 @@ interface InvitationDetails {
 }
 
 export interface User {
-  user: UserDetails;
-}
-
-export interface Users {
-  users: UserDetails[];
-}
-
-export interface Group {
-  group: GroupDetails;
-}
-
-export interface Groups {
-  groups: GroupDetails[];
-}
-
-export interface Task {
-  task: TaskDetails;
-}
-
-export interface Tasks {
-  tasks: TaskDetails[];
-}
-
-export interface Tag {
-  tag: TagDetails;
-}
-
-export interface Tags {
-  tags: TagDetails[];
-}
-
-export interface Invitations {
-  invitations: InvitationDetails[];
+  user: UserDetails | null;
+  userGroups: GroupDetails[] | null;
+  userTasks: TaskDetails[] | null;
+  userAuth: string | null;
 }

@@ -3,8 +3,9 @@ import ReactDOM from "react-dom/client";
 import "./assets/css/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import AuthContextProvider from "./context/auth/AuthContextProvider";
+import ErrorContextProvider from "./context/error/ErrorContextProvider";
 import { theme, ThemeProvider } from "./assets/theme/ThemeProvider";
+import UserContextProvider from "./context/user/UserContextProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,9 +13,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <AuthContextProvider>
-        <App />
-      </AuthContextProvider>
+      <UserContextProvider>
+        <ErrorContextProvider>
+          <App />
+        </ErrorContextProvider>
+      </UserContextProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

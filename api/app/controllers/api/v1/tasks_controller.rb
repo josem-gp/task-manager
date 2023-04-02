@@ -1,13 +1,5 @@
 class Api::V1::TasksController < ApplicationController
   before_action :find_task, only: [:show, :update, :destroy]
-  before_action :find_all_user_tasks, only: [:index]
-  before_action :skip_authorization, only: [:index]
-  
-  # Fetch all the tasks of a user (whether the user is the creator or assignee)
-  # GET /api/v1/tasks
-  def index
-    render json: { task_value: build_json(@user_tasks) } # we don't need the auth check because we already fetch only the tasks of the current user in the backend
-  end
 
   # Fetch one specific task
   # GET /api/v1/tasks/:id
@@ -55,10 +47,6 @@ class Api::V1::TasksController < ApplicationController
   end
 
   private
-
-  def find_all_user_tasks
-    @user_tasks = Task.where(user: current_user).or(Task.where(assignee: current_user))
-  end
 
   def find_task
     @task = Task.find(params[:id])

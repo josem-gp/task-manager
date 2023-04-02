@@ -9,4 +9,9 @@ class Api::V1::UserPolicy < ApplicationPolicy
   def update?
     record == user
   end
+
+   # Only the current user can update itself
+   def fetch_user_info?
+    record == user
+  end
 end
