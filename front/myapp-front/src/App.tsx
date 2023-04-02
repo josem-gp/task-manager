@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "./context/auth/AuthContext";
-import Form from "./components/authForm/AuthForm";
-import Group from "./Group";
+import Dashboard from "./views/dashboard/Dashboard";
+import AuthForm from "./components/authForm/AuthForm";
 
 function App() {
   const authContext = useContext(AuthContext);
@@ -10,7 +10,7 @@ function App() {
     return <div>{authContext.error}</div>;
   }
 
-  return <>{!authContext.auth ? <Form /> : <Group />}</>;
+  return <>{!authContext.auth ? <AuthForm /> : <Dashboard />}</>;
 }
 
 export default App;

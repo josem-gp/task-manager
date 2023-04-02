@@ -1,0 +1,80 @@
+.react-calendar {
+  border: none !important;
+  margin-top: 30px;
+
+  abbr,
+  span {
+    font-family: "Montserrat";
+  }
+
+  &__month-view__days,
+  &__month-view__weekdays {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+  }
+
+  &__tile {
+    max-height: 37px;
+    max-width: 37px !important;
+    border-radius: 50%;
+
+    &:enabled:hover,
+    &:enabled:focus {
+      background-color: #e6e6e6;
+      border-radius: 50%;
+    }
+
+    &--now {
+      color: #f9bb19 !important;
+      background-color: transparent !important;
+      font-weight: bold;
+      position: relative;
+
+      &:after {
+        content: "\A";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #f9bb19;
+        position: inline;
+        display: block;
+        position: absolute;
+        left: 16px;
+        right: 0;
+        bottom: 5px;
+      }
+    }
+
+    &--active {
+      border-radius: 50%;
+      background-color: #f9bb19 !important;
+      color: white !important;
+    }
+  }
+
+  &__navigation {
+    &__label {
+      pointer-events: none;
+    }
+
+    button:enabled:hover,
+    button:enabled:focus {
+      background-color: transparent !important;
+      transform: scale(1.5);
+    }
+
+    &__prev2-button,
+    &__next2-button {
+      display: none;
+    }
+  }
+
+  &__month-view__weekdays__weekday {
+    abbr {
+      text-decoration: none !important;
+      text-transform: capitalize !important;
+    }
+  }
+}
