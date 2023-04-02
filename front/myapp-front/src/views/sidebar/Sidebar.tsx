@@ -2,8 +2,8 @@ import { Stack } from "@mui/material";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SettingsIcon from "@mui/icons-material/Settings";
-import IconBtn from "../../elements/sidebarIconBtn/SidebarIconBtn";
-import GroupSelect from "../../elements/elementSelect/ElementSelect";
+import IconBtn from "../../components/sidebarIconBtn/SidebarIconBtn";
+import GroupSelect from "../../components/elementSelect/ElementSelect";
 
 function Sidebar() {
   return (

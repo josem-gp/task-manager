@@ -6,8 +6,8 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ElementSelect from "../../elements/elementSelect/ElementSelect";
-import ActionBtn from "../../elements/actionBtn/ActionBtn";
+import ElementSelect from "../elementSelect/ElementSelect";
+import ActionBtn from "../actionBtn/ActionBtn";
 
 function FilterBar() {
   return (

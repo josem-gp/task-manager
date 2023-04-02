@@ -1,6 +1,6 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import Navbar from "../../components/navbar/Navbar";
-import ActionBtn from "../../elements/actionBtn/ActionBtn";
+import ActionBtn from "../../components/actionBtn/ActionBtn";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 

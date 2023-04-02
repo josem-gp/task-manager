@@ -2,7 +2,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ActionBtn from "../../elements/actionBtn/ActionBtn";
+import ActionBtn from "../../components/actionBtn/ActionBtn";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
 
 function GroupsMenu() {
