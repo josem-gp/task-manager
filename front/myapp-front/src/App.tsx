@@ -17,7 +17,7 @@ function App() {
   function fetchUserInfo() {
     const params: UseApiProps<undefined> = {
       method: "get",
-      url: `http://localhost:3000/api/v1/users/${state.user?.id}/fetch_user_info`,
+      url: `http://localhost:3000/api/v1/users/fetch_user_info`,
       headers: {
         Authorization: `Bearer ${state.userAuth}`,
         "Content-Type": "application/json",
@@ -27,6 +27,11 @@ function App() {
     fetchData<undefined, User>(params)
       .then((response: AxiosResponse<User> | AxiosError) => {
         if ("data" in response) {
+          // To set the user in the context
+          dispatch({
+            type: "SET_USER",
+            payload: response.data.user,
+          });
           // To set the user tasks in the context
           dispatch({
             type: "SET_USER_TASKS",

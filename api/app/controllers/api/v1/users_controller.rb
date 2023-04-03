@@ -1,13 +1,12 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :find_user, only: [:update, :fetch_user_info]
-  before_action :find_all_user_tasks, only: [:fetch_user_info]
+  before_action :find_user, only: [:update]
 
   # Update a user 
   # PATCH /api/v1/users/:id
   def update
     if @user.update(user_params)
       render json: { 
-        user: select_attributes(current_user, ['id', 'username', 'email', 'icon_id']), 
+        user: select_attributes(@user, ['id', 'username', 'email', 'icon_id']), 
         message: "The user was successfully updated"
       }
     else
@@ -17,12 +16,14 @@ class Api::V1::UsersController < ApplicationController
   end
 
   # Get user information
-  # GET /api/v1/users/:user_id/fetch_user_info
+  # GET /api/v1/users/fetch_user_info
   def fetch_user_info
+    user_tasks = Task.where(user: current_user).or(Task.where(assignee: current_user))
+    
     render json: { 
       user: select_attributes(current_user, ['id', 'username', 'email', 'icon_id']), 
-      userGroups: except_attributes(@user.groups, ['created_at', 'updated_at']),
-      userTasks: build_json(@user_tasks),
+      userGroups: except_attributes(current_user.groups, ['created_at', 'updated_at']),
+      userTasks: build_json(user_tasks),
     }
   end
 
@@ -31,10 +32,6 @@ class Api::V1::UsersController < ApplicationController
   def find_user
     @user = User.find(params[:id])
     authorize @user, policy_class: Api::V1::UserPolicy
-  end
-
-  def find_all_user_tasks
-    @user_tasks = Task.where(user: @user).or(Task.where(assignee: @user))
   end
 
   def user_params

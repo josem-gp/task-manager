@@ -13,12 +13,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :users, only: [:update] do
-        member do
-          get 'fetch_user_info', to: 'users#fetch_user_info'
-        end
-      end
-      resources :groups, only: [:index, :show, :create, :update, :destroy] do
+      resources :users, only: [:update]
+      resources :groups, only: [:show, :create, :update, :destroy] do
         member do
           get 'fetch_users', to: 'groups#fetch_users'
           post 'send_invitation', to: 'groups#send_invitation'
@@ -29,8 +25,9 @@ Rails.application.routes.draw do
         resources :tags, only: [:index, :create, :update, :destroy]
         resources :invitations, only: [:index]
       end
-      resources :tasks, only: [:index, :show, :create, :update, :destroy]
+      resources :tasks, only: [:show, :create, :update, :destroy]
       get 'invitation_signup/:token', to: 'invitations#invitation_signup'
+      get 'users/fetch_user_info', to: 'users#fetch_user_info'
     end
   end
   mount Sidekiq::Web => '/sidekiq'

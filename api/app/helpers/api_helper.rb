@@ -16,7 +16,7 @@ module ApiHelper
     attributes = attributes.map(&:to_s)
     if object.respond_to?(:map)
       object.map do |obj|
-        object.slice(*attributes)
+        obj.slice(*attributes)
       end
     else
       object.slice(*attributes)
