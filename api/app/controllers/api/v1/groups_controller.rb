@@ -93,7 +93,7 @@ class Api::V1::GroupsController < ApplicationController
     users = @group.users
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']), 
-      users: select_attributes(current_user, ['id', 'username', 'email', 'icon_id'])
+      users: select_attributes(users, ['id', 'username', 'email', 'icon_id'])
     }
   end
 

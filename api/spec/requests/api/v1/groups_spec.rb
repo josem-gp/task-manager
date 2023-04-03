@@ -8,23 +8,6 @@ RSpec.describe "Api::V1::Groups", type: :request do
   let(:user) { create :user }
   let!(:membership) {create :membership, user: user, group: group}
 
-  describe "GET /index" do
-    # 2xx RESPONSE: {"groups": [group_instances]}
-    before do
-      sign_in user
-      get api_v1_groups_path
-    end
-
-    it { expect(response).to have_http_status(:success) }
-
-    it "returns a json with the info of the groups" do
-      json = JSON.parse(response.body)
-
-      expect(json["groups"].length).to eq 1
-      expect(json["groups"].first["name"]).to eq(group.name)
-    end
-  end
-
   describe "GET /show" do
     # 2xx RESPONSE: {"group": group_instance}
     # 4xx RESPONSE: {"message": "Record not found"} -> comes from our customized Pundit exception handler

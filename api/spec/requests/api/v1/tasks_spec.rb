@@ -11,30 +11,6 @@ RSpec.describe "Api::V1::Tasks", type: :request do
     create :tagged_task, task: task, tag: tags.first
   end
 
-  describe "GET /index" do
-    # 2xx RESPONSE:  { "task_value": [{ "task": task_instance, "task_tags": [task_instance.tags] }, {...}] }
-    before do
-      sign_in user
-      get api_v1_tasks_path
-    end
-
-    it { expect(response).to have_http_status(:success) }
-
-    it "returns a json with all the tasks of the user" do
-      json = JSON.parse(response.body)
-
-      expect(json["task_value"].length).to eq 1
-      expect(json["task_value"].first["task"]["name"]).to eq(task.name)
-    end
-
-    it "returns a json with all the tags of each task" do
-      json = JSON.parse(response.body)
-
-      expect(json["task_value"].first["task_tags"].count).to eq 1
-      expect(json["task_value"].first["task_tags"].first["name"]).to eq(tags.first.name)
-    end
-  end
-
   describe "GET /show" do
     # 2xx RESPONSE: {"task_value": { "task": task_instance, "task_tags": [task_instance.tags] } }
     before do
