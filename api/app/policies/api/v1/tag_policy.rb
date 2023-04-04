@@ -5,11 +5,6 @@ class Api::V1::TagPolicy < ApplicationPolicy
     end
   end
 
-  # Only users belonging to the group can see the tags
-  def index?
-    record.group.users.include?(user)
-  end
-
   # Only users belonging to the group can create a tag
   def create?
     record.group.users.include?(user)

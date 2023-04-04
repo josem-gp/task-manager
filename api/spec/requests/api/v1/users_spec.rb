@@ -58,7 +58,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
-  # 2xx RESPONSE: { user: user_instance, userGroups: [user_groups], userTasks: [user_tasks]}
+  # 2xx RESPONSE: { "user": user_instance, "userGroups": [user_groups], "userTasks": [user_tasks]}
   describe "GET /fetch_user_info" do
     before do
       create_list(:group, 3, admin: user)

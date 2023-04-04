@@ -34,7 +34,7 @@ export interface TaskDetails {
   assignee_id: number;
 }
 
-interface TagDetails {
+export interface TagDetails {
   id: number;
   name: string;
   slug: string;
@@ -42,7 +42,7 @@ interface TagDetails {
   user_id: number;
 }
 
-interface InvitationDetails {
+export interface InvitationDetails {
   id: number;
   email: string;
   expiration_date: string;
@@ -57,4 +57,12 @@ export interface User {
   userGroups: GroupDetails[] | null;
   userTasks: TaskDetails[] | null;
   userAuth: string | null;
+}
+
+export interface Group {
+  group: GroupDetails | null;
+  groupUsers: UserDetails[] | null;
+  groupTasks: TaskDetails[] | null;
+  groupTags: TagDetails[] | null;
+  groupInvitations: InvitationDetails[] | null;
 }
