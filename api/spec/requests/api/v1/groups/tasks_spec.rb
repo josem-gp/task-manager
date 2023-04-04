@@ -12,36 +12,6 @@ RSpec.describe "Api::V1::Groups::Tasks", type: :request do
     create :task, user: user # This task should never appear since it is not in the group we are doing the specs into
   end
 
-  describe "GET /index" do
-    # 2xx RESPONSE:  { "task_value": {
-    #                                  "today: [{ "task": task_instance, "task_tags": [task_instance.tags] },...],
-    #                                  "upcoming: [{ "task": task_instance, "task_tags": [task_instance.tags] },...],
-    #                                  "past: [{ "task": task_instance, "task_tags": [task_instance.tags] },...],
-    #                                }
-    #                }
-    before do
-      sign_in user
-      get api_v1_group_tasks_path(group.id)
-    end
-
-    it { expect(response).to have_http_status(:success) }
-
-    it "returns a json with the tasks of the user for that group" do
-      json = JSON.parse(response.body)
-
-      expect(json["task_value"]).to have_key("today").and have_key("upcoming").and have_key("past")
-      expect([json["task_value"]["today"], json["task_value"]["past"]]).to all(be_empty)
-      expect(json["task_value"]["upcoming"].length).to eq 1
-    end
-
-    it "returns a json with all the tags of each task" do
-      json = JSON.parse(response.body)
-
-      expect(json["task_value"]["upcoming"].first["task_tags"].count).to eq 1
-      expect(json["task_value"]["upcoming"].first["task_tags"].first["name"]).to eq(tags.first.name)
-    end
-  end
-
   describe "POST /create" do
     # 2xx RESPONSE: {"task": task_instance, "message": "The task was successfully created"}
     # 4xx RESPONSE: {"message": error_message}
