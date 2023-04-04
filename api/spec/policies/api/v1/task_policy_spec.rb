@@ -10,7 +10,7 @@ RSpec.describe Api::V1::TaskPolicy, type: :policy do
     let(:user) { create :user }
     let(:assignee) { nil }
 
-    it { should_not authorize(:show)   }
+    it { should_not authorize(:show)    }
     it { should_not authorize(:create)  }
     it { should_not authorize(:update)  }
     it { should_not authorize(:destroy) }
@@ -24,7 +24,7 @@ RSpec.describe Api::V1::TaskPolicy, type: :policy do
       create :membership, user: user, group: group
     end
 
-    it { should authorize(:show)   }
+    it { should authorize(:show)    }
     it { should authorize(:create)  }
     it { should authorize(:update)  }
     it { should authorize(:destroy) }
@@ -59,7 +59,7 @@ RSpec.describe Api::V1::TaskPolicy, type: :policy do
     let(:user) { group.admin }
     let(:assignee) { nil }
 
-    it { should authorize(:show)   }
+    it { should authorize(:show)    }
     it { should authorize(:create)  }
     it { should authorize(:update)  }
     it { should authorize(:destroy) }

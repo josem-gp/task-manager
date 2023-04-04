@@ -34,9 +34,4 @@ class Api::V1::GroupPolicy < ApplicationPolicy
   def remove_user?
     record.admin == user
   end
-
-  # Only users belonging to the group can see all the members in the group
-  def fetch_users?
-    record.users.include?(user)
-  end
 end

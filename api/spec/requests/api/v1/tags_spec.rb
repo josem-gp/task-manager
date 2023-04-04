@@ -8,23 +8,6 @@ RSpec.describe "Api::V1::Tags", type: :request do
   let(:tag) { group.tags.first }
   let!(:membership) {create :membership, user: user, group: group}
 
-  describe "GET /index" do
-    # 2xx RESPONSE: {"tags": [tag_instances]}
-    before do
-      sign_in user
-      get api_v1_group_tags_path(group.id)
-    end
-
-    it { expect(response).to have_http_status(:success) }
-
-    it "returns a json with the tags for that group" do
-      json = JSON.parse(response.body)
-
-      expect(json["tags"].length).to eq 1
-      expect(json["tags"].first["name"]).to eq(tag.name)
-    end
-  end
-
   describe "POST /create" do
     # 2xx RESPONSE: {"tag": tag_instance, "message": "The tag was successfully created"}
     # 4xx RESPONSE: {"message": error_message}

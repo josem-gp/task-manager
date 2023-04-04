@@ -5,7 +5,18 @@ class Api::V1::GroupsController < ApplicationController
   # Fetch one of the groups of the current user
   # GET /api/v1/groups/:id
   def show
-    render json: { group: except_attributes(@group, ['created_at', 'updated_at']) }
+    users = @group.users
+    tasks = @group.tasks.where(user: current_user).or(Task.where(assignee: current_user))
+    tags = @group.tags
+    invitations = @group.invitations
+    
+    render json: { 
+      group: except_attributes(@group, ['created_at', 'updated_at']),
+      groupUsers: select_attributes(users, ['id', 'username', 'email', 'icon_id']),
+      groupTasks: divide_tasks_by_date(tasks),
+      groupTags: except_attributes(tags, ['created_at', 'updated_at']),
+      groupInvitations: except_attributes(invitations, ['oauth_token', 'created_at', 'updated_at'])
+    }
   end
 
   # Create a group
@@ -87,16 +98,6 @@ class Api::V1::GroupsController < ApplicationController
     end
   end
 
-  # Fetch all users in the group
-  # GET /api/v1/groups/:id/fetch_users
-  def fetch_users
-    users = @group.users
-    render json: { 
-      group: except_attributes(@group, ['created_at', 'updated_at']), 
-      users: select_attributes(users, ['id', 'username', 'email', 'icon_id'])
-    }
-  end
-
   private
 
   def find_group
@@ -119,5 +120,17 @@ class Api::V1::GroupsController < ApplicationController
 
   def render_error(message, status)
     render json: {message: message}, status: status
+  end
+
+  def divide_tasks_by_date(tasks)
+    today = Date.today
+    upcoming_tasks = tasks.filter { |task| task.due_date > today }
+    past_tasks = tasks.filter { |task| task.due_date < today }
+    today_tasks = tasks.filter { |task| task.due_date == today }
+    {
+      today: build_json(today_tasks),
+      upcoming: build_json(upcoming_tasks),
+      past: build_json(past_tasks)
+    }
   end
 end

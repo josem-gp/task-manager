@@ -9,7 +9,6 @@ import { ElementSelectProps } from "./ElementSelect.types";
 import { colors } from "../../utils/colors";
 
 export function ElementSelect({
-  name,
   elements,
   elementId,
   setElementId,
@@ -37,18 +36,6 @@ export function ElementSelect({
         },
       }}
     >
-      <InputLabel
-        sx={{
-          background: "white",
-          paddingRight: "6px",
-          "&.Mui-focused": {
-            color: colors.primary,
-            fontWeight: "bold",
-          },
-        }}
-      >
-        {name}
-      </InputLabel>
       <Select
         value={elementId}
         onChange={handleChange}

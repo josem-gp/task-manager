@@ -9,8 +9,13 @@ RSpec.describe "Api::V1::Groups", type: :request do
   let!(:membership) {create :membership, user: user, group: group}
 
   describe "GET /show" do
-    # 2xx RESPONSE: {"group": group_instance}
-    # 4xx RESPONSE: {"message": "Record not found"} -> comes from our customized Pundit exception handler
+    # 2xx RESPONSE: { "group": user_instance, 
+    #                 "groupUsers": [group_users], 
+    #                 "groupTasks": [group_tasks], 
+    #                 "groupTags": [group_tags], 
+    #                 "groupInvitations": [group_invitations]
+    #               }
+    # 4xx RESPONSE: {"message": "Record not found"} -> comes from our customized exception handler
     before do
       sign_in user
       get api_v1_group_path(param)
@@ -21,10 +26,15 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns a json with a specific group of the user" do
+      it "returns a json with the info of the group" do
         json = JSON.parse(response.body)
-
-        expect(json["group"]["name"]).to eq(group.name)
+  
+        expect(json).to have_key("group").and(have_key("groupUsers")).and(have_key("groupTasks")).and(have_key("groupTags")).and(have_key("groupInvitations"))
+        expect(json["group"]["id"]).to eq group.id
+        expect(json["groupUsers"].length).to eq 2
+        expect(json["groupTasks"].length).to eq 3
+        expect(json["groupTags"].length).to eq 1
+        expect(json["groupInvitations"].length).to eq 1
       end
     end
 
@@ -443,23 +453,6 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
         expect(json["message"]).to eq("Unauthorized access or action")
       end
-    end
-  end
-
-  describe "GET /fetch_users" do
-    # 2xx RESPONSE: {"group": group_instances, "users": [user_instances]}
-    before do
-      sign_in user
-      get fetch_users_api_v1_group_path(group.id)
-    end
-
-    it { expect(response).to have_http_status(:success) }
-
-    it "returns a json with the info of the users" do
-      json = JSON.parse(response.body)
-
-      expect(json["users"].length).to eq 2
-      expect(json["group"]["name"]).to eq(group.name)
     end
   end
 end
