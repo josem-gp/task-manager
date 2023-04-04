@@ -4,6 +4,7 @@ import Sidebar from "../sidebar/Sidebar";
 import MainMenu from "../mainMenu/MainMenu";
 import SupportMenu from "../supportMenu/SupportMenu";
 import SidebarBtnContextProvider from "../../context/sidebarBtn/SidebarBtnContextProvider";
+import GroupContextProvider from "../../context/group/GroupContextProvider";
 
 function Dashboard() {
   return (
@@ -26,9 +27,11 @@ function Dashboard() {
             md={6}
             sx={{ display: { xs: "none", md: "block", lg: "none" } }}
           ></Grid>
-          <Grid item xs={12} md={6}>
-            <MainMenu />
-          </Grid>
+          <GroupContextProvider>
+            <Grid item xs={12} md={6}>
+              <MainMenu />
+            </Grid>
+          </GroupContextProvider>
           <Grid item xs={12} md={6} lg={4}>
             {/* <SupportMenu /> */}
           </Grid>

@@ -1,13 +1,5 @@
 class Api::V1::Groups::TasksController < ApplicationController
   before_action :find_group
-  before_action :skip_authorization, only: [:index]
-
-  # Fetch all the tasks of an user in a group (whether the user is the creator or assignee)
-  # GET /api/v1/groups/:group_id/tasks
-  def index
-    tasks = @group.tasks.where(user: current_user).or(Task.where(assignee: current_user)) # we don't need the auth check because we already fetch only the tasks in the group of the current user in the backend
-    render json: { task_value: divide_tasks_by_date(tasks) }
-  end
 
   # Create a task in a group
   # POST /api/v1/groups/:group_id/tasks
@@ -44,17 +36,5 @@ class Api::V1::Groups::TasksController < ApplicationController
 
   def render_error(message, status)
     render json: {message: message}, status: status
-  end
-
-  def divide_tasks_by_date(tasks)
-    today = Date.today
-    upcoming_tasks = tasks.filter { |task| task.due_date > today }
-    past_tasks = tasks.filter { |task| task.due_date < today }
-    today_tasks = tasks.filter { |task| task.due_date == today }
-    {
-      today: build_json(today_tasks),
-      upcoming: build_json(upcoming_tasks),
-      past: build_json(past_tasks)
-    }
   end
 end

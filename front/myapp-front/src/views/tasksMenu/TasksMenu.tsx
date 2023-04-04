@@ -2,8 +2,13 @@ import { Box, Stack, Typography } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FilterTasks from "../../components/filterBar/FilterBar";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
+import { useContext } from "react";
+import { GroupContext } from "../../context/group/GroupContext";
 
 function TasksMenu() {
+  const { state, dispatch } = useContext(GroupContext);
+
+  console.log(state);
   return (
     <Box
       sx={{

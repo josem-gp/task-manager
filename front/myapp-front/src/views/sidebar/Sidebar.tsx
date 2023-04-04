@@ -40,7 +40,6 @@ function Sidebar() {
         ))}
       </Stack>
       <GroupSelect
-        name={"Choose group"}
         elements={userContext.state.userGroups}
         elementId={sidebarBtnContext.selectedGroupId}
         setElementId={(id: string) => sidebarBtnContext.setSelectedGroupId(id)}
