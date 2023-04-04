@@ -113,6 +113,7 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def filter_params
+    # The assignee_id works both as a string and number
     params.permit(:by_fuzzy_name, :by_assignee_id, :by_finished, :from_due_date, :to_due_date)
   end
 

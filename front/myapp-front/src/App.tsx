@@ -12,8 +12,6 @@ function App() {
   const errorContext = useContext(ErrorContext);
   const { state, dispatch } = useContext(UserContext);
 
-  console.log(state);
-
   function fetchUserInfo() {
     const params: UseApiProps<undefined> = {
       method: "get",
@@ -43,7 +41,6 @@ function App() {
             payload: response.data.userGroups,
           });
         } else {
-          console.log("ERROR", response);
           errorContext.setError(
             response.response?.statusText as React.SetStateAction<string | null>
           );

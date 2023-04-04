@@ -3,9 +3,11 @@ import SidebarIconBtn from "../../components/sidebarIconBtn/SidebarIconBtn";
 import { ElementSelect as GroupSelect } from "../../components/elementSelect/ElementSelect";
 import { useContext } from "react";
 import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
+import { UserContext } from "../../context/user/UserContext";
 
 function Sidebar() {
   const sidebarBtnContext = useContext(SidebarBtnContext);
+  const userContext = useContext(UserContext);
 
   function handleSidebarIconBtn(id: number) {
     sidebarBtnContext.setSidebarBtns((prevState) =>
@@ -37,7 +39,12 @@ function Sidebar() {
           />
         ))}
       </Stack>
-      <GroupSelect name={"Choose group"} />
+      <GroupSelect
+        name={"Choose group"}
+        elements={userContext.state.userGroups}
+        elementId={sidebarBtnContext.selectedGroupId}
+        setElementId={(id: string) => sidebarBtnContext.setSelectedGroupId(id)}
+      />
     </Stack>
   );
 }

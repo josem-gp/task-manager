@@ -1,8 +1,31 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { ElementSelectProps } from "./ElementSelect.types";
 import { colors } from "../../utils/colors";
 
-export function ElementSelect({ name }: ElementSelectProps) {
+export function ElementSelect({
+  name,
+  elements,
+  elementId,
+  setElementId,
+}: ElementSelectProps) {
+  const handleChange = (event: SelectChangeEvent) => {
+    // The MUI component needs to be controlled so we set
+    setElementId(event.target.value);
+  };
+
+  // Map over user Groups and render each one
+  const userGroups = elements?.map((group) => (
+    <MenuItem key={group.id} value={group.id}>
+      {group.name}
+    </MenuItem>
+  ));
+
   return (
     <FormControl
       fullWidth
@@ -27,22 +50,13 @@ export function ElementSelect({ name }: ElementSelectProps) {
         {name}
       </InputLabel>
       <Select
-        // value={userGroups.selectedGroupId}
-        // onChange={chooseGroup}
+        value={elementId}
+        onChange={handleChange}
         sx={{
           color: colors.textDark,
         }}
       >
-        {/* {groupMap} */}
-        <MenuItem
-          key="test"
-          value="test"
-          sx={{
-            color: colors.textLight,
-          }}
-        >
-          Harcoded test
-        </MenuItem>
+        {userGroups}
       </Select>
     </FormControl>
   );
