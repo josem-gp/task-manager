@@ -36,8 +36,17 @@ function SidebarBtnContextProvider({
   const [sidebarBtns, setSidebarBtns] =
     useState<SidebarBtn[]>(initialSidebarBtns);
 
+  const [selectedGroupId, setSelectedGroupId] = useState<string>("");
+
   return (
-    <SidebarBtnContext.Provider value={{ sidebarBtns, setSidebarBtns }}>
+    <SidebarBtnContext.Provider
+      value={{
+        sidebarBtns,
+        setSidebarBtns,
+        selectedGroupId,
+        setSelectedGroupId,
+      }}
+    >
       {children}
     </SidebarBtnContext.Provider>
   );
