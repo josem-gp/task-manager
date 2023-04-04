@@ -8,7 +8,6 @@ import { GroupContext } from "../../context/group/GroupContext";
 function TasksMenu() {
   const { state, dispatch } = useContext(GroupContext);
 
-  console.log(state);
   return (
     <Box
       sx={{
