@@ -46,7 +46,7 @@ function GroupsMenu() {
         </Typography>
         <ActionBtn />
       </Stack>
-      <ElementsTab />
+      {/* <ElementsTab /> */}
     </Box>
   );
 }

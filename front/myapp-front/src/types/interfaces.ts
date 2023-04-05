@@ -34,6 +34,17 @@ export interface TaskDetails {
   assignee_id: number;
 }
 
+export interface DividedTaskDetails {
+  task: TaskDetails;
+  task_tags: TagDetails[];
+}
+
+export interface DividedTasks {
+  past: DividedTaskDetails[];
+  today: DividedTaskDetails[];
+  upcoming: DividedTaskDetails[];
+}
+
 export interface TagDetails {
   id: number;
   name: string;
@@ -62,7 +73,7 @@ export interface User {
 export interface Group {
   group: GroupDetails | null;
   groupUsers: UserDetails[] | null;
-  groupTasks: TaskDetails[] | null;
+  groupTasks: DividedTasks | null;
   groupTags: TagDetails[] | null;
   groupInvitations: InvitationDetails[] | null;
 }

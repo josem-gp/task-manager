@@ -4,9 +4,31 @@ import FilterTasks from "../../components/filterBar/FilterBar";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
 import { useContext } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
+import { UserContext } from "../../context/user/UserContext";
+import { colors } from "../../utils/colors";
 
 function TasksMenu() {
-  const { state, dispatch } = useContext(GroupContext);
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
+
+  const tabHeaders = [
+    {
+      label: "Today",
+      value: "1",
+      data: groupState.groupTasks?.today || [],
+    },
+    {
+      label: "Upcoming",
+      value: "2",
+      data: groupState.groupTasks?.upcoming || [],
+    },
+    {
+      label: "Past",
+      value: "3",
+      data: groupState.groupTasks?.past || [],
+    },
+  ];
 
   return (
     <Box
@@ -19,8 +41,8 @@ function TasksMenu() {
         paddingBottom: { xs: "80px", md: "0" },
       }}
     >
-      <Typography variant="h5" sx={{ color: "#B5B5B5" }}>
-        Hello, Hardcoded Jose!
+      <Typography variant="h5" sx={{ color: colors.textLight }}>
+        Hello, {userState.user?.username}!
       </Typography>
       <Stack
         direction="row"
@@ -30,7 +52,7 @@ function TasksMenu() {
         marginBottom="60px"
       >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          You've got 0 hardcoded tasks today
+          You've got {groupState.groupTasks?.today.length} tasks today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>
@@ -43,7 +65,7 @@ function TasksMenu() {
       >
         My tasks
       </Typography>
-      <ElementsTab />
+      <ElementsTab tabHeaders={tabHeaders} />
     </Box>
   );
 }

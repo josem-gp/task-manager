@@ -1,10 +1,10 @@
 import { createContext } from "react";
 import {
+  DividedTasks,
   Group,
   GroupDetails,
   InvitationDetails,
   TagDetails,
-  TaskDetails,
   UserDetails,
 } from "../../types/interfaces";
 
@@ -19,7 +19,7 @@ export const initialState: Group = {
 type GroupContextAction =
   | { type: "SET_GROUP"; payload: GroupDetails | null }
   | { type: "SET_GROUP_USERS"; payload: UserDetails[] | null }
-  | { type: "SET_GROUP_TASKS"; payload: TaskDetails[] | null }
+  | { type: "SET_GROUP_TASKS"; payload: DividedTasks | null }
   | { type: "SET_GROUP_TAGS"; payload: TagDetails[] | null }
   | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] | null };
 
