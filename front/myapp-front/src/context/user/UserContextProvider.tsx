@@ -13,7 +13,7 @@ function UserContextProvider({ children }: UserContextProviderProps) {
 
   function fetchAuthToken() {
     try {
-      const token = Cookies.get("auth_token") || null;
+      const token = Cookies.get("auth_token") || "";
       // To set the token in the context
       dispatch({ type: "SET_USER_AUTH", payload: token });
     } catch (error) {

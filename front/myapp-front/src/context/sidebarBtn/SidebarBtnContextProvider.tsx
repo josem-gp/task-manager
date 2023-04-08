@@ -37,8 +37,7 @@ function SidebarBtnContextProvider({
   const { state } = useContext(UserContext);
 
   function defaultGroup() {
-    // We use ! because we know this function will run only if state.useGroups is truthy
-    setSelectedGroupId(state.userGroups![0].id.toString());
+    setSelectedGroupId(state.userGroups[0].id.toString());
   }
 
   const [sidebarBtns, setSidebarBtns] =
@@ -49,7 +48,9 @@ function SidebarBtnContextProvider({
   // This Use Effect will run once there is some userGroup available and will put the first one as a default
   // so we can show the tasks from that group in the MainMenu of the Dashboard
   useEffect(() => {
-    if (state.userGroups) {
+    // We double-check that the array of userGroups is not empty.
+    // If not it will throw error in runtime when trying to fetch the id of the first element in the array
+    if (state.userGroups.length > 0) {
       defaultGroup();
     }
   }, [state.userGroups]);

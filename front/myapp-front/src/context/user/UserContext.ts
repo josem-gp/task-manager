@@ -7,17 +7,17 @@ import {
 } from "../../types/interfaces";
 
 export const initialState: User = {
-  user: null,
-  userGroups: null,
-  userTasks: null,
-  userAuth: null,
+  user: { id: 0, username: "string", email: "string", icon_id: 0 },
+  userGroups: [],
+  userTasks: [],
+  userAuth: "",
 };
 
 type UserContextAction =
-  | { type: "SET_USER"; payload: UserDetails | null }
-  | { type: "SET_USER_GROUPS"; payload: GroupDetails[] | null }
-  | { type: "SET_USER_TASKS"; payload: TaskDetails[] | null }
-  | { type: "SET_USER_AUTH"; payload: string | null };
+  | { type: "SET_USER"; payload: UserDetails }
+  | { type: "SET_USER_GROUPS"; payload: GroupDetails[] }
+  | { type: "SET_USER_TASKS"; payload: TaskDetails[] }
+  | { type: "SET_USER_AUTH"; payload: string };
 
 export function reducer(state: User, action: UserContextAction) {
   switch (action.type) {

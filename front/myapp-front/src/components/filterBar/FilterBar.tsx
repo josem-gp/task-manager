@@ -93,7 +93,6 @@ function FilterBar() {
     <>
       <Typography
         variant="h6"
-        fontSize={14}
         borderBottom="2px solid #f9bb19"
         padding="2px 0px"
         width="fit-content"
@@ -101,6 +100,8 @@ function FilterBar() {
           marginLeft: "8px",
           marginTop: "20px",
           marginBottom: "20px",
+          textTransform: "uppercase",
+          fontSize: "15px",
         }}
       >
         Filter by
@@ -136,7 +137,7 @@ function FilterBar() {
           }}
         />
         <ActionBtn
-          name="Search"
+          name="Filter"
           fontColor={colors.primary}
           backgroundColor={colors.backgroundLight}
           borderColor={colors.primary}
