@@ -10,6 +10,10 @@ export interface UserResponse {
   user: UserDetails;
 }
 
+export interface TasksResponse {
+  tasks: DividedTasks;
+}
+
 export interface UserDetails {
   id: number;
   username: string;

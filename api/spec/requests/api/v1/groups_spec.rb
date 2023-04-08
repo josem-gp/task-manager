@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
   describe "GET /show" do
     # 2xx RESPONSE: { "group": user_instance, 
     #                 "groupUsers": [group_users], 
-    #                 "groupTasks": [group_tasks], 
+    #                 "groupTasks": {today: [task_instances], upcoming: [task_instances], past: [task_instances]}, 
     #                 "groupTags": [group_tags], 
     #                 "groupInvitations": [group_invitations]
     #               }
@@ -222,12 +222,13 @@ RSpec.describe "Api::V1::Groups", type: :request do
   end
 
   describe "POST /filter_tasks" do
-    # 2xx RESPONSE: {"tasks": [{ task: task_instance, task_tags: [task_instance.tags] }]}
-    let(:task_one) {create :task, group: group, user: user, assignee: nil, due_date: "2030-11-30"} 
-    let(:task_two) {create :task, group: group, assignee: user, finished: true, due_date: "2031-01-10"}
+    # 2xx RESPONSE: {"tasks": {today: [task_instances], upcoming: [task_instances], past: [task_instances]}}
+    let(:task_one) {create :task, group: group, user: user, assignee: nil, due_date: Date.current + 10} 
+    let(:task_two) {create :task, group: group, assignee: user, finished: true, due_date: Date.current - 10}
     let(:tags) {create_list :tag, 3, group: group}
     before do
-      create :task, group: group, assignee: nil, finished: true, due_date: "2030-12-24"
+      # The user is not owner nor assignee of one of the following task so I will not be fetched
+      create :task, group: group, assignee: nil, finished: true, due_date: Date.current
       create :tagged_task, task: task_one, tag: tags.first
       create :tagged_task, task: task_one, tag: tags.last
       create :tagged_task, task: task_two, tag: tags.second
@@ -243,54 +244,84 @@ RSpec.describe "Api::V1::Groups", type: :request do
       
       it { expect(response).to have_http_status(:success) }
 
-      it "returns an array of all tasks for that group" do
+
+
+      it "returns all tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 2
-        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"].first["task_tags"].length).to eq 2
+        expect(json["tasks"]["upcoming"].length).to eq 1
+        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["past"].length).to eq 1
+      end
+
+      it "returns each task and their tags" do 
+        json = JSON.parse(response.body)
+
+        expect(json["tasks"]["upcoming"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 2
       end
     end
 
     context "when filter param has only one param" do
-      let(:params) { {"by_finished": "true"} }
+      # The enums are in app/models/task.rb
+      let(:params) { {"by_status": "1"} }
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns an array the tasks that fit the search in the group" do
+      it "returns the searched tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 1
-        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"].first["task_tags"].length).to eq 1
+        expect(json["tasks"]["upcoming"].length).to eq 0
+        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["past"].length).to eq 1
+      end
+
+      it "returns each task and their tags" do 
+        json = JSON.parse(response.body)
+
+        expect(json["tasks"]["past"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"]["past"].first["task_tags"].length).to eq 1
       end
     end
 
     context "when filter param has more than one param" do
-      let(:params) { {"by_fuzzy_name": "Factory task", "by_finished": "false", "from_due_date": "", "to_due_date": ""}  }
+      let(:params) { {"by_fuzzy_name": "Factory task", "by_status": "0", "from_due_date": "", "to_due_date": ""}  }
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns an array the tasks that fit the search in the group" do
+      it "returns the searched tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 1
-        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"].first["task_tags"].length).to eq 2
+        expect(json["tasks"]["upcoming"].length).to eq 1
+        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["past"].length).to eq 0
+      end
+
+      it "returns each task and their tags" do 
+        json = JSON.parse(response.body)
+
+        expect(json["tasks"]["past"].first).to be_nil
+        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 2
       end
     end
 
     context "when filtering by ranged date" do
-      let(:params) { {"by_fuzzy_name": "Factory task", "from_due_date": "2030-11-30", "to_due_date": "2030-12-24"} }
+      let(:params) { {"by_fuzzy_name": "Factory task", "from_due_date": Date.current , "to_due_date": Date.current + 15} }
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns an array the tasks that fit the search in the group" do
+      it "returns the searched tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"].length).to eq 1
-        expect(json["tasks"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"].first["task_tags"].length).to eq 2
+        expect(json["tasks"]["upcoming"].length).to eq 1
+        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["past"].length).to eq 0
+      end
+
+      it "returns each task and their tags" do 
+        json = JSON.parse(response.body)
+
+        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 2
       end
     end
 

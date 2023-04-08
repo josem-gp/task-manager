@@ -1,12 +1,17 @@
 class Task < ApplicationRecord
+  enum status: { false: "0", true: "1" }
+
   # Using filterable gem (https://github.com/toschas/filterable)
-  filter_by :assignee_id, :finished
+  filter_by :assignee_id
   # We want the filter by name to be broader (instead of a specific name, we search by regex) so we customize it
   filter_by :fuzzy_name, custom: true
 
   scope :by_fuzzy_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   # We want the filter by due_date to include the date we use to filter using "from"
   filter_by :due_date, custom: true, prefix: [:from, :to]
+
+  filter_by :finished, custom: true
+  scope :by_status, ->(status) {where(finished: status)}
 
   scope :from_due_date, ->(from_date) { where('due_date >= ?', Date.parse(from_date)) }
   scope :to_due_date, ->(to_date) { where('due_date <= ?', Date.parse(to_date)) }

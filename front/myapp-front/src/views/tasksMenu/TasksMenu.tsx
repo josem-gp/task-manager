@@ -49,18 +49,18 @@ function TasksMenu() {
         spacing={2}
         width="100%"
         alignItems="center"
-        marginBottom="60px"
+        marginBottom="30px"
       >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           You've got {groupState.groupTasks?.today.length} tasks today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>
-      {/* <FilterTasks /> */}
+      <FilterTasks />
       <Typography
         variant="h4"
-        marginTop="60px"
-        marginBottom="40px"
+        marginTop="30px"
+        marginBottom="10px"
         sx={{ fontWeight: "bold" }}
       >
         My tasks

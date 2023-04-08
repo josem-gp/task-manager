@@ -1,21 +1,28 @@
 import { Button } from "@mui/material";
+import { ActionBtnProps } from "./ActionBtn.types";
 
-function ActionBtn() {
+function ActionBtn({
+  name,
+  fontColor,
+  backgroundColor,
+  borderColor,
+  onClick,
+}: ActionBtnProps) {
   return (
     <Button
       variant="outlined"
       sx={{
-        color: "#f9bb19",
+        color: fontColor,
         fontWeight: "bold",
-        border: "1px solid #f9bb19",
+        border: `2px solid ${borderColor}`,
         "&:hover": {
-          backgroundColor: "rgba(255, 182, 0, 0.05);",
-          border: "1px solid #f9bb19",
+          backgroundColor: backgroundColor,
+          border: `2px solid ${borderColor}`,
         },
       }}
-      // onClick={handleSearchClear}
+      onClick={onClick}
     >
-      Hardcoded
+      {name}
     </Button>
   );
 }
