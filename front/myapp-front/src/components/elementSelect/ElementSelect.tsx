@@ -9,6 +9,7 @@ import { ElementSelectProps } from "./ElementSelect.types";
 import { colors } from "../../utils/colors";
 
 export function ElementSelect({
+  name,
   elements,
   elementId,
   setElementId,
@@ -18,24 +19,50 @@ export function ElementSelect({
     setElementId(event.target.value);
   };
 
-  // Map over user Groups and render each one
-  const userGroups = elements?.map((group) => (
-    <MenuItem key={group.id} value={group.id}>
-      {group.name}
-    </MenuItem>
-  ));
+  // Map over elements and render each one
+  const elementsRender = elements?.map((el) => {
+    if ("name" in el) {
+      const group = el;
+      return (
+        <MenuItem key={group.id} value={group.id}>
+          {group.name}
+        </MenuItem>
+      );
+    } else if ("username" in el) {
+      const user = el;
+      return (
+        <MenuItem key={user.id} value={user.id}>
+          {user.username}
+        </MenuItem>
+      );
+    } else {
+      return null;
+    }
+  });
 
   return (
     <FormControl
       fullWidth
       sx={{
-        marginBottom: { xs: "20px", lg: "40px" },
+        marginBottom: { xs: "20px", lg: "0px" },
         marginTop: { xs: "20px", lg: "0" },
         "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: `${colors.primary} !important`,
         },
       }}
     >
+      <InputLabel
+        sx={{
+          background: "white",
+          paddingRight: "6px",
+          "&.Mui-focused": {
+            color: colors.primary,
+            fontWeight: "bold",
+          },
+        }}
+      >
+        {name}
+      </InputLabel>
       <Select
         value={elementId}
         onChange={handleChange}
@@ -43,7 +70,7 @@ export function ElementSelect({
           color: colors.textDark,
         }}
       >
-        {userGroups}
+        {elementsRender}
       </Select>
     </FormControl>
   );

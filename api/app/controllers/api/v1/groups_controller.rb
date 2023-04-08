@@ -66,7 +66,7 @@ class Api::V1::GroupsController < ApplicationController
     if filtered_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
-      render json: { tasks: build_json(filtered_tasks) }
+      render json: { tasks: divide_tasks_by_date(filtered_tasks) }
     end
   end
 
@@ -115,7 +115,7 @@ class Api::V1::GroupsController < ApplicationController
 
   def filter_params
     # The assignee_id works both as a string and number
-    params.permit(:by_fuzzy_name, :by_assignee_id, :by_finished, :from_due_date, :to_due_date)
+    params.permit(:by_fuzzy_name, :by_assignee_id, :by_status, :from_due_date, :to_due_date)
   end
 
   def render_error(message, status)
