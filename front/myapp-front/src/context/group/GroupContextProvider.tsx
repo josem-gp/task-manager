@@ -14,16 +14,16 @@ type GroupContextProviderProps = {
 
 function GroupContextProvider({ children }: GroupContextProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const userContext = useContext(UserContext);
-  const errorContext = useContext(ErrorContext);
-  const sidebarBtnContext = useContext(SidebarBtnContext);
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { error, setError } = useContext(ErrorContext);
+  const { selectedGroupId } = useContext(SidebarBtnContext);
 
   function fetchGroupInfo() {
     const params: UseApiProps<undefined> = {
       method: "get",
-      url: `http://localhost:3000/api/v1/groups/${sidebarBtnContext.selectedGroupId}`,
+      url: `http://localhost:3000/api/v1/groups/${selectedGroupId}`,
       headers: {
-        Authorization: `Bearer ${userContext.state.userAuth}`,
+        Authorization: `Bearer ${userState.userAuth}`,
         "Content-Type": "application/json",
       } as AxiosRequestHeaders,
     };
@@ -57,23 +57,23 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
             payload: response.data.groupInvitations,
           });
         } else {
-          errorContext.setError(
+          setError(
             response.response?.statusText as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        errorContext.setError(
+        setError(
           error.response?.statusText as React.SetStateAction<string | null>
         );
       });
   }
 
   useEffect(() => {
-    if (sidebarBtnContext.selectedGroupId) {
+    if (selectedGroupId) {
       fetchGroupInfo();
     }
-  }, [sidebarBtnContext.selectedGroupId]);
+  }, [selectedGroupId]);
 
   return (
     <GroupContext.Provider value={{ state, dispatch }}>

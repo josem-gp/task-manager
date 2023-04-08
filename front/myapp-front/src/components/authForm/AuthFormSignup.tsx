@@ -20,7 +20,7 @@ import { UserContext } from "../../context/user/UserContext";
 
 function AuthFormSignup({ setIsLogin }: AuthFormProps) {
   const { state, dispatch } = useContext(UserContext);
-  const errorContext = useContext(ErrorContext);
+  const { error, setError } = useContext(ErrorContext);
   const [data, setData] = useState<UserFormDetails>({
     user: { username: "", email: "", password: "" },
   });
@@ -56,15 +56,13 @@ function AuthFormSignup({ setIsLogin }: AuthFormProps) {
           // To set the user info in the context
           dispatch({ type: "SET_USER", payload: response.data.user });
         } else {
-          errorContext.setError(
+          setError(
             response.response?.data as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        errorContext.setError(
-          error.response?.data as React.SetStateAction<string | null>
-        );
+        setError(error.response?.data as React.SetStateAction<string | null>);
       });
   }
 

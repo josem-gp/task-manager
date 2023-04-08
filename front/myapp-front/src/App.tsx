@@ -9,7 +9,7 @@ import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { UseApiProps } from "./types/types";
 
 function App() {
-  const errorContext = useContext(ErrorContext);
+  const { error, setError } = useContext(ErrorContext);
   const { state, dispatch } = useContext(UserContext);
 
   function fetchUserInfo() {
@@ -41,13 +41,13 @@ function App() {
             payload: response.data.userGroups,
           });
         } else {
-          errorContext.setError(
+          setError(
             response.response?.statusText as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        errorContext.setError(
+        setError(
           error.response?.statusText as React.SetStateAction<string | null>
         );
       });
@@ -59,8 +59,8 @@ function App() {
     }
   }, [state.userAuth]);
 
-  if (errorContext.error) {
-    return <div>{errorContext.error}</div>;
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return <>{!state.userAuth ? <AuthForm /> : <Dashboard />}</>;

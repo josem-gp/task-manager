@@ -6,11 +6,12 @@ import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
 import { UserContext } from "../../context/user/UserContext";
 
 function Sidebar() {
-  const sidebarBtnContext = useContext(SidebarBtnContext);
-  const userContext = useContext(UserContext);
+  const { setSidebarBtns, sidebarBtns, selectedGroupId, setSelectedGroupId } =
+    useContext(SidebarBtnContext);
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
 
   function handleSidebarIconBtn(id: number) {
-    sidebarBtnContext.setSidebarBtns((prevState) =>
+    setSidebarBtns((prevState) =>
       prevState.map((btn) =>
         btn.id === id ? { ...btn, checked: true } : { ...btn, checked: false }
       )
@@ -29,7 +30,7 @@ function Sidebar() {
       }}
     >
       <Stack spacing={4} sx={{ paddingTop: { xs: "0", lg: "120px" } }}>
-        {sidebarBtnContext.sidebarBtns.map((el) => (
+        {sidebarBtns.map((el) => (
           <SidebarIconBtn
             key={el.id}
             name={el.name}
@@ -41,9 +42,9 @@ function Sidebar() {
       </Stack>
       <GroupSelect
         name="Choose a group"
-        elements={userContext.state.userGroups}
-        elementId={sidebarBtnContext.selectedGroupId}
-        setElementId={(id: string) => sidebarBtnContext.setSelectedGroupId(id)}
+        elements={userState.userGroups}
+        elementId={selectedGroupId}
+        setElementId={(id: string) => setSelectedGroupId(id)}
       />
     </Stack>
   );

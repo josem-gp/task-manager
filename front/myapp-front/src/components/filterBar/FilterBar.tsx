@@ -28,7 +28,7 @@ function FilterBar() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
-  const errorContext = useContext(ErrorContext);
+  const { error, setError } = useContext(ErrorContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   // Any asynchronous code that we run after dispatch (e.g. making API calls, setting timeouts/intervals)
   // may not complete before the state update is finished. In such cases, we need to use other mechanisms
@@ -66,15 +66,13 @@ function FilterBar() {
             payload: response.data.tasks,
           });
         } else {
-          errorContext.setError(
+          setError(
             response.response?.statusText as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        errorContext.setError(
-          error.response?.data as React.SetStateAction<string | null>
-        );
+        setError(error.response?.data as React.SetStateAction<string | null>);
       });
   }
 

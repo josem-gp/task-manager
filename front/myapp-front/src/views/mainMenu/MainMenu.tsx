@@ -5,12 +5,10 @@ import { useContext } from "react";
 import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
 
 function MainMenu() {
-  const sidebarBtnContext = useContext(SidebarBtnContext);
+  const { sidebarBtns } = useContext(SidebarBtnContext);
 
   // It fetches the selectedBtn from the context
-  const selectedBtn = sidebarBtnContext.sidebarBtns.find(
-    (btn) => btn.checked
-  )!.id;
+  const selectedBtn = sidebarBtns.find((btn) => btn.checked)!.id;
 
   // It renders the component depending on the selectedBtn that comes from sidebar
   function getSelectedComponent() {
