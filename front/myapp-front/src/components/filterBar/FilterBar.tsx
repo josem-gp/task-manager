@@ -30,8 +30,10 @@ function FilterBar() {
     useContext(GroupContext);
   const errorContext = useContext(ErrorContext);
   const [state, dispatch] = useReducer(reducer, initialState);
-  // We don't want to run the useEffect on the first rendering so we use this
-  const [mounted, setMounted] = useState(false);
+  // Any asynchronous code that we run after dispatch (e.g. making API calls, setting timeouts/intervals)
+  // may not complete before the state update is finished. In such cases, we need to use other mechanisms
+  // like promises or useEffect to ensure that your code executes in the correct order.
+  const [isResetting, setIsResetting] = useState(false);
 
   const taskStatus: TaskStatus[] = [
     {
@@ -77,24 +79,34 @@ function FilterBar() {
   }
 
   function handleReset() {
-    console.log(state);
+    // To reset the tasks
+    dispatch({ type: "RESET" });
+    setIsResetting(true);
   }
 
   useEffect(() => {
-    if (mounted) {
+    if (isResetting) {
       handleFilter();
-    } else {
-      setMounted(true);
+      setIsResetting(false);
     }
-  }, [
-    state.by_assignee_id,
-    state.by_status,
-    state.from_due_date,
-    state.to_due_date,
-  ]);
+  }, [isResetting]);
 
   return (
     <>
+      <Typography
+        variant="h6"
+        fontSize={14}
+        borderBottom="2px solid #f9bb19"
+        padding="2px 0px"
+        width="fit-content"
+        sx={{
+          marginLeft: "8px",
+          marginTop: "20px",
+          marginBottom: "20px",
+        }}
+      >
+        Filter by
+      </Typography>
       <Stack
         width="100%"
         justifyContent="start"
@@ -140,20 +152,6 @@ function FilterBar() {
           onClick={handleReset}
         />
       </Stack>
-      <Typography
-        variant="h6"
-        fontSize={14}
-        borderBottom="2px solid #f9bb19"
-        padding="2px 0px"
-        width="fit-content"
-        sx={{
-          marginLeft: "8px",
-          marginTop: "20px",
-          marginBottom: "20px",
-        }}
-      >
-        Filter by
-      </Typography>
       <Grid container spacing={1} wrap="wrap" alignItems="end">
         <Grid item xs={3}>
           <ElementSelect

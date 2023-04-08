@@ -13,7 +13,8 @@ type FilterBarAction =
   | { type: "SET_ASSIGNEE_ID"; payload: string }
   | { type: "SET_STATUS"; payload: string }
   | { type: "SET_FROM_DUE_DATE"; payload: string | null }
-  | { type: "SET_TO_DUE_DATE"; payload: string | null };
+  | { type: "SET_TO_DUE_DATE"; payload: string | null }
+  | { type: "RESET" };
 
 export function reducer(state: FilterBarParams, action: FilterBarAction) {
   switch (action.type) {
@@ -27,6 +28,8 @@ export function reducer(state: FilterBarParams, action: FilterBarAction) {
       return { ...state, from_due_date: action.payload };
     case "SET_TO_DUE_DATE":
       return { ...state, to_due_date: action.payload };
+    case "RESET":
+      return initialState;
     default:
       return state;
   }

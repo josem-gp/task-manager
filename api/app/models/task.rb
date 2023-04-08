@@ -6,7 +6,7 @@ class Task < ApplicationRecord
   # We want the filter by name to be broader (instead of a specific name, we search by regex) so we customize it
   filter_by :fuzzy_name, custom: true
 
-  scope :by_fuzzy_name, ->(name) { where('name LIKE ?', "%#{name}%") }
+  scope :by_fuzzy_name, ->(name) { where('name ILIKE ?', "%#{name}%") }
   # We want the filter by due_date to include the date we use to filter using "from"
   filter_by :due_date, custom: true, prefix: [:from, :to]
 
