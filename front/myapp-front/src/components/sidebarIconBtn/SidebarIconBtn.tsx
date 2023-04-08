@@ -14,7 +14,7 @@ function SidebarIconBtn({ name, icon, checked, onClick }: SidebarIconBtnProps) {
         fontWeight: "bold",
         backgroundColor: checked ? colors.primary : "transparent",
         "&:hover": {
-          backgroundColor: checked ? colors.primary : colors.background,
+          backgroundColor: checked ? colors.primary : colors.backgroundLight,
         },
       }}
     >

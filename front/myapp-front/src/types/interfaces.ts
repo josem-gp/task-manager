@@ -10,6 +10,10 @@ export interface UserResponse {
   user: UserDetails;
 }
 
+export interface TasksResponse {
+  tasks: DividedTasks;
+}
+
 export interface UserDetails {
   id: number;
   username: string;
@@ -32,6 +36,17 @@ export interface TaskDetails {
   group_id: number;
   user_id: number;
   assignee_id: number;
+}
+
+export interface DividedTaskDetails {
+  task: TaskDetails;
+  task_tags: TagDetails[];
+}
+
+export interface DividedTasks {
+  past: DividedTaskDetails[];
+  today: DividedTaskDetails[];
+  upcoming: DividedTaskDetails[];
 }
 
 export interface TagDetails {
@@ -62,7 +77,7 @@ export interface User {
 export interface Group {
   group: GroupDetails | null;
   groupUsers: UserDetails[] | null;
-  groupTasks: TaskDetails[] | null;
+  groupTasks: DividedTasks | null;
   groupTags: TagDetails[] | null;
   groupInvitations: InvitationDetails[] | null;
 }

@@ -1,30 +1,44 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
+import { useState } from "react";
+import Card from "../card/Card";
+import { ElementsTabProps } from "./ElementsTab.types";
+import { v4 as uuidv4 } from "uuid";
 
-function ElementsTab() {
+function ElementsTab({ tabHeaders }: ElementsTabProps) {
+  const [tabValue, setTabValue] = useState("1");
+
+  function handleTabChange(event: React.SyntheticEvent, newValue: string) {
+    setTabValue(newValue);
+  }
+
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={"Harcoded"}>
+      <TabContext value={tabValue}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList
-            // onChange={handleTabChange}
-            aria-label="main dashboard tabs"
-          >
-            <Tab label="Today" value="1" />
-            <Tab label="Upcoming" value="2" />
-            <Tab label="Past" value="3" />
+          <TabList onChange={handleTabChange} aria-label="main dashboard tabs">
+            {tabHeaders.map((header) => (
+              <Tab key={uuidv4()} label={header.label} value={header.value} />
+            ))}
           </TabList>
         </Box>
-        <TabPanel
-          value="1"
-          sx={{
-            padding: { xs: "24px 10px 0 10px", md: "24px 24px 0 24px" },
-            maxHeight: "500px",
-            overflow: "scroll",
-          }}
-        >
-          Tasks
-        </TabPanel>
+        <>
+          {tabHeaders.map((element) => (
+            <TabPanel
+              key={uuidv4()}
+              value={element.value}
+              sx={{
+                padding: { xs: "24px 10px 0 10px", md: "24px 24px 0 24px" },
+                maxHeight: "500px",
+                overflow: "scroll",
+              }}
+            >
+              {element.data.map((el) => (
+                <Card key={uuidv4()} type="task" element={el} />
+              ))}
+            </TabPanel>
+          ))}
+        </>
       </TabContext>
     </Box>
   );
