@@ -7,7 +7,7 @@ export interface UserFormDetails {
 }
 
 export interface UserResponse {
-  user: DividedUserDetails;
+  userObject: DividedUserDetails;
 }
 
 export interface TasksResponse {

@@ -6,7 +6,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     sign_in user
   end
 
-  # 2xx RESPONSE: {"user": user_instance, "message": "The user was successfully updated"}
+  # 2xx RESPONSE: {"userObject": {user: user_instance, user_icon: icon_instance}, "message": "The user was successfully updated"}
   # 4xx RESPONSE: {"message": error_message}
   describe "PATCH /update" do
     let(:new_icon) { create :icon }
@@ -34,8 +34,8 @@ RSpec.describe "Api::V1::Users", type: :request do
       it "returns a json with the updated user info" do
         json = JSON.parse(response.body)
 
-        expect(json["user"]).to have_key("id").and(have_key("username")).and(have_key("email")).and(have_key("icon_id"))
-        expect(json["user"]["icon_id"]).to eq(new_icon.id)
+        expect(json["userObject"]["user"]).to have_key("id").and(have_key("username")).and(have_key("email")).and(have_key("icon_id"))
+        expect(json["userObject"]["user"]["icon_id"]).to eq(new_icon.id)
         expect(json["message"]).to eq("The user was successfully updated")
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
-  # 2xx RESPONSE: { "user": user_instance, "userGroups": [user_groups], "userTasks": [user_tasks]}
+  # 2xx RESPONSE: { "userObject": {user: user_instance, user_icon: icon_instance}, "userGroups": [user_groups], "userTasks": [user_tasks]}
   describe "GET /fetch_user_info" do
     before do
       create_list(:group, 3, admin: user)
@@ -70,8 +70,8 @@ RSpec.describe "Api::V1::Users", type: :request do
     it "returns a json with the info of the users" do
       json = JSON.parse(response.body)
 
-      expect(json).to have_key("user").and(have_key("userGroups")).and(have_key("userTasks"))
-      expect(json["user"]["id"]).to eq user.id
+      expect(json).to have_key("userObject").and(have_key("userGroups")).and(have_key("userTasks"))
+      expect(json["userObject"]["user"]["id"]).to eq user.id
       expect(json["userGroups"].length).to eq 3
       expect(json["userTasks"].length).to eq 9
     end

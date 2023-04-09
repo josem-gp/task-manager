@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
   def update
     if @user.update(user_params)
       render json: { 
-        user: build_user_json(@user), 
+        userObject: build_user_json(@user), 
         message: "The user was successfully updated"
       }
     else

@@ -19,7 +19,7 @@ RSpec.describe "Users::Registrations", type: :request do
           json = JSON.parse(response.body)
 
           expect(json["message"]).to match("Signed up succesfully")
-          expect(json["user"]["email"]).to eq("myemail@email.com")
+          expect(json["userObject"]["user"]["email"]).to eq("myemail@email.com")
         end
 
         it "creates the user" do
@@ -50,7 +50,7 @@ RSpec.describe "Users::Registrations", type: :request do
           json = JSON.parse(response.body)
 
           expect(json["message"]).to match("Signed up succesfully")
-          expect(json["user"]["email"]).to eq("myemail@email.com")
+          expect(json["userObject"]["user"]["email"]).to eq("myemail@email.com")
         end
 
         it "creates the user" do

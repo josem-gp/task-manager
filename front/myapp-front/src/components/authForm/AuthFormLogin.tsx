@@ -60,7 +60,7 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
           // To set the user info in the context
           dispatch({
             type: "SET_USER",
-            payload: response.data.user,
+            payload: response.data.userObject,
           });
         } else {
           setError(

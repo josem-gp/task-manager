@@ -54,7 +54,7 @@ function AuthFormSignup({ setIsLogin }: AuthFormProps) {
           // To set the token in the context
           dispatch({ type: "SET_USER_AUTH", payload: token });
           // To set the user info in the context
-          dispatch({ type: "SET_USER", payload: response.data.user });
+          dispatch({ type: "SET_USER", payload: response.data.userObject });
         } else {
           setError(
             response.response?.data as React.SetStateAction<string | null>
