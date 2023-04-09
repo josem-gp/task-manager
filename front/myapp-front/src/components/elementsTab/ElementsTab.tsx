@@ -22,48 +22,74 @@ function ElementsTab({ tabHeaders }: CompoundTabProps) {
   }
 
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={tabValue}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleTabChange} aria-label="main dashboard tabs">
-            {tabHeaders.map((header) => (
-              <Tab key={uuidv4()} label={header.label} value={header.value} />
-            ))}
-          </TabList>
-        </Box>
-        <>
-          {tabHeaders.map((element) => (
-            <TabPanel
-              key={uuidv4()}
-              value={element.value}
-              sx={{
-                padding: { xs: "24px 10px 0 10px", md: "24px 24px 0 24px" },
-                maxHeight: { md: "30vh", lg: "44vh" },
-                overflow: "scroll",
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: "10px",
-              }}
-            >
-              {element.data.map((el) => {
-                switch (element.type) {
-                  case "task":
-                    return <TaskCard element={el as DividedTaskDetails} />;
-                  case "invitation":
-                    return <InvitationCard element={el as InvitationDetails} />;
-                  case "tag":
-                    return <TagCard element={el as TagDetails} />;
-                  case "user":
-                    return <UserCard element={el as DividedUserDetails} />;
-                  default:
-                    return null;
-                }
-              })}
-            </TabPanel>
+    <TabContext value={tabValue}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <TabList onChange={handleTabChange} aria-label="main dashboard tabs">
+          {tabHeaders.map((header) => (
+            <Tab key={uuidv4()} label={header.label} value={header.value} />
           ))}
-        </>
-      </TabContext>
-    </Box>
+        </TabList>
+      </Box>
+      <>
+        {tabHeaders.map((element) => (
+          <TabPanel
+            key={uuidv4()}
+            value={element.value}
+            sx={{
+              padding: { xs: "24px 10px 0 10px", md: "24px 24px 0 24px" },
+              maxHeight: { md: "30vh", lg: "44vh" },
+              overflow: "scroll",
+              display: tabValue === element.value ? "grid" : "none",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "10px",
+            }}
+          >
+            {element.data.map((el) => {
+              switch (element.type) {
+                case "task":
+                  return (
+                    <TaskCard
+                      key={uuidv4()}
+                      element={el as DividedTaskDetails}
+                    />
+                  );
+                case "invitation":
+                  return (
+                    <InvitationCard
+                      key={uuidv4()}
+                      element={el as InvitationDetails}
+                    />
+                  );
+                case "tag":
+                  return <TagCard key={uuidv4()} element={el as TagDetails} />;
+                case "user":
+                  return (
+                    <UserCard
+                      key={uuidv4()}
+                      element={el as DividedUserDetails}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            })}
+          </TabPanel>
+        ))}
+      </>
+    </TabContext>
+
+    // <TabContext value={"3"}>
+    //   <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    //     <TabList aria-label="lab API tabs example">
+    //       <Tab label="Item One" value="1" />
+    //       <Tab label="Item Two" value="2" />
+    //       <Tab label="Item Three" value="3" />
+    //     </TabList>
+    //   </Box>
+    //   <TabPanel value="1">Item One</TabPanel>
+    //   <TabPanel value="2">Item Two</TabPanel>
+    //   <TabPanel value="3">Item Three</TabPanel>
+    // </TabContext>
   );
 }
 

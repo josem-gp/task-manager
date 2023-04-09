@@ -25,7 +25,7 @@ type UserContextAction =
 export function reducer(state: User, action: UserContextAction) {
   switch (action.type) {
     case "SET_USER":
-      return { ...state, user: action.payload };
+      return { ...state, userObject: action.payload };
     case "SET_USER_GROUPS":
       return { ...state, userGroups: action.payload };
     case "SET_USER_TASKS":

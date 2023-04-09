@@ -11,16 +11,11 @@ import { useContext } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { DEFAULT_ICON_URL } from "../../utils/constants";
 import { TaskRendererProps } from "./Card.types";
+import { fetchIconUrl } from "../../utils/fetchUserIcon";
 
 function TaskCard({ element }: TaskRendererProps) {
   const { state: groupState } = useContext(GroupContext);
-
-  function fetchIconUrl(user_id: number) {
-    const taskOwner = groupState.groupUsers.find((u) => u.user.id === user_id);
-    return taskOwner ? taskOwner.user_icon.url : DEFAULT_ICON_URL;
-  }
 
   return (
     <Paper
@@ -63,7 +58,7 @@ function TaskCard({ element }: TaskRendererProps) {
         </Stack>
 
         <Avatar
-          src={fetchIconUrl(element.task.user_id)}
+          src={fetchIconUrl(groupState.groupUsers, element.task.user_id)}
           alt="Owner's profile picture"
           sx={{ width: 30, height: 30 }}
         />
