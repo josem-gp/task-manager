@@ -3,6 +3,7 @@ import GroupsMenu from "../groupsMenu/GroupsMenu";
 import ProfileMenu from "../profileMenu/ProfileMenu";
 import { useContext } from "react";
 import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
+import { Box } from "@mui/material";
 
 function MainMenu() {
   const { sidebarBtns } = useContext(SidebarBtnContext);
@@ -24,7 +25,19 @@ function MainMenu() {
     }
   }
 
-  return <>{getSelectedComponent()}</>;
+  return (
+    <Box
+      sx={{
+        margin: { xs: "0 auto", md: "0" },
+        paddingLeft: { xs: "20px", lg: "80px" },
+        paddingRight: { xs: "20px", lg: "80px" },
+        paddingTop: "20px",
+        paddingBottom: { xs: "80px", md: "0" },
+      }}
+    >
+      {getSelectedComponent()}
+    </Box>
+  );
 }
 
 export default MainMenu;

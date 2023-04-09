@@ -13,16 +13,15 @@ import { UserContext } from "../../context/user/UserContext";
 import { useContext, useEffect, useReducer, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import { initialState, reducer } from "./filterBarReducer";
-import { TaskStatus } from "../elementSelect/ElementSelect.types";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
-import dayjs from "dayjs";
 import { UseApiProps } from "../../types/types";
 import { FilterBarParams } from "./FilterBar.types";
 import { fetchData } from "../../utils/fetchApiData";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { ErrorContext } from "../../context/error/ErrorContext";
 import { TasksResponse } from "../../types/interfaces";
+import useFilterOptions from "../../hooks/useFilterOptions";
 
 function FilterBar() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
@@ -34,27 +33,17 @@ function FilterBar() {
   // may not complete before the state update is finished. In such cases, we need to use other mechanisms
   // like promises or useEffect to ensure that your code executes in the correct order.
   const [isResetting, setIsResetting] = useState(false);
-
-  const taskStatus: TaskStatus[] = [
-    {
-      id: "0",
-      name: "false",
-    },
-    {
-      id: "1",
-      name: "true",
-    },
-  ];
+  const { elementSelectProps, elementDateProps } = useFilterOptions();
 
   function handleFilter() {
     const params: UseApiProps<FilterBarParams> = {
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,
-      // headers: {
-      //   Authorization: `Bearer ${userState.userAuth}`,
-      //   "Content-Type": "application/json",
-      // } as AxiosRequestHeaders,
+      headers: {
+        Authorization: `Bearer ${userState.userAuth}`,
+        "Content-Type": "application/json",
+      } as AxiosRequestHeaders,
     };
 
     fetchData<FilterBarParams, TasksResponse>(params)
@@ -152,66 +141,18 @@ function FilterBar() {
         />
       </Stack>
       <Grid container spacing={1} wrap="wrap" alignItems="end">
-        <Grid item xs={2}>
-          <ElementSelect
-            name="Owner"
-            elements={groupState.groupUsers}
-            elementId={state.by_assignee_id}
-            setElementId={(id: string) =>
-              dispatch({ type: "SET_ASSIGNEE_ID", payload: id })
-            }
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <ElementSelect
-            name="Assignee"
-            elements={groupState.groupUsers}
-            elementId={state.by_assignee_id}
-            setElementId={(id: string) =>
-              dispatch({ type: "SET_ASSIGNEE_ID", payload: id })
-            }
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <ElementSelect
-            name="Status"
-            elements={taskStatus}
-            elementId={state.by_status}
-            setElementId={(id: string) =>
-              dispatch({ type: "SET_STATUS", payload: id })
-            }
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <MyDatePicker
-            state={state}
-            label="From"
-            fontColor={colors.primary}
-            borderColor={colors.primary}
-            setElement={(newValue: dayjs.Dayjs | null) =>
-              dispatch({
-                type: "SET_FROM_DUE_DATE",
-                // Ensure that the payload property always has a string or null value, even if the format method returns undefined.
-                payload: newValue?.format("YYYY/MM/DD") ?? null,
-              })
-            }
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <MyDatePicker
-            state={state}
-            label="To"
-            fontColor={colors.primary}
-            borderColor={colors.primary}
-            setElement={(newValue: dayjs.Dayjs | null) =>
-              dispatch({
-                type: "SET_TO_DUE_DATE",
-                // Ensure that the payload property always has a string or null value, even if the format method returns undefined.
-                payload: newValue?.format("YYYY/MM/DD") ?? null,
-              })
-            }
-          />
-        </Grid>
+        {elementSelectProps.map((props, index) => (
+          <Grid item key={index} xs={4} sx={{ maxWidth: "150px !important" }}>
+            <ElementSelect {...props} />
+          </Grid>
+        ))}
+      </Grid>
+      <Grid container spacing={1} wrap="wrap" alignItems="end">
+        {elementDateProps.map((props, index) => (
+          <Grid item xs={6} sx={{ maxWidth: "150px !important" }}>
+            <MyDatePicker {...props} />
+          </Grid>
+        ))}
       </Grid>
     </>
   );

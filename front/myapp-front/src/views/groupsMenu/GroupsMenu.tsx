@@ -7,16 +7,7 @@ import ElementsTab from "../../components/elementsTab/ElementsTab";
 
 function GroupsMenu() {
   return (
-    <Box
-      sx={{
-        maxWidth: "550px",
-        margin: { xs: "0 auto", md: "0" },
-        paddingLeft: { xs: "20px", lg: "80px" },
-        paddingRight: { xs: "20px", lg: "80px" },
-        paddingTop: "20px",
-        paddingBottom: { xs: "80px", md: "0" },
-      }}
-    >
+    <>
       <Typography variant="h5" sx={{ color: "#B5B5B5" }}>
         Hello, Harcoded Jose!
       </Typography>
@@ -47,7 +38,7 @@ function GroupsMenu() {
         {/* <ActionBtn /> */}
       </Stack>
       {/* <ElementsTab /> */}
-    </Box>
+    </>
   );
 }
 
