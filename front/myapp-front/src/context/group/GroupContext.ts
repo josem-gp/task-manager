@@ -5,23 +5,23 @@ import {
   GroupDetails,
   InvitationDetails,
   TagDetails,
-  UserDetails,
+  DividedUserDetails,
 } from "../../types/interfaces";
 
 export const initialState: Group = {
-  group: null,
-  groupUsers: null,
-  groupTasks: null,
-  groupTags: null,
-  groupInvitations: null,
+  group: { id: 0, name: "", description: "", admin_id: 0 },
+  groupUsers: [],
+  groupTasks: { past: [], today: [], upcoming: [] },
+  groupTags: [],
+  groupInvitations: [],
 };
 
 type GroupContextAction =
-  | { type: "SET_GROUP"; payload: GroupDetails | null }
-  | { type: "SET_GROUP_USERS"; payload: UserDetails[] | null }
-  | { type: "SET_GROUP_TASKS"; payload: DividedTasks | null }
-  | { type: "SET_GROUP_TAGS"; payload: TagDetails[] | null }
-  | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] | null };
+  | { type: "SET_GROUP"; payload: GroupDetails }
+  | { type: "SET_GROUP_USERS"; payload: DividedUserDetails[] }
+  | { type: "SET_GROUP_TASKS"; payload: DividedTasks }
+  | { type: "SET_GROUP_TAGS"; payload: TagDetails[] }
+  | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] };
 
 export function reducer(state: Group, action: GroupContextAction) {
   switch (action.type) {

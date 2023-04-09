@@ -6,13 +6,13 @@ class Api::V1::GroupsController < ApplicationController
   # GET /api/v1/groups/:id
   def show
     users = @group.users
-    tasks = @group.tasks.where(user: current_user).or(Task.where(assignee: current_user))
+    tasks = @group.tasks
     tags = @group.tags
     invitations = @group.invitations
     
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']),
-      groupUsers: select_attributes(users, ['id', 'username', 'email', 'icon_id']),
+      groupUsers: build_user_json(users),
       groupTasks: divide_tasks_by_date(tasks),
       groupTags: except_attributes(tags, ['created_at', 'updated_at']),
       groupInvitations: except_attributes(invitations, ['oauth_token', 'created_at', 'updated_at'])
@@ -62,7 +62,7 @@ class Api::V1::GroupsController < ApplicationController
   # Filter tasks thats belong to the group and whose user is either the creator or assignee
   # POST /api/v1/groups/:id/filter_tasks
   def filter_tasks
-    filtered_tasks = Task.filter(filter_params).where(group: @group).and(Task.where(user: current_user).or(Task.where(assignee: current_user)))
+    filtered_tasks = Task.filter(filter_params).where(group: @group)
     if filtered_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
@@ -115,7 +115,7 @@ class Api::V1::GroupsController < ApplicationController
 
   def filter_params
     # The assignee_id works both as a string and number
-    params.permit(:by_fuzzy_name, :by_assignee_id, :by_status, :from_due_date, :to_due_date)
+    params.permit(:by_fuzzy_name, :by_owner_id,  :by_assignee_id, :by_status, :from_due_date, :to_due_date)
   end
 
   def render_error(message, status)
@@ -128,9 +128,9 @@ class Api::V1::GroupsController < ApplicationController
     past_tasks = tasks.filter { |task| task.due_date < today }
     today_tasks = tasks.filter { |task| task.due_date == today }
     {
-      today: build_json(today_tasks),
-      upcoming: build_json(upcoming_tasks),
-      past: build_json(past_tasks)
+      today: build_task_json(today_tasks),
+      upcoming: build_task_json(upcoming_tasks),
+      past: build_task_json(past_tasks)
     }
   end
 end

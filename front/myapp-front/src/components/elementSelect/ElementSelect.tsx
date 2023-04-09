@@ -29,10 +29,10 @@ export function ElementSelect({
         </MenuItem>
       );
     } else if ("username" in el) {
-      const user = el;
+      const userObject = el;
       return (
-        <MenuItem key={user.id} value={user.id}>
-          {user.username}
+        <MenuItem key={userObject.user.id} value={userObject.user.id}>
+          {userObject.user.username}
         </MenuItem>
       );
     } else {
@@ -44,7 +44,7 @@ export function ElementSelect({
     <FormControl
       fullWidth
       sx={{
-        marginBottom: { xs: "20px", lg: "0px" },
+        marginBottom: { xs: "20px", md: "0px" },
         marginTop: { xs: "20px", lg: "0" },
         "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: `${colors.primary} !important`,

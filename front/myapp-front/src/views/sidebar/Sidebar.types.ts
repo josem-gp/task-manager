@@ -4,3 +4,7 @@ export type SidebarBtn = {
   icon: JSX.Element;
   checked: boolean;
 };
+
+export type SidebarProps = {
+  isVertical: boolean;
+};
