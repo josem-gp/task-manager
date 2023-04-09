@@ -10,7 +10,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
   describe "GET /show" do
     # 2xx RESPONSE: { "group": user_instance, 
-    #                 "groupUsers": [group_users], 
+    #                 "groupUsers": [{user: user_instance, user_icon: icon_instance}], 
     #                 "groupTasks": {today: [task_instances], upcoming: [task_instances], past: [task_instances]}, 
     #                 "groupTags": [group_tags], 
     #                 "groupInvitations": [group_invitations]
@@ -249,16 +249,16 @@ RSpec.describe "Api::V1::Groups", type: :request do
       it "returns all tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 1
-        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["upcoming"].length).to eq 4 # Because of the group factory callback
+        expect(json["tasks"]["today"].length).to eq 1
         expect(json["tasks"]["past"].length).to eq 1
       end
 
       it "returns each task and their tags" do 
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 2
+        expect(json["tasks"]["past"].first).to have_key("task").and have_key("task_tags")
+        expect(json["tasks"]["past"].first["task_tags"].length).to eq 1
       end
     end
 
@@ -272,7 +272,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
         json = JSON.parse(response.body)
 
         expect(json["tasks"]["upcoming"].length).to eq 0
-        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["today"].length).to eq 1
         expect(json["tasks"]["past"].length).to eq 1
       end
 
@@ -292,7 +292,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
       it "returns the searched tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 1
+        expect(json["tasks"]["upcoming"].length).to eq 4
         expect(json["tasks"]["today"].length).to eq 0
         expect(json["tasks"]["past"].length).to eq 0
       end
@@ -301,7 +301,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
         json = JSON.parse(response.body)
 
         expect(json["tasks"]["past"].first).to be_nil
-        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 2
+        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 1
       end
     end
 
@@ -313,15 +313,15 @@ RSpec.describe "Api::V1::Groups", type: :request do
       it "returns the searched tasks for that group divided by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 1
-        expect(json["tasks"]["today"].length).to eq 0
+        expect(json["tasks"]["upcoming"].length).to eq 4
+        expect(json["tasks"]["today"].length).to eq 1
         expect(json["tasks"]["past"].length).to eq 0
       end
 
       it "returns each task and their tags" do 
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 2
+        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 1
       end
     end
 

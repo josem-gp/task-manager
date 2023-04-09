@@ -7,9 +7,11 @@ import { fetchData } from "./utils/fetchApiData";
 import { User } from "./types/interfaces";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { UseApiProps } from "./types/types";
+import { Alert, Button, Stack } from "@mui/material";
+import ActionAlerts from "./components/actionAlerts/ActionAlerts";
 
 function App() {
-  const errorContext = useContext(ErrorContext);
+  const { error, setError } = useContext(ErrorContext);
   const { state, dispatch } = useContext(UserContext);
 
   function fetchUserInfo() {
@@ -28,7 +30,7 @@ function App() {
           // To set the user in the context
           dispatch({
             type: "SET_USER",
-            payload: response.data.user,
+            payload: response.data.userObject,
           });
           // To set the user tasks in the context
           dispatch({
@@ -41,13 +43,13 @@ function App() {
             payload: response.data.userGroups,
           });
         } else {
-          errorContext.setError(
+          setError(
             response.response?.statusText as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        errorContext.setError(
+        setError(
           error.response?.statusText as React.SetStateAction<string | null>
         );
       });
@@ -59,11 +61,12 @@ function App() {
     }
   }, [state.userAuth]);
 
-  if (errorContext.error) {
-    return <div>{errorContext.error}</div>;
-  }
-
-  return <>{!state.userAuth ? <AuthForm /> : <Dashboard />}</>;
+  return (
+    <>
+      {error && <ActionAlerts severity="error" />}
+      {!state.userAuth ? <AuthForm /> : <Dashboard />}
+    </>
+  );
 }
 
 export default App;

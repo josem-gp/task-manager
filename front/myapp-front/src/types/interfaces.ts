@@ -7,7 +7,7 @@ export interface UserFormDetails {
 }
 
 export interface UserResponse {
-  user: UserDetails;
+  userObject: DividedUserDetails;
 }
 
 export interface TasksResponse {
@@ -20,6 +20,13 @@ export interface UserDetails {
   email: string;
   icon_id: number;
 }
+
+export interface IconDetails {
+  id: number;
+  name: string;
+  url: string;
+}
+
 export interface GroupDetails {
   id: number;
   name: string;
@@ -41,6 +48,11 @@ export interface TaskDetails {
 export interface DividedTaskDetails {
   task: TaskDetails;
   task_tags: TagDetails[];
+}
+
+export interface DividedUserDetails {
+  user: UserDetails;
+  user_icon: IconDetails;
 }
 
 export interface DividedTasks {
@@ -68,16 +80,16 @@ export interface InvitationDetails {
 }
 
 export interface User {
-  user: UserDetails | null;
-  userGroups: GroupDetails[] | null;
-  userTasks: TaskDetails[] | null;
-  userAuth: string | null;
+  userObject: DividedUserDetails;
+  userGroups: GroupDetails[];
+  userTasks: TaskDetails[];
+  userAuth: string;
 }
 
 export interface Group {
-  group: GroupDetails | null;
-  groupUsers: UserDetails[] | null;
-  groupTasks: DividedTasks | null;
-  groupTags: TagDetails[] | null;
-  groupInvitations: InvitationDetails[] | null;
+  group: GroupDetails;
+  groupUsers: DividedUserDetails[];
+  groupTasks: DividedTasks;
+  groupTags: TagDetails[];
+  groupInvitations: InvitationDetails[];
 }

@@ -9,15 +9,15 @@ type UserContextProviderProps = {
 
 function UserContextProvider({ children }: UserContextProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const errorContext = useContext(ErrorContext);
+  const { error, setError } = useContext(ErrorContext);
 
   function fetchAuthToken() {
     try {
-      const token = Cookies.get("auth_token") || null;
+      const token = Cookies.get("auth_token") || "";
       // To set the token in the context
       dispatch({ type: "SET_USER_AUTH", payload: token });
     } catch (error) {
-      errorContext.setError("Error fetching auth token from cookie");
+      setError("Error fetching auth token from cookie");
     }
   }
 

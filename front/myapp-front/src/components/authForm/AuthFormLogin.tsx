@@ -10,7 +10,11 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { setAuthToken } from "../../utils/setAuthToken";
-import { UserFormDetails, UserResponse } from "../../types/interfaces";
+import {
+  DividedUserDetails,
+  UserFormDetails,
+  UserResponse,
+} from "../../types/interfaces";
 import { AuthFormProps } from "./AuthForm.types";
 import { fetchData } from "../../utils/fetchApiData";
 import { UseApiProps } from "../../types/types";
@@ -20,7 +24,7 @@ import { ErrorContext } from "../../context/error/ErrorContext";
 
 function AuthFormLogin({ setIsLogin }: AuthFormProps) {
   const { state, dispatch } = useContext(UserContext);
-  const errorContext = useContext(ErrorContext);
+  const { error, setError } = useContext(ErrorContext);
   const [data, setData] = useState<UserFormDetails>({
     user: { email: "", password: "" },
   });
@@ -54,17 +58,18 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
           // To set the token in the context
           dispatch({ type: "SET_USER_AUTH", payload: token });
           // To set the user info in the context
-          dispatch({ type: "SET_USER", payload: response.data.user });
+          dispatch({
+            type: "SET_USER",
+            payload: response.data.userObject,
+          });
         } else {
-          errorContext.setError(
+          setError(
             response.response?.data as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        errorContext.setError(
-          error.response?.data as React.SetStateAction<string | null>
-        );
+        setError(error.response?.data as React.SetStateAction<string | null>);
       });
   }
 

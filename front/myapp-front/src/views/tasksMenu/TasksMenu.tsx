@@ -31,18 +31,9 @@ function TasksMenu() {
   ];
 
   return (
-    <Box
-      sx={{
-        maxWidth: "550px",
-        margin: { xs: "0 auto", md: "0" },
-        paddingLeft: { xs: "20px", lg: "80px" },
-        paddingRight: { xs: "20px", lg: "80px" },
-        paddingTop: "20px",
-        paddingBottom: { xs: "80px", md: "0" },
-      }}
-    >
+    <>
       <Typography variant="h5" sx={{ color: colors.textLight }}>
-        Hello, {userState.user?.username}!
+        Hello, {userState.userObject.user.username}!
       </Typography>
       <Stack
         direction="row"
@@ -66,7 +57,7 @@ function TasksMenu() {
         My tasks
       </Typography>
       <ElementsTab tabHeaders={tabHeaders} />
-    </Box>
+    </>
   );
 }
 

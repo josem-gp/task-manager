@@ -2,6 +2,7 @@ import { FilterBarParams } from "./FilterBar.types";
 
 export const initialState: FilterBarParams = {
   by_fuzzy_name: "",
+  by_owner_id: "",
   by_assignee_id: "",
   by_status: "",
   from_due_date: null,
@@ -10,6 +11,7 @@ export const initialState: FilterBarParams = {
 
 type FilterBarAction =
   | { type: "SET_FUZZY_NAME"; payload: string }
+  | { type: "SET_OWNER_ID"; payload: string }
   | { type: "SET_ASSIGNEE_ID"; payload: string }
   | { type: "SET_STATUS"; payload: string }
   | { type: "SET_FROM_DUE_DATE"; payload: string | null }
@@ -20,6 +22,8 @@ export function reducer(state: FilterBarParams, action: FilterBarAction) {
   switch (action.type) {
     case "SET_FUZZY_NAME":
       return { ...state, by_fuzzy_name: action.payload };
+    case "SET_OWNER_ID":
+      return { ...state, by_owner_id: action.payload };
     case "SET_ASSIGNEE_ID":
       return { ...state, by_assignee_id: action.payload };
     case "SET_STATUS":
