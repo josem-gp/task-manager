@@ -40,10 +40,10 @@ function FilterBar() {
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
+      // headers: {
+      //   Authorization: `Bearer ${userState.userAuth}`,
+      //   "Content-Type": "application/json",
+      // } as AxiosRequestHeaders,
     };
 
     fetchData<FilterBarParams, TasksResponse>(params)
