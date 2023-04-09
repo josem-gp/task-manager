@@ -4,8 +4,34 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
+import { useContext } from "react";
+import { GroupContext } from "../../context/group/GroupContext";
 
 function GroupsMenu() {
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
+
+  const tabHeaders = [
+    {
+      label: "Members",
+      value: "1",
+      type: "user" as const,
+      data: groupState.groupUsers || [],
+    },
+    {
+      label: "Tags",
+      value: "2",
+      type: "tag" as const,
+      data: groupState.groupTags || [],
+    },
+    {
+      label: "Invitations",
+      value: "3",
+      type: "invitation" as const,
+      data: groupState.groupInvitations || [],
+    },
+  ];
+
   return (
     <>
       <Typography variant="h5" sx={{ color: "#B5B5B5" }}>
@@ -37,7 +63,7 @@ function GroupsMenu() {
         </Typography>
         {/* <ActionBtn /> */}
       </Stack>
-      {/* <ElementsTab /> */}
+      <ElementsTab tabHeaders={tabHeaders} />
     </>
   );
 }

@@ -16,16 +16,19 @@ function TasksMenu() {
     {
       label: "Today",
       value: "1",
+      type: "task" as const, // added this so that type is not taking as a string but as the literal value we want. In this case "task"
       data: groupState.groupTasks?.today || [],
     },
     {
       label: "Upcoming",
       value: "2",
+      type: "task" as const,
       data: groupState.groupTasks?.upcoming || [],
     },
     {
       label: "Past",
       value: "3",
+      type: "task" as const,
       data: groupState.groupTasks?.past || [],
     },
   ];

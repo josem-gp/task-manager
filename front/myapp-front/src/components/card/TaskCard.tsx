@@ -10,11 +10,11 @@ import { colors } from "../../utils/colors";
 import { useContext } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { CardRendererProps } from "./Card.types";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { DEFAULT_ICON_URL } from "../../utils/constants";
+import { TaskRendererProps } from "./Card.types";
 
-function TaskCard({ element }: CardRendererProps) {
+function TaskCard({ element }: TaskRendererProps) {
   const { state: groupState } = useContext(GroupContext);
 
   function fetchIconUrl(user_id: number) {

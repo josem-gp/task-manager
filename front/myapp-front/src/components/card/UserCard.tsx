@@ -1,6 +1,7 @@
 import React from "react";
+import { UserRendererProps } from "./Card.types";
 
-function UserCard() {
+function UserCard({ element }: UserRendererProps) {
   return <div>UserCard</div>;
 }
 

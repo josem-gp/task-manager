@@ -1,11 +1,20 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { useState } from "react";
-import Card from "../card/Card";
-import { ElementsTabProps } from "./ElementsTab.types";
+import { CompoundTabProps } from "./ElementsTab.types";
 import { v4 as uuidv4 } from "uuid";
+import TaskCard from "../card/TaskCard";
+import InvitationCard from "../card/InvitationCard";
+import TagCard from "../card/TagCard";
+import UserCard from "../card/UserCard";
+import {
+  DividedTaskDetails,
+  DividedUserDetails,
+  InvitationDetails,
+  TagDetails,
+} from "../../types/interfaces";
 
-function ElementsTab({ tabHeaders }: ElementsTabProps) {
+function ElementsTab({ tabHeaders }: CompoundTabProps) {
   const [tabValue, setTabValue] = useState("1");
 
   function handleTabChange(event: React.SyntheticEvent, newValue: string) {
@@ -36,9 +45,20 @@ function ElementsTab({ tabHeaders }: ElementsTabProps) {
                 gap: "10px",
               }}
             >
-              {element.data.map((el) => (
-                <Card key={uuidv4()} type="task" element={el} />
-              ))}
+              {element.data.map((el) => {
+                switch (element.type) {
+                  case "task":
+                    return <TaskCard element={el as DividedTaskDetails} />;
+                  case "invitation":
+                    return <InvitationCard element={el as InvitationDetails} />;
+                  case "tag":
+                    return <TagCard element={el as TagDetails} />;
+                  case "user":
+                    return <UserCard element={el as DividedUserDetails} />;
+                  default:
+                    return null;
+                }
+              })}
             </TabPanel>
           ))}
         </>

@@ -1,6 +1,7 @@
 import React from "react";
+import { InvitationRendererProps } from "./Card.types";
 
-function InvitationCard() {
+function InvitationCard({ element }: InvitationRendererProps) {
   return <div>InvitationCard</div>;
 }
 
