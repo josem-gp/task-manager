@@ -51,10 +51,10 @@ function FilterBar() {
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
+      // headers: {
+      //   Authorization: `Bearer ${userState.userAuth}`,
+      //   "Content-Type": "application/json",
+      // } as AxiosRequestHeaders,
     };
 
     fetchData<FilterBarParams, TasksResponse>(params)
@@ -152,7 +152,17 @@ function FilterBar() {
         />
       </Stack>
       <Grid container spacing={1} wrap="wrap" alignItems="end">
-        <Grid item xs={3}>
+        <Grid item xs={2}>
+          <ElementSelect
+            name="Owner"
+            elements={groupState.groupUsers}
+            elementId={state.by_assignee_id}
+            setElementId={(id: string) =>
+              dispatch({ type: "SET_ASSIGNEE_ID", payload: id })
+            }
+          />
+        </Grid>
+        <Grid item xs={2}>
           <ElementSelect
             name="Assignee"
             elements={groupState.groupUsers}
@@ -162,7 +172,7 @@ function FilterBar() {
             }
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <ElementSelect
             name="Status"
             elements={taskStatus}
@@ -172,7 +182,7 @@ function FilterBar() {
             }
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <MyDatePicker
             state={state}
             label="From"
@@ -187,7 +197,7 @@ function FilterBar() {
             }
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <MyDatePicker
             state={state}
             label="To"

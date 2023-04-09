@@ -3,4 +3,5 @@ export type SidebarIconBtnProps = {
   icon: JSX.Element;
   checked: boolean;
   onClick: () => void;
+  onlyIcon: boolean;
 };

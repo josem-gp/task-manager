@@ -8,7 +8,7 @@ function SupportMenu() {
   return (
     <>
       <Box sx={{ display: { xs: "none", lg: "block" } }}>
-        <Navbar />
+        <Navbar showSidebar={false} />
       </Box>
       <Box
         display="flex"

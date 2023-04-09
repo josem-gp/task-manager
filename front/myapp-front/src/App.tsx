@@ -7,6 +7,8 @@ import { fetchData } from "./utils/fetchApiData";
 import { User } from "./types/interfaces";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { UseApiProps } from "./types/types";
+import { Alert, Button, Stack } from "@mui/material";
+import ActionAlerts from "./components/actionAlerts/ActionAlerts";
 
 function App() {
   const { error, setError } = useContext(ErrorContext);
@@ -59,11 +61,12 @@ function App() {
     }
   }, [state.userAuth]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  return <>{!state.userAuth ? <AuthForm /> : <Dashboard />}</>;
+  return (
+    <>
+      {error && <ActionAlerts severity="error" />}
+      {!state.userAuth ? <AuthForm /> : <Dashboard />}
+    </>
+  );
 }
 
 export default App;

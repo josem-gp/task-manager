@@ -44,7 +44,7 @@ export function ElementSelect({
     <FormControl
       fullWidth
       sx={{
-        marginBottom: { xs: "20px", lg: "0px" },
+        marginBottom: { xs: "20px", md: "0px" },
         marginTop: { xs: "20px", lg: "0" },
         "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: `${colors.primary} !important`,
