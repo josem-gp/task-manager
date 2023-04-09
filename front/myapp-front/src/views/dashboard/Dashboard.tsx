@@ -28,11 +28,11 @@ function Dashboard() {
             </Grid>
           )}
           <GroupContextProvider>
-            <Grid item xs={12} md={7} lg={6} sx={{ backgroundColor: "pink" }}>
+            <Grid item xs={12} md={7} lg={6}>
               <MainMenu />
             </Grid>
           </GroupContextProvider>
-          <Grid item xs={12} md={5} lg={4} sx={{ backgroundColor: "purple" }}>
+          <Grid item xs={12} md={5} lg={4}>
             {/* <SupportMenu /> */}
             <h1>Hi</h1>
           </Grid>

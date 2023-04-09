@@ -28,9 +28,10 @@ export default function useFilterOptions() {
     {
       name: "Owner",
       elements: groupState.groupUsers,
-      elementId: state.by_assignee_id,
-      setElementId: (id: string) =>
-        dispatch({ type: "SET_ASSIGNEE_ID", payload: id }),
+      elementId: state.by_owner_id,
+      setElementId: (id: string) => {
+        dispatch({ type: "SET_OWNER_ID", payload: id });
+      },
     },
     {
       name: "Assignee",
@@ -75,5 +76,5 @@ export default function useFilterOptions() {
     },
   ];
 
-  return { elementSelectProps, elementDateProps };
+  return { elementSelectProps, elementDateProps, state, dispatch };
 }

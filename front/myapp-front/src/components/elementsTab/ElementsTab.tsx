@@ -29,8 +29,11 @@ function ElementsTab({ tabHeaders }: ElementsTabProps) {
               value={element.value}
               sx={{
                 padding: { xs: "24px 10px 0 10px", md: "24px 24px 0 24px" },
-                maxHeight: "500px",
+                maxHeight: { md: "30vh", lg: "44vh" },
                 overflow: "scroll",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "10px",
               }}
             >
               {element.data.map((el) => (

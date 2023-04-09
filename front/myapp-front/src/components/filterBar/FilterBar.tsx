@@ -28,12 +28,12 @@ function FilterBar() {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
   const { error, setError } = useContext(ErrorContext);
-  const [state, dispatch] = useReducer(reducer, initialState);
   // Any asynchronous code that we run after dispatch (e.g. making API calls, setting timeouts/intervals)
   // may not complete before the state update is finished. In such cases, we need to use other mechanisms
   // like promises or useEffect to ensure that your code executes in the correct order.
   const [isResetting, setIsResetting] = useState(false);
-  const { elementSelectProps, elementDateProps } = useFilterOptions();
+  const { elementSelectProps, elementDateProps, state, dispatch } =
+    useFilterOptions();
 
   function handleFilter() {
     const params: UseApiProps<FilterBarParams> = {
@@ -101,6 +101,7 @@ function FilterBar() {
         alignItems="center"
         direction="row"
         spacing={1}
+        marginBottom="10px"
       >
         <TextField
           onChange={(event) =>
@@ -149,7 +150,7 @@ function FilterBar() {
       </Grid>
       <Grid container spacing={1} wrap="wrap" alignItems="end">
         {elementDateProps.map((props, index) => (
-          <Grid item xs={6} sx={{ maxWidth: "150px !important" }}>
+          <Grid item key={index} xs={6} sx={{ maxWidth: "150px !important" }}>
             <MyDatePicker {...props} />
           </Grid>
         ))}
