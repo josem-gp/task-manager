@@ -5,7 +5,7 @@ import {
   GroupDetails,
   InvitationDetails,
   TagDetails,
-  UserDetails,
+  DividedUserDetails,
 } from "../../types/interfaces";
 
 export const initialState: Group = {
@@ -18,7 +18,7 @@ export const initialState: Group = {
 
 type GroupContextAction =
   | { type: "SET_GROUP"; payload: GroupDetails }
-  | { type: "SET_GROUP_USERS"; payload: UserDetails[] }
+  | { type: "SET_GROUP_USERS"; payload: DividedUserDetails[] }
   | { type: "SET_GROUP_TASKS"; payload: DividedTasks }
   | { type: "SET_GROUP_TAGS"; payload: TagDetails[] }
   | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] };

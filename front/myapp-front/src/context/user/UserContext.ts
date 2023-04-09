@@ -3,18 +3,21 @@ import {
   GroupDetails,
   TaskDetails,
   User,
-  UserDetails,
+  DividedUserDetails,
 } from "../../types/interfaces";
 
 export const initialState: User = {
-  user: { id: 0, username: "string", email: "string", icon_id: 0 },
+  userObject: {
+    user: { id: 0, username: "", email: "", icon_id: 0 },
+    user_icon: { id: 0, name: "", url: "" },
+  },
   userGroups: [],
   userTasks: [],
   userAuth: "",
 };
 
 type UserContextAction =
-  | { type: "SET_USER"; payload: UserDetails }
+  | { type: "SET_USER"; payload: DividedUserDetails }
   | { type: "SET_USER_GROUPS"; payload: GroupDetails[] }
   | { type: "SET_USER_TASKS"; payload: TaskDetails[] }
   | { type: "SET_USER_AUTH"; payload: string };

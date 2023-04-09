@@ -33,7 +33,7 @@ function TasksMenu() {
   return (
     <>
       <Typography variant="h5" sx={{ color: colors.textLight }}>
-        Hello, {userState.user?.username}!
+        Hello, {userState.userObject.user.username}!
       </Typography>
       <Stack
         direction="row"

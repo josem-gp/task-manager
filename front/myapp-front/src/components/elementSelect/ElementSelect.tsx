@@ -29,10 +29,10 @@ export function ElementSelect({
         </MenuItem>
       );
     } else if ("username" in el) {
-      const user = el;
+      const userObject = el;
       return (
-        <MenuItem key={user.id} value={user.id}>
-          {user.username}
+        <MenuItem key={userObject.user.id} value={userObject.user.id}>
+          {userObject.user.username}
         </MenuItem>
       );
     } else {

@@ -10,7 +10,11 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { setAuthToken } from "../../utils/setAuthToken";
-import { UserFormDetails, UserResponse } from "../../types/interfaces";
+import {
+  DividedUserDetails,
+  UserFormDetails,
+  UserResponse,
+} from "../../types/interfaces";
 import { AuthFormProps } from "./AuthForm.types";
 import { fetchData } from "../../utils/fetchApiData";
 import { UseApiProps } from "../../types/types";
@@ -54,7 +58,10 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
           // To set the token in the context
           dispatch({ type: "SET_USER_AUTH", payload: token });
           // To set the user info in the context
-          dispatch({ type: "SET_USER", payload: response.data.user });
+          dispatch({
+            type: "SET_USER",
+            payload: response.data.user,
+          });
         } else {
           setError(
             response.response?.data as React.SetStateAction<string | null>

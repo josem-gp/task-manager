@@ -30,7 +30,7 @@ function App() {
           // To set the user in the context
           dispatch({
             type: "SET_USER",
-            payload: response.data.user,
+            payload: response.data.userObject,
           });
           // To set the user tasks in the context
           dispatch({
