@@ -4,12 +4,40 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
+import { useContext } from "react";
+import { GroupContext } from "../../context/group/GroupContext";
+import { UserContext } from "../../context/user/UserContext";
 
 function GroupsMenu() {
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
+
+  const tabHeaders = [
+    {
+      label: "Members",
+      value: "1",
+      type: "user" as const,
+      data: groupState.groupUsers || [],
+    },
+    {
+      label: "Tags",
+      value: "2",
+      type: "tag" as const,
+      data: groupState.groupTags || [],
+    },
+    {
+      label: "Invitations",
+      value: "3",
+      type: "invitation" as const,
+      data: groupState.groupInvitations || [],
+    },
+  ];
+
   return (
     <>
       <Typography variant="h5" sx={{ color: "#B5B5B5" }}>
-        Hello, Harcoded Jose!
+        Hello, {userState.userObject.user.username}!
       </Typography>
       <Stack
         direction="row"
@@ -19,7 +47,7 @@ function GroupsMenu() {
         marginBottom="60px"
       >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          Welcome to Harcoded Group
+          Welcome to {groupState.group.name}
         </Typography>
       </Stack>
       <Stack
@@ -29,7 +57,6 @@ function GroupsMenu() {
       >
         <Typography
           variant="h4"
-          marginTop="60px"
           marginBottom="40px"
           sx={{ fontWeight: "bold" }}
         >
@@ -37,7 +64,7 @@ function GroupsMenu() {
         </Typography>
         {/* <ActionBtn /> */}
       </Stack>
-      {/* <ElementsTab /> */}
+      <ElementsTab tabHeaders={tabHeaders} />
     </>
   );
 }

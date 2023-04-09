@@ -1,10 +1,22 @@
-import { DividedTaskDetails } from "../../types/interfaces";
+import {
+  DividedTaskDetails,
+  DividedUserDetails,
+  InvitationDetails,
+  TagDetails,
+} from "../../types/interfaces";
 
-export type CardProps = {
-  type: "task" | "invitation" | "tag" | "user";
+export type TaskRendererProps = {
   element: DividedTaskDetails;
 };
 
-export type CardRendererProps = {
-  element: DividedTaskDetails;
+export type UserRendererProps = {
+  element: DividedUserDetails;
+};
+
+export type TagRendererProps = {
+  element: TagDetails;
+};
+
+export type InvitationRendererProps = {
+  element: InvitationDetails;
 };
