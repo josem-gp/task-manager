@@ -10,9 +10,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { ElementSelect } from "../elementSelect/ElementSelect";
 import { UserContext } from "../../context/user/UserContext";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
-import { initialState, reducer } from "./filterBarReducer";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
 import { UseApiProps } from "../../types/types";
@@ -40,10 +39,10 @@ function FilterBar() {
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,
-      // headers: {
-      //   Authorization: `Bearer ${userState.userAuth}`,
-      //   "Content-Type": "application/json",
-      // } as AxiosRequestHeaders,
+      headers: {
+        Authorization: `Bearer ${userState.userAuth}`,
+        "Content-Type": "application/json",
+      } as AxiosRequestHeaders,
     };
 
     fetchData<FilterBarParams, TasksResponse>(params)

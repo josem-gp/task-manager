@@ -8,6 +8,7 @@ import { MyDatePickerProps } from "./MyDatePicker.types";
 
 function MyDatePicker({
   state,
+  value,
   label,
   borderColor,
   fontColor,
@@ -19,7 +20,7 @@ function MyDatePicker({
         <DatePicker
           className="customDatePicker"
           label={label}
-          value={state.to_due_date ? dayjs(state.to_due_date) : null}
+          value={value ? dayjs(value) : null}
           onChange={(newValue: dayjs.Dayjs | null) => setElement(newValue)}
           sx={{
             "& .Mui-focused .MuiOutlinedInput-notchedOutline": {

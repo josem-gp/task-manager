@@ -28,7 +28,7 @@ export function ElementSelect({
           {group.name}
         </MenuItem>
       );
-    } else if ("username" in el) {
+    } else if ("user" in el) {
       const userObject = el;
       return (
         <MenuItem key={userObject.user.id} value={userObject.user.id}>
