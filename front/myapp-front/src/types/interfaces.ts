@@ -6,6 +6,18 @@ export interface UserFormDetails {
   };
 }
 
+export interface TaskFormDetails {
+  task: {
+    name: string;
+    note: string;
+    finished: boolean;
+    due_date: string;
+    assignee_id: number;
+    group_id: number;
+    tag_ids: number[];
+  };
+}
+
 export interface UserResponse {
   userObject: DividedUserDetails;
 }

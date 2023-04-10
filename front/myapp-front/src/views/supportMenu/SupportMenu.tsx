@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/user/UserContext";
 import { DividedTaskDetails } from "../../types/interfaces";
 import TaskCard from "../../components/card/TaskCard";
+import ActionModal from "../../components/actionModal/ActionModal";
 
 function SupportMenu() {
   const todaysDate = parseDate();
@@ -103,7 +104,7 @@ function SupportMenu() {
               Today
             </Typography>
           </Box>
-          <ActionBtn name="New Task" onClick={() => console.log("clicked")} />
+          <ActionModal type="task" btnName="New Task" action="create" />
         </Stack>
         <Calendar
           className="react-calendar"

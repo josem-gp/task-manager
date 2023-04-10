@@ -14,6 +14,9 @@ function UserCard({ element }: UserRendererProps) {
     <Paper
       elevation={2}
       sx={{
+        display: "flex",
+        flexFlow: "column",
+        justifyContent: "center",
         width: "100%",
         maxWidth: "360px",
         padding: "10px 0",

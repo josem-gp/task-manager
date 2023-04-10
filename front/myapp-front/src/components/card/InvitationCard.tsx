@@ -16,49 +16,36 @@ function InvitationCard({ element }: InvitationRendererProps) {
       elevation={2}
       sx={{
         display: "flex",
+        justifyContent: "space-around",
         width: "100%",
         maxWidth: "360px",
         padding: "10px 0",
         marginBottom: "10px !important",
-        cursor: "pointer",
-        "&:hover": {
-          elevation: "3",
-        },
       }}
-      // onClick={() => handleOpenUserProfile(user)}
     >
       <Stack
         direction="row"
         alignItems="center"
-        justifyContent="space-between"
-        padding="0 20px"
+        spacing={2}
+        width="184px"
+        overflow="scroll"
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={2}
-          width="184px"
-          overflow="scroll"
-        >
-          <Stack direction="column">
-            <Typography variant="button">{element.email}</Typography>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <CalendarTodayIcon fontSize="small" />
-              <Typography variant="caption">
-                {element.expiration_date}
-              </Typography>
-            </Stack>
+        <Stack direction="column">
+          <Typography variant="button">{element.email}</Typography>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <CalendarTodayIcon fontSize="small" />
+            <Typography variant="caption">{element.expiration_date}</Typography>
           </Stack>
         </Stack>
-        {userState.userObject.user.id === groupState.group.admin_id && ( // user needs to be admin
-          <IconButton
-            // onClick={() => handleUserDelete(user.id)}
-            size="small"
-          >
-            <DeleteIcon />
-          </IconButton>
-        )}
       </Stack>
+      {userState.userObject.user.id === groupState.group.admin_id && ( // user needs to be admin
+        <IconButton
+          // onClick={() => handleUserDelete(user.id)}
+          size="small"
+        >
+          <DeleteIcon />
+        </IconButton>
+      )}
     </Paper>
   );
 }
