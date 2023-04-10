@@ -34,8 +34,6 @@ function FilterBar() {
   const { elementSelectProps, elementDateProps, state, dispatch } =
     useFilterOptions();
 
-  console.log("filterbarstate", groupState);
-
   function handleFilter() {
     const params: UseApiProps<FilterBarParams> = {
       method: "post",
