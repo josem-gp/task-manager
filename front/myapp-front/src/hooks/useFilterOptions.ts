@@ -53,6 +53,7 @@ export default function useFilterOptions() {
     {
       state: state,
       label: "From",
+      value: state.from_due_date,
       fontColor: colors.primary,
       borderColor: colors.primary,
       setElement: (newValue: dayjs.Dayjs | null) =>
@@ -65,6 +66,7 @@ export default function useFilterOptions() {
     {
       state: state,
       label: "To",
+      value: state.to_due_date,
       fontColor: colors.primary,
       borderColor: colors.primary,
       setElement: (newValue: dayjs.Dayjs | null) =>
