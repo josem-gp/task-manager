@@ -15,14 +15,14 @@ import { GroupContext } from "../../context/group/GroupContext";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
 import { UseApiProps } from "../../types/types";
-import { FilterBarParams } from "./FilterBar.types";
 import { fetchData } from "../../utils/fetchApiData";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { ErrorContext } from "../../context/error/ErrorContext";
-import { TasksResponse } from "../../types/interfaces";
+import { FilterBarParams, TasksResponse } from "../../types/interfaces";
 import useFilterOptions from "../../hooks/useFilterOptions";
+import { FilterBarProps } from "./FilterBar.types";
 
-function FilterBar() {
+function FilterBar({ closeModal }: FilterBarProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
@@ -62,6 +62,9 @@ function FilterBar() {
       .catch((error: AxiosError) => {
         setError(error.response?.data as React.SetStateAction<string | null>);
       });
+
+    // After filtering or resetting we close modal
+    closeModal();
   }
 
   function handleReset() {
