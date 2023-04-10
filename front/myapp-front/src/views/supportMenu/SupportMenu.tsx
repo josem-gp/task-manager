@@ -26,7 +26,7 @@ function SupportMenu() {
       return filterDates(dateRange, el.task.due_date);
     });
 
-    setFilteredUserTasks(filteredUserTasks);
+    setFilteredUserTasks(filteredDates);
   }
 
   useEffect(() => {
