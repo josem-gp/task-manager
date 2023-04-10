@@ -33,7 +33,7 @@ function UserCard({ element }: UserRendererProps) {
       >
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar
-            src={fetchIconUrl(groupState.groupUsers, element.user.id)}
+            src={element.user_icon.url}
             alt="Owner's profile picture"
             sx={{ width: 30, height: 30 }}
           />

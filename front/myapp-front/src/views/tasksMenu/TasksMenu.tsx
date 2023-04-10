@@ -57,7 +57,7 @@ function TasksMenu() {
         marginBottom="10px"
         sx={{ fontWeight: "bold" }}
       >
-        My tasks
+        {groupState.group.name} tasks
       </Typography>
       <ElementsTab tabHeaders={tabHeaders} />
     </>
