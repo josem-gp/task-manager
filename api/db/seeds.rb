@@ -30,7 +30,7 @@ puts "Creating Icons"
 # With this function we create fake data for a specific group.
 # We will add a specific user we want so that it will have data created for them in the group
 def create_fake_data(group, admin, user, icons)
-  users = [admin, user]
+  users = []
   tasks = []
   tags = []
 
@@ -53,11 +53,20 @@ def create_fake_data(group, admin, user, icons)
     Membership.create!(user: user, group: group)
   end
 
+  users.concat([admin, user])
+
   puts "Create Tasks for #{group.name}"
   50.times do
     # We want the date to be close to our current date
     rand_date = ((Date.current - 10) + rand((Date.current + 30) - (Date.current - 10))).strftime("%Y-%m-%d")
-    tasks << Task.create!(name: "#{Faker::Verb.base} #{Faker::Hacker.noun}", user: users.sample, group: group, assignee: users.sample, due_date: rand_date) 
+    tasks << Task.create!(
+      name: "#{Faker::Verb.base} #{Faker::Hacker.noun}", 
+      user: users.sample, 
+      group: group, 
+      assignee: users.sample, 
+      due_date: rand_date,
+      finished: [true, false].sample
+    ) 
   end
 
   puts "Creating Tags for #{group.name}"

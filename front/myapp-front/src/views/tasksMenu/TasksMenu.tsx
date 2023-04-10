@@ -65,7 +65,7 @@ function TasksMenu() {
         marginBottom="30px"
       >
         <Typography variant="h6">
-          You have {groupState.groupTasks?.today.length} tasks today
+          There are {groupState.groupTasks?.today.length} tasks due today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>

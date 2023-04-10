@@ -15,6 +15,7 @@ function InvitationCard({ element }: InvitationRendererProps) {
     <Paper
       elevation={2}
       sx={{
+        display: "flex",
         width: "100%",
         maxWidth: "360px",
         padding: "10px 0",
@@ -32,7 +33,13 @@ function InvitationCard({ element }: InvitationRendererProps) {
         justifyContent="space-between"
         padding="0 20px"
       >
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          width="184px"
+          overflow="scroll"
+        >
           <Stack direction="column">
             <Typography variant="button">{element.email}</Typography>
             <Stack direction="row" spacing={1} alignItems="center">

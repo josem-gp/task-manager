@@ -82,12 +82,10 @@ function TaskCard({ element }: TaskRendererProps) {
         {element.task.name}
       </Typography>
       <Stack
-        direction="row"
         spacing={1}
         sx={{
           padding: "0px 20px 10px 20px",
-          alignItems: "center",
-          justifyContent: "space-between",
+          alignItems: "flex-start",
         }}
       >
         <Box>

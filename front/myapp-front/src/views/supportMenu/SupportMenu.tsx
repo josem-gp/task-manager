@@ -7,6 +7,7 @@ import { filterDates, parseDate } from "../../utils/dateUtils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/user/UserContext";
 import { DividedTaskDetails } from "../../types/interfaces";
+import TaskCard from "../../components/card/TaskCard";
 
 function SupportMenu() {
   const todaysDate = parseDate();
@@ -16,9 +17,7 @@ function SupportMenu() {
   // We create this temporary state in order not to make changes to our base state (userState.userTasks)
   const [filteredUserTasks, setFilteredUserTasks] = useState<
     DividedTaskDetails[]
-  >([]);
-
-  console.log(filteredUserTasks);
+  >(userState.userTasks);
 
   // In this function we filter the User tasks and update the state
   function handleFilteredUserTasks() {
@@ -29,9 +28,19 @@ function SupportMenu() {
     setFilteredUserTasks(filteredDates);
   }
 
+  function taskCardRenderer() {
+    return filteredUserTasks.map((el) => (
+      <TaskCard key={el.task.id} element={el} />
+    ));
+  }
+
   useEffect(() => {
     handleFilteredUserTasks();
   }, [dateRange]);
+
+  useEffect(() => {
+    taskCardRenderer();
+  }, [filteredUserTasks]);
 
   return (
     <>
@@ -117,7 +126,7 @@ function SupportMenu() {
             padding: "0 10px",
           }}
         >
-          Task Hardcoded
+          {taskCardRenderer()}
         </Stack>
       </Box>
     </>

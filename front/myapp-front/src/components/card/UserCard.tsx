@@ -37,7 +37,7 @@ function UserCard({ element }: UserRendererProps) {
             alt="Owner's profile picture"
             sx={{ width: 30, height: 30 }}
           />
-          <Stack direction="column">
+          <Stack direction="column" width="148px" overflow="scroll">
             <Typography variant="h6">{element.user.username}</Typography>
             <Typography
               variant="caption"
