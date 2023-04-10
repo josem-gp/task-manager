@@ -3,8 +3,36 @@ import Navbar from "../../components/navbar/Navbar";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { filterDates, parseDate } from "../../utils/dateUtils";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/user/UserContext";
+import { DividedTaskDetails } from "../../types/interfaces";
 
 function SupportMenu() {
+  const todaysDate = parseDate();
+  // https://www.npmjs.com/package/react-calendar
+  const [dateRange, onChange] = useState(() => new Date());
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  // We create this temporary state in order not to make changes to our base state (userState.userTasks)
+  const [filteredUserTasks, setFilteredUserTasks] = useState<
+    DividedTaskDetails[]
+  >([]);
+
+  console.log(filteredUserTasks);
+
+  // In this function we filter the User tasks and update the state
+  function handleFilteredUserTasks() {
+    const filteredDates = userState.userTasks.filter((el) => {
+      return filterDates(dateRange, el.task.due_date);
+    });
+
+    setFilteredUserTasks(filteredUserTasks);
+  }
+
+  useEffect(() => {
+    handleFilteredUserTasks();
+  }, [dateRange]);
+
   return (
     <>
       <Box sx={{ display: { xs: "none", lg: "block" } }}>
@@ -20,6 +48,7 @@ function SupportMenu() {
         }}
       >
         <Box
+          // Only show for mobile
           sx={{
             width: "100%",
             display: { xs: "block", md: "none" },
@@ -43,7 +72,7 @@ function SupportMenu() {
             <TextField
               variant="standard"
               margin="normal"
-              // value={todaysDate.current}
+              value={todaysDate}
               disabled={true}
               required
               fullWidth
@@ -65,12 +94,12 @@ function SupportMenu() {
               Today
             </Typography>
           </Box>
-          {/* <ActionBtn /> */}
+          <ActionBtn name="New Task" onClick={() => console.log("clicked")} />
         </Stack>
         <Calendar
           className="react-calendar"
-          // onChange={onChange}
-          // value={date}
+          onChange={onChange}
+          value={dateRange}
           locale="en-EN"
           allowPartialRange={true}
           selectRange={true}

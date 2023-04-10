@@ -1,9 +1,9 @@
 import { createContext } from "react";
 import {
   GroupDetails,
-  TaskDetails,
   User,
   DividedUserDetails,
+  DividedTaskDetails,
 } from "../../types/interfaces";
 
 export const initialState: User = {
@@ -19,7 +19,7 @@ export const initialState: User = {
 type UserContextAction =
   | { type: "SET_USER"; payload: DividedUserDetails }
   | { type: "SET_USER_GROUPS"; payload: GroupDetails[] }
-  | { type: "SET_USER_TASKS"; payload: TaskDetails[] }
+  | { type: "SET_USER_TASKS"; payload: DividedTaskDetails[] }
   | { type: "SET_USER_AUTH"; payload: string };
 
 export function reducer(state: User, action: UserContextAction) {

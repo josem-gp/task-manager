@@ -75,13 +75,7 @@ function TasksMenu() {
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <ActionBtn
-          name="New Task"
-          fontColor={colors.primary}
-          backgroundColor={colors.backgroundLight}
-          borderColor={colors.primary}
-          onClick={handleOpen}
-        />
+        <ActionBtn name="New Task" onClick={handleOpen} />
         <ActionBtn
           name="Filter by"
           fontColor={colors.textLight}
