@@ -37,12 +37,9 @@ function UserCard({ element }: UserRendererProps) {
             alt="Owner's profile picture"
             sx={{ width: 30, height: 30 }}
           />
-          <Stack direction="column" width="148px" overflow="scroll">
+          <Stack direction="column" width="148px" sx={{ overflow: "scroll" }}>
             <Typography variant="h6">{element.user.username}</Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: "#B5B5B5", lineHeight: "0.8" }}
-            >
+            <Typography variant="caption" sx={{ color: "#B5B5B5" }}>
               {element.user.email}
             </Typography>
           </Stack>
