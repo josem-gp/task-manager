@@ -90,7 +90,7 @@ icons.each_with_index do |icon, idx|
 end
 
 puts "Creating main Users"
-admin_one = User.create!(username: "jose", email: "testest@gmail.com", password: "123456")
+admin_one = User.create!(username: "jose", email: "jgarciaportillo@gmail.com", password: "123456")
 admin_two = User.create!(username: "saki", email: "saki@test.io", password: "1234567")
 
 puts "Creating main Groups"
