@@ -10,20 +10,19 @@ import SearchIcon from "@mui/icons-material/Search";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { ElementSelect } from "../elementSelect/ElementSelect";
 import { UserContext } from "../../context/user/UserContext";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
-import { initialState, reducer } from "./filterBarReducer";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
 import { UseApiProps } from "../../types/types";
-import { FilterBarParams } from "./FilterBar.types";
 import { fetchData } from "../../utils/fetchApiData";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { ErrorContext } from "../../context/error/ErrorContext";
-import { TasksResponse } from "../../types/interfaces";
+import { FilterBarParams, TasksResponse } from "../../types/interfaces";
 import useFilterOptions from "../../hooks/useFilterOptions";
+import { FilterBarProps } from "./FilterBar.types";
 
-function FilterBar() {
+function FilterBar({ closeModal }: FilterBarProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
@@ -40,10 +39,10 @@ function FilterBar() {
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,
-      // headers: {
-      //   Authorization: `Bearer ${userState.userAuth}`,
-      //   "Content-Type": "application/json",
-      // } as AxiosRequestHeaders,
+      headers: {
+        Authorization: `Bearer ${userState.userAuth}`,
+        "Content-Type": "application/json",
+      } as AxiosRequestHeaders,
     };
 
     fetchData<FilterBarParams, TasksResponse>(params)
@@ -63,6 +62,9 @@ function FilterBar() {
       .catch((error: AxiosError) => {
         setError(error.response?.data as React.SetStateAction<string | null>);
       });
+
+    // After filtering or resetting we close modal
+    closeModal();
   }
 
   function handleReset() {
@@ -126,13 +128,7 @@ function FilterBar() {
             ),
           }}
         />
-        <ActionBtn
-          name="Filter"
-          fontColor={colors.primary}
-          backgroundColor={colors.backgroundLight}
-          borderColor={colors.primary}
-          onClick={handleFilter}
-        />
+        <ActionBtn name="Filter" onClick={handleFilter} />
         <ActionBtn
           name="Reset"
           fontColor={colors.textLight}

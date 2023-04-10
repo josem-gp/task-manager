@@ -50,20 +50,9 @@ function GroupsMenu() {
           Welcome to {groupState.group.name}
         </Typography>
       </Stack>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="baseline"
-      >
-        <Typography
-          variant="h4"
-          marginBottom="40px"
-          sx={{ fontWeight: "bold" }}
-        >
-          My Group
-        </Typography>
-        {/* <ActionBtn /> */}
-      </Stack>
+
+      {/* <ActionBtn /> */}
+
       <ElementsTab tabHeaders={tabHeaders} />
     </>
   );

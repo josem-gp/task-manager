@@ -33,8 +33,7 @@ function Dashboard() {
             </Grid>
           </GroupContextProvider>
           <Grid item xs={12} md={5} lg={4}>
-            {/* <SupportMenu /> */}
-            <h1>Hi</h1>
+            <SupportMenu />
           </Grid>
         </Grid>
       </SidebarBtnContextProvider>

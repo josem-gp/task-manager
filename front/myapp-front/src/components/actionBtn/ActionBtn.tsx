@@ -1,11 +1,12 @@
 import { Button } from "@mui/material";
 import { ActionBtnProps } from "./ActionBtn.types";
+import { colors } from "../../utils/colors";
 
 function ActionBtn({
   name,
-  fontColor,
-  backgroundColor,
-  borderColor,
+  fontColor = colors.primary,
+  backgroundColor = colors.backgroundLight,
+  borderColor = colors.primary,
   onClick,
 }: ActionBtnProps) {
   return (

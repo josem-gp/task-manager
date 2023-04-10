@@ -1,16 +1,32 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import FilterTasks from "../../components/filterBar/FilterBar";
+import FilterBar from "../../components/filterBar/FilterBar";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import { UserContext } from "../../context/user/UserContext";
 import { colors } from "../../utils/colors";
+import ActionBtn from "../../components/actionBtn/ActionBtn";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 function TasksMenu() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const tabHeaders = [
     {
@@ -38,6 +54,9 @@ function TasksMenu() {
       <Typography variant="h5" sx={{ color: colors.textLight }}>
         Hello, {userState.userObject.user.username}!
       </Typography>
+      <Typography variant="h4" marginBottom="30px" sx={{ fontWeight: "bold" }}>
+        Welcome to {groupState.group.name}
+      </Typography>
       <Stack
         direction="row"
         spacing={2}
@@ -45,20 +64,26 @@ function TasksMenu() {
         alignItems="center"
         marginBottom="30px"
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          You've got {groupState.groupTasks?.today.length} tasks today
+        <Typography variant="h6">
+          You have {groupState.groupTasks?.today.length} tasks today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>
-      <FilterTasks />
-      <Typography
-        variant="h4"
-        marginTop="30px"
-        marginBottom="10px"
-        sx={{ fontWeight: "bold" }}
-      >
-        My tasks
-      </Typography>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <FilterBar closeModal={handleClose} />
+        </Box>
+      </Modal>
+      <Stack direction="row" spacing={2} justifyContent="flex-end">
+        <ActionBtn name="New Task" onClick={handleOpen} />
+        <ActionBtn
+          name="Filter by"
+          fontColor={colors.textLight}
+          backgroundColor={colors.backgroundDark}
+          borderColor={colors.grayBtn}
+          onClick={handleOpen}
+        />
+      </Stack>
       <ElementsTab tabHeaders={tabHeaders} />
     </>
   );
