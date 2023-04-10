@@ -5,15 +5,24 @@ import EmailIcon from "@mui/icons-material/Email";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { NavbarProps } from "./Navbar.types";
 import Sidebar from "../../views/sidebar/Sidebar";
+import { useContext } from "react";
+import { UserContext } from "../../context/user/UserContext";
 
 function Navbar({ showSidebar }: NavbarProps) {
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+
   return (
     <Stack
       direction="row"
       spacing={1}
       sx={{
-        margin: { xs: "10px 40px 40px 40px" },
-        justifyContent: { xs: "center", sm: "flex-end", md: "space-between" },
+        margin: { xs: "10px 40px 15px 40px" },
+        justifyContent: {
+          xs: "center",
+          sm: "flex-end",
+          md: "space-between",
+          lg: "flex-end",
+        },
       }}
       alignItems="end"
     >
@@ -23,7 +32,7 @@ function Navbar({ showSidebar }: NavbarProps) {
           <AccountCircleIcon fontSize="large" />
         </IconButton>
         <Typography variant="caption" display="block" lineHeight={0}>
-          Hardcoded username
+          {userState.userObject.user.username}
         </Typography>
         <IconButton>
           <NotificationsIcon sx={{ color: "#000000" }} />

@@ -128,13 +128,7 @@ function FilterBar({ closeModal }: FilterBarProps) {
             ),
           }}
         />
-        <ActionBtn
-          name="Filter"
-          fontColor={colors.primary}
-          backgroundColor={colors.backgroundLight}
-          borderColor={colors.primary}
-          onClick={handleFilter}
-        />
+        <ActionBtn name="Filter" onClick={handleFilter} />
         <ActionBtn
           name="Reset"
           fontColor={colors.textLight}

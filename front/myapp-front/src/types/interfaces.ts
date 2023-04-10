@@ -82,7 +82,7 @@ export interface InvitationDetails {
 export interface User {
   userObject: DividedUserDetails;
   userGroups: GroupDetails[];
-  userTasks: TaskDetails[];
+  userTasks: DividedTaskDetails[];
   userAuth: string;
 }
 

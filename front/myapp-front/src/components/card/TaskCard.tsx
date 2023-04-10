@@ -42,6 +42,7 @@ function TaskCard({ element }: TaskRendererProps) {
           spacing={2}
           width="100%"
           height="fit-content"
+          overflow="scroll"
           sx={{ padding: "0px 0px 0px 20px" }}
         >
           {element.task_tags.map((tag) => (
