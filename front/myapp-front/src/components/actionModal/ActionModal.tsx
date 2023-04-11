@@ -1,5 +1,5 @@
 import { Box, Modal, Typography } from "@mui/material";
-import React from "react";
+import { useState } from "react";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { ActionModalProps } from "./ActionModal.types";
 import ModalTask from "./ModalTask";
@@ -19,15 +19,15 @@ const style = {
   p: 4,
 };
 
-function ActionModal({ type, btnName, action }: ActionModalProps) {
-  const [open, setOpen] = React.useState(false);
+function ActionModal({ type, btnName, action, initialData }: ActionModalProps) {
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   function modalRenderer() {
     switch (type) {
       case "task":
-        return <ModalTask action={action} />;
+        return <ModalTask action={action} initialData={initialData} />;
       case "group":
         return <ModalGroup />;
       case "tag":

@@ -29,6 +29,7 @@ function TaskCard({ element }: TaskRendererProps) {
           elevation: "3",
         },
       }}
+      onClick={() => console.log("clicked", element.task.id)}
     >
       <Stack
         direction="row"

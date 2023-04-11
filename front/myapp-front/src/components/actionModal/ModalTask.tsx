@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import { CardModalProps } from "./ActionModal.types";
+import { TaskModalProps } from "./ActionModal.types";
 import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { Group, TagDetails, TaskFormDetails } from "../../types/interfaces";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
@@ -20,7 +20,7 @@ import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../../context/error/ErrorContext";
 import ActionModalHeader from "./ActionModalHeader";
 
-function ModalTask({ action }: CardModalProps) {
+function ModalTask({ action, initialData }: TaskModalProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";
@@ -29,17 +29,7 @@ function ModalTask({ action }: CardModalProps) {
   // And groupState is not empty since it is holding the value of the group we selected in the sidebar
   const [taskGroup, setTaskGroup] = useState<Group>(GroupInitialState);
   const { setError } = useContext(ErrorContext);
-  const [data, setData] = useState<TaskFormDetails>({
-    task: {
-      name: "",
-      note: "",
-      finished: false,
-      due_date: "",
-      assignee_id: "",
-      group_id: "",
-      tag_ids: [],
-    },
-  });
+  const [data, setData] = useState<TaskFormDetails>(initialData);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;

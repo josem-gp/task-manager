@@ -104,7 +104,22 @@ function SupportMenu() {
               Today
             </Typography>
           </Box>
-          <ActionModal type="task" btnName="New Task" action="create" />
+          <ActionModal
+            type="task"
+            btnName="New Task"
+            action="create"
+            initialData={{
+              task: {
+                name: "",
+                note: "",
+                finished: false,
+                due_date: "",
+                assignee_id: "",
+                group_id: "",
+                tag_ids: [],
+              },
+            }}
+          />
         </Stack>
         <Calendar
           className="react-calendar"
