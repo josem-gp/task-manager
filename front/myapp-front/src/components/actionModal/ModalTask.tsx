@@ -1,8 +1,10 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
   ListItemText,
@@ -15,27 +17,76 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { DatePicker } from "@mui/x-date-pickers";
 import { CardModalProps } from "./ActionModal.types";
-import { useState } from "react";
-import { TaskFormDetails } from "../../types/interfaces";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
+import { Group, TagDetails, TaskFormDetails } from "../../types/interfaces";
+import { GroupContext } from "../../context/group/GroupContext";
+import MyDatePicker from "../myDatePicker/MyDatePicker";
+import dayjs from "dayjs";
+import { ElementSelect } from "../elementSelect/ElementSelect";
+import { UserContext } from "../../context/user/UserContext";
+import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
+import { initialState as GroupInitialState } from "../../context/group/GroupContext";
+import ActionBtn from "../actionBtn/ActionBtn";
 
 function ModalTask({ action }: CardModalProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
-  const isCreate = formAction === "create";
   const isEdit = formAction === "edit";
+  const { state: groupState } = useContext(GroupContext);
+  const { state: userState } = useContext(UserContext);
+  const { setSelectedGroupId } = useContext(SidebarBtnContext);
+  // We create this state to hold the groupState info because we want it to be empty in the beginning
+  // And groupState is not empty since it is holding the value of the group we selected in the sidebar
+  const [taskGroup, setTaskGroup] = useState<Group>(GroupInitialState);
   const [data, setData] = useState<TaskFormDetails>({
     task: {
       name: "",
       note: "",
       finished: false,
       due_date: "",
-      assignee_id: 0,
-      group_id: 0,
+      assignee_id: "",
+      group_id: "",
       tag_ids: [],
     },
   });
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value, type, checked } = event.target;
+    console.log(name);
+    console.log(type);
+    setData((prevState) => ({
+      ...prevState,
+      task: {
+        ...prevState.task,
+        [name]: type === "checkbox" ? checked : value,
+      },
+    }));
+  }
+
+  function handleAutocompleteChange(
+    event: SyntheticEvent<Element, Event>,
+    value: TagDetails[]
+  ) {
+    setData((prevState) => ({
+      ...prevState,
+      task: {
+        ...prevState.task,
+        tag_ids: [...prevState.task.tag_ids, value[value.length - 1].id],
+      },
+    }));
+  }
+
+  useEffect(() => {
+    setSelectedGroupId(data.task.group_id);
+  }, [data.task.group_id]);
+
+  useEffect(() => {
+    // We want to set a taskGroup when we have a group selected in our task form
+    if (data.task.group_id) {
+      setTaskGroup(groupState);
+    }
+  }, [groupState]);
 
   return (
     <>
@@ -79,11 +130,11 @@ function ModalTask({ action }: CardModalProps) {
           )}
         </Stack>
       </Stack>
+
       <TextField
         disabled={isShow ? true : undefined}
-        id="name"
         label="Name"
-        // onChange={handleChange}
+        onChange={handleChange}
         name="name"
         value={data.task.name}
         sx={{
@@ -93,328 +144,110 @@ function ModalTask({ action }: CardModalProps) {
         }}
       />
 
-      {/* <Box sx={{ width: 225, marginBottom: "10px" }}>
-        {userTasks.status === "show" ? (
-          <FormControl fullWidth disabled>
-            <InputLabel
-              id="multiple-checkbox"
-              sx={{
-                background: "white",
-                paddingRight: "6px",
-              }}
-            >
-              Tags
-            </InputLabel>
-            <Select
-              labelId="multiple-checkbox"
-              id="multiple-checkbox"
-              multiple
-              name="selectedTags"
-              value={taskCard.selectedTags}
-              onChange={handleSelectPartner}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {taskCard.possibleTags &&
-                taskCard.possibleTags.map((name) => (
-                  <MenuItem key={name[0]} value={name[1]}>
-                    <Checkbox
-                      checked={taskCard.selectedTags.indexOf(name[1]) > -1}
-                    />
-                    <ListItemText primary={name[1]} />
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        ) : (
-          <FormControl fullWidth>
-            <InputLabel
-              id="multiple-checkbox"
-              sx={{
-                background: "white",
-                paddingRight: "6px",
-              }}
-            >
-              Tags
-            </InputLabel>
-            <Select
-              labelId="multiple-checkbox"
-              id="multiple-checkbox"
-              multiple
-              name="selectedTags"
-              value={taskCard.selectedTags}
-              onChange={handleSelectPartner}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {taskCard.possibleTags &&
-                taskCard.possibleTags.map((name) => (
-                  <MenuItem key={name[0]} value={name[1]}>
-                    <Checkbox
-                      checked={taskCard.selectedTags.indexOf(name[1]) > -1}
-                    />
-                    <ListItemText primary={name[1]} />
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        )}
-      </Box>
-
       <Box
         sx={{
           width: "225px",
         }}
       >
-        {userTasks.status === "show" ? (
-          <DatePicker
-            disabled
-            label="Due date"
-            name="due_date"
-            value={userTasks.task.due_date}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        ) : (
-          <DatePicker
-            label="Due date"
-            name="due_date"
-            value={userTasks.task.due_date}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        )}
-      </Box>
-      <Box sx={{ width: 225, marginTop: "10px" }}>
-        {userTasks.status === "show" ? (
-          <FormControl fullWidth disabled>
-            <InputLabel id="selected-group">Choose group</InputLabel>
-            <Select
-              defaultValue=""
-              id="selected-group"
-              name="group"
-              value={taskCard.selectedTaskGroup}
-              label="Choose group"
-              onChange={handleChange}
-            >
-              {userGroups.groupsArray.map((group) => (
-                <MenuItem key={group.id} value={group.id}>
-                  {group.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ) : (
-          <FormControl fullWidth>
-            <InputLabel id="selected-group">Choose group</InputLabel>
-            <Select
-              defaultValue=""
-              id="selected-group"
-              name="group"
-              value={taskCard.selectedTaskGroup}
-              label="Choose group"
-              onChange={handleChange}
-            >
-              {userGroups.groupsArray.map((group) => (
-                <MenuItem key={group.id} value={group.id}>
-                  {group.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      </Box>
-      <Box sx={{ width: 225, marginTop: "10px" }}>
-        {userTasks.status === "show" ? (
-          <FormControl fullWidth disabled>
-            <InputLabel
-              id="multiple-checkbox"
-              sx={{
-                background: "white",
-                paddingRight: "6px",
-              }}
-            >
-              Assign to
-            </InputLabel>
-            <Select
-              labelId="multiple-checkbox"
-              id="multiple-checkbox"
-              multiple
-              name="selectedAssignees"
-              value={taskCard.selectedAssignees}
-              onChange={handleSelectPartner}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {taskCard.possibleAssignees &&
-                taskCard.possibleAssignees.map((name) => (
-                  <MenuItem key={name[0]} value={name[1]}>
-                    <Checkbox
-                      checked={taskCard.selectedAssignees.indexOf(name[1]) > -1}
-                    />
-                    <ListItemText primary={name[1]} />
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        ) : (
-          <FormControl fullWidth>
-            <InputLabel
-              id="multiple-checkbox"
-              sx={{
-                background: "white",
-                paddingRight: "6px",
-              }}
-            >
-              Assign to
-            </InputLabel>
-            <Select
-              labelId="multiple-checkbox"
-              id="multiple-checkbox"
-              multiple
-              name="selectedAssignees"
-              value={taskCard.selectedAssignees}
-              onChange={handleSelectPartner}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {taskCard.possibleAssignees &&
-                taskCard.possibleAssignees.map((name) => (
-                  <MenuItem key={name[0]} value={name[1]}>
-                    <Checkbox
-                      checked={taskCard.selectedAssignees.indexOf(name[1]) > -1}
-                    />
-                    <ListItemText primary={name[1]} />
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        )}
-      </Box>
-      {userTasks.status === "show" ? (
-        <>
-          <FormControlLabel
-            disabled
-            control={
-              <Checkbox
-                checked={userTasks.task.finished}
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            }
-            label="Finished"
-          />
-          {userTasks.task.reviewed && (
-            <FormControlLabel
-              disabled
-              control={
-                <Checkbox
-                  checked={userTasks.task.reviewed}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-              }
-              label="Reviewed"
-            />
-          )}
-        </>
-      ) : (
-        <FormControlLabel
-          control={
-            <Checkbox
-              name="finished"
-              type="checkbox"
-              checked={userTasks.task.finished}
-              onChange={handleChange}
-              inputProps={{ "aria-label": "controlled" }}
-            />
+        <MyDatePicker
+          disabled={isShow ? true : false}
+          label="Due date"
+          value={data.task.due_date}
+          setElement={(newValue: dayjs.Dayjs | null) =>
+            setData((prevState) => ({
+              ...prevState,
+              task: {
+                ...prevState.task,
+                due_date: newValue ? newValue.format("YYYY/MM/DD") : "",
+              },
+            }))
           }
-          label="Finished"
         />
-      )}
-      {userTasks.task.pending && (
-        <Typography
-          variant="caption"
-          color="rgba(0, 0, 0, 0.38)"
-          fontStyle="italic"
-          sx={{
-            textDecoration: "underline",
-          }}
-        >
-          Pending Review
-        </Typography>
-      )}
+      </Box>
 
-      {userTasks.status === "show" ? (
-        <TextField
-          disabled
-          id="note"
-          label="Note"
-          onChange={handleChange}
-          name="note"
-          value={userTasks.task.note ? userTasks.task.note : ""}
-          multiline
-          rows={5}
-          sx={{
-            marginTop: "10px",
-            marginBottom: "30px",
-            width: "225px",
-          }}
+      <Box sx={{ width: 225, marginTop: "10px" }}>
+        <ElementSelect
+          disabled={isShow ? true : false}
+          name="Choose a group"
+          elements={userState.userGroups}
+          elementId={data.task.group_id}
+          setElementId={(id: string) =>
+            setData((prevState) => ({
+              ...prevState,
+              task: {
+                ...prevState.task,
+                group_id: id,
+              },
+            }))
+          }
         />
-      ) : (
-        <TextField
-          id="note"
-          label="Note"
-          onChange={handleChange}
-          name="note"
-          value={userTasks.task.note ? userTasks.task.note : ""}
-          multiline
-          rows={5}
-          sx={{
-            marginTop: "10px",
-            marginBottom: "30px",
-            width: "225px",
-          }}
+      </Box>
+
+      <Box sx={{ width: 225, marginBottom: "10px" }}>
+        <Autocomplete
+          disabled={isShow ? true : undefined}
+          multiple
+          options={taskGroup.groupTags}
+          getOptionLabel={(tag) => tag.slug}
+          defaultValue={[]}
+          onChange={handleAutocompleteChange}
+          filterSelectedOptions
+          renderInput={(params) => (
+            <TextField {...params} label="Tags" placeholder="Select tags" />
+          )}
+        />
+      </Box>
+
+      <Box sx={{ width: 225, marginTop: "10px" }}>
+        <ElementSelect
+          disabled={isShow ? true : false}
+          name="Choose assignee"
+          elements={taskGroup.groupUsers}
+          elementId={data.task.assignee_id}
+          setElementId={(id: string) =>
+            setData((prevState) => ({
+              ...prevState,
+              task: {
+                ...prevState.task,
+                assignee_id: id,
+              },
+            }))
+          }
+        />
+      </Box>
+
+      <FormControlLabel
+        disabled={isShow ? true : undefined}
+        control={
+          <Checkbox
+            name="finished"
+            checked={data.task.finished}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+        }
+        label="Finished"
+      />
+
+      <TextField
+        disabled={isShow ? true : undefined}
+        label="Note"
+        onChange={handleChange}
+        name="note"
+        value={data.task.note}
+        sx={{
+          marginBottom: "10px",
+          marginTop: "30px",
+          width: "225px",
+        }}
+      />
+
+      {!isShow && (
+        <ActionBtn
+          name={isEdit ? "Edit task" : "Create task"}
+          onClick={() => console.log("Clicked")}
         />
       )}
-      {userTasks.status === "create" && (
-        <Button
-          variant="contained"
-          onClick={handleTaskCreate}
-          sx={{
-            color: "#515151",
-            fontWeight: "bold",
-            backgroundColor: "#f9bb19",
-            "&:hover": {
-              backgroundColor: "#f7b613",
-            },
-            float: "right",
-            marginRight: "26px",
-          }}
-        >
-          Create task
-        </Button>
-      )}
-      {userTasks.status === "edit" && (
-        <Button
-          variant="contained"
-          onClick={handleTaskEdit}
-          sx={{
-            color: "#515151",
-            fontWeight: "bold",
-            backgroundColor: "#f9bb19",
-            "&:hover": {
-              backgroundColor: "#f7b613",
-            },
-            float: "right",
-            marginRight: "26px",
-          }}
-        >
-          Edit task
-        </Button>
-      )} */}
     </>
   );
 }

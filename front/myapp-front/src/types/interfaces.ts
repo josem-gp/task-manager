@@ -12,8 +12,8 @@ export interface TaskFormDetails {
     note: string;
     finished: boolean;
     due_date: string;
-    assignee_id: number;
-    group_id: number;
+    assignee_id: string;
+    group_id: string;
     tag_ids: number[];
   };
 }
