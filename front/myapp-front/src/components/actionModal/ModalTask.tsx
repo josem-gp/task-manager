@@ -28,17 +28,20 @@ import { UserContext } from "../../context/user/UserContext";
 import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
 import { initialState as GroupInitialState } from "../../context/group/GroupContext";
 import ActionBtn from "../actionBtn/ActionBtn";
+import { UseApiProps } from "../../types/types";
+import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
+import { fetchData } from "../../utils/fetchApiData";
+import { ErrorContext } from "../../context/error/ErrorContext";
 
 function ModalTask({ action }: CardModalProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";
-  const { state: groupState } = useContext(GroupContext);
   const { state: userState } = useContext(UserContext);
-  const { setSelectedGroupId } = useContext(SidebarBtnContext);
   // We create this state to hold the groupState info because we want it to be empty in the beginning
   // And groupState is not empty since it is holding the value of the group we selected in the sidebar
   const [taskGroup, setTaskGroup] = useState<Group>(GroupInitialState);
+  const { setError } = useContext(ErrorContext);
   const [data, setData] = useState<TaskFormDetails>({
     task: {
       name: "",
@@ -77,16 +80,38 @@ function ModalTask({ action }: CardModalProps) {
     }));
   }
 
-  useEffect(() => {
-    setSelectedGroupId(data.task.group_id);
-  }, [data.task.group_id]);
+  function fetchGroupInfo() {
+    const params: UseApiProps<undefined> = {
+      method: "get",
+      url: `http://localhost:3000/api/v1/groups/${data.task.group_id}`,
+      headers: {
+        Authorization: `Bearer ${userState.userAuth}`,
+        "Content-Type": "application/json",
+      } as AxiosRequestHeaders,
+    };
+
+    fetchData<undefined, Group>(params)
+      .then((response: AxiosResponse<Group> | AxiosError) => {
+        if ("data" in response) {
+          setTaskGroup(response.data);
+        } else {
+          setError(
+            response.response?.statusText as React.SetStateAction<string | null>
+          );
+        }
+      })
+      .catch((error: AxiosError) => {
+        setError(
+          error.response?.statusText as React.SetStateAction<string | null>
+        );
+      });
+  }
 
   useEffect(() => {
-    // We want to set a taskGroup when we have a group selected in our task form
     if (data.task.group_id) {
-      setTaskGroup(groupState);
+      fetchGroupInfo();
     }
-  }, [groupState]);
+  }, [data.task.group_id]);
 
   return (
     <>
