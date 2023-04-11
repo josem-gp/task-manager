@@ -1,37 +1,24 @@
 import {
   Autocomplete,
   Box,
-  Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
-  IconButton,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
   TextField,
-  Typography,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { CardModalProps } from "./ActionModal.types";
 import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { Group, TagDetails, TaskFormDetails } from "../../types/interfaces";
-import { GroupContext } from "../../context/group/GroupContext";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
 import dayjs from "dayjs";
 import { ElementSelect } from "../elementSelect/ElementSelect";
 import { UserContext } from "../../context/user/UserContext";
-import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
 import { initialState as GroupInitialState } from "../../context/group/GroupContext";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { UseApiProps } from "../../types/types";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../../context/error/ErrorContext";
+import ActionModalHeader from "./ActionModalHeader";
 
 function ModalTask({ action }: CardModalProps) {
   const [formAction, setFormAction] = useState(action);
@@ -75,7 +62,7 @@ function ModalTask({ action }: CardModalProps) {
       ...prevState,
       task: {
         ...prevState.task,
-        tag_ids: [...prevState.task.tag_ids, value[value.length - 1].id],
+        tag_ids: [...prevState.task.tag_ids, value[value.length - 1]?.id],
       },
     }));
   }
@@ -115,65 +102,34 @@ function ModalTask({ action }: CardModalProps) {
 
   return (
     <>
-      <Stack
-        direction="row"
-        spacing={2}
-        width="100%"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography variant="h6" component="h2">
-          {isShow
+      <ActionModalHeader
+        title={
+          isShow
             ? "Check your task"
             : isEdit
             ? "Edit your task"
-            : "Create a task"}
-        </Typography>
-        <Stack
-          direction="row"
-          spacing={0}
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          {isShow && (
-            <>
-              <IconButton
-                onClick={() => {
-                  setFormAction("edit");
-                }}
-                size="small"
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                // onClick={() => handleTaskDelete()}
-                size="small"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </>
-          )}
-        </Stack>
-      </Stack>
-
-      <TextField
-        disabled={isShow ? true : undefined}
-        label="Name"
-        onChange={handleChange}
-        name="name"
-        value={data.task.name}
-        sx={{
-          marginBottom: "10px",
-          marginTop: "30px",
-          width: "225px",
-        }}
+            : "Create a task"
+        }
+        isShow={isShow}
+        setFormAction={setFormAction}
       />
 
       <Box
         sx={{
-          width: "225px",
+          display: "flex",
+          flexDirection: "column",
+          rowGap: "10px",
+          marginTop: "20px",
         }}
       >
+        <TextField
+          disabled={isShow ? true : undefined}
+          label="Name"
+          onChange={handleChange}
+          name="name"
+          value={data.task.name}
+        />
+
         <MyDatePicker
           disabled={isShow ? true : false}
           label="Due date"
@@ -188,9 +144,7 @@ function ModalTask({ action }: CardModalProps) {
             }))
           }
         />
-      </Box>
 
-      <Box sx={{ width: 225, marginTop: "10px" }}>
         <ElementSelect
           disabled={isShow ? true : false}
           name="Choose a group"
@@ -206,9 +160,7 @@ function ModalTask({ action }: CardModalProps) {
             }))
           }
         />
-      </Box>
 
-      <Box sx={{ width: 225, marginBottom: "10px" }}>
         <Autocomplete
           disabled={isShow ? true : undefined}
           multiple
@@ -221,9 +173,7 @@ function ModalTask({ action }: CardModalProps) {
             <TextField {...params} label="Tags" placeholder="Select tags" />
           )}
         />
-      </Box>
 
-      <Box sx={{ width: 225, marginTop: "10px" }}>
         <ElementSelect
           disabled={isShow ? true : false}
           name="Choose assignee"
@@ -239,40 +189,35 @@ function ModalTask({ action }: CardModalProps) {
             }))
           }
         />
-      </Box>
 
-      <FormControlLabel
-        disabled={isShow ? true : undefined}
-        control={
-          <Checkbox
-            name="finished"
-            checked={data.task.finished}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
-          />
-        }
-        label="Finished"
-      />
-
-      <TextField
-        disabled={isShow ? true : undefined}
-        label="Note"
-        onChange={handleChange}
-        name="note"
-        value={data.task.note}
-        sx={{
-          marginBottom: "10px",
-          marginTop: "30px",
-          width: "225px",
-        }}
-      />
-
-      {!isShow && (
-        <ActionBtn
-          name={isEdit ? "Edit task" : "Create task"}
-          onClick={() => console.log("Clicked")}
+        <TextField
+          disabled={isShow ? true : undefined}
+          label="Note"
+          onChange={handleChange}
+          name="note"
+          value={data.task.note}
         />
-      )}
+
+        <FormControlLabel
+          disabled={isShow ? true : undefined}
+          control={
+            <Checkbox
+              name="finished"
+              checked={data.task.finished}
+              onChange={handleChange}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          }
+          label="Finished"
+        />
+
+        {!isShow && (
+          <ActionBtn
+            name={isEdit ? "Edit task" : "Create task"}
+            onClick={() => console.log("Clicked")}
+          />
+        )}
+      </Box>
     </>
   );
 }

@@ -23,6 +23,7 @@ function MyDatePicker({
           value={value ? dayjs(value) : null}
           onChange={(newValue: dayjs.Dayjs | null) => setElement(newValue)}
           sx={{
+            flexGrow: 1,
             "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
               borderColor: `${colors.primary} !important`,
             },
