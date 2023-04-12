@@ -20,7 +20,12 @@ import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../../context/error/ErrorContext";
 import ActionModalHeader from "./ActionModalHeader";
 
-function ModalTask({ action, initialData, setGroup }: TaskModalProps) {
+function ModalTask({
+  action,
+  initialData,
+  setGroup,
+  handleSubmit,
+}: TaskModalProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";
@@ -202,7 +207,7 @@ function ModalTask({ action, initialData, setGroup }: TaskModalProps) {
         {!isShow && (
           <ActionBtn
             name={isEdit ? "Edit task" : "Create task"}
-            onClick={() => console.log("Clicked")}
+            onClick={() => handleSubmit(data)}
           />
         )}
       </Box>

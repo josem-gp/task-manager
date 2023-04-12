@@ -23,7 +23,7 @@ export interface UserResponse {
 }
 
 export interface TasksResponse {
-  tasks: DividedTasks;
+  task_value: DividedTasks;
 }
 
 export interface UserDetails {

@@ -109,6 +109,7 @@ function SupportMenu() {
             btnName="New Task"
             action="create"
             setGroup={false}
+            handleSubmit={() => console.log("hi")}
             initialData={{
               task: {
                 name: "",

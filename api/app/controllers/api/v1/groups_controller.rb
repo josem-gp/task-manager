@@ -66,7 +66,7 @@ class Api::V1::GroupsController < ApplicationController
     if filtered_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
-      render json: { tasks: divide_tasks_by_date(filtered_tasks) }
+      render json: { task_value: divide_tasks_by_date(filtered_tasks) }
     end
   end
 

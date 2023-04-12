@@ -51,7 +51,7 @@ function FilterBar({ closeModal }: FilterBarProps) {
           // To set the group tasks in the context
           groupDispatch({
             type: "SET_GROUP_TASKS",
-            payload: response.data.tasks,
+            payload: response.data.task_value,
           });
         } else {
           setError(

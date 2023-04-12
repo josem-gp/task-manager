@@ -25,6 +25,7 @@ function ActionModal({
   action,
   initialData,
   setGroup,
+  handleSubmit,
 }: ActionModalProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -38,6 +39,7 @@ function ActionModal({
             action={action}
             setGroup={setGroup}
             initialData={initialData}
+            handleSubmit={handleSubmit}
           />
         );
       case "group":
