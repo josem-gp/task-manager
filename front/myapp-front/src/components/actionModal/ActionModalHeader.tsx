@@ -1,7 +1,7 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { ActionModalHeaderProps } from "./ActionModal.types";
+import ActionAlertDialog from "./ActionAlertDialog";
 
 function ActionModalHeader({
   title,
@@ -35,12 +35,7 @@ function ActionModalHeader({
             >
               <EditIcon />
             </IconButton>
-            <IconButton
-              // onClick={() => handleTaskDelete()}
-              size="small"
-            >
-              <DeleteIcon />
-            </IconButton>
+            <ActionAlertDialog />
           </>
         )}
       </Stack>
