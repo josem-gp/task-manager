@@ -3,7 +3,7 @@ import {
   InvitationDetails,
   TaskFormDetails,
 } from "../../types/interfaces";
-import { TagDetails, TaskDetails, UserDetails } from "../../types/interfaces";
+import { TagDetails, UserDetails } from "../../types/interfaces";
 
 export type ActionModalProps = BaseModal & ModalActions & DataProps;
 
@@ -39,6 +39,7 @@ type InvitationDataProps = {
 
 type ModalActions = {
   action: "show" | "create" | "edit";
+  setGroup: boolean;
 };
 
 export type TaskModalProps = {

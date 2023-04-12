@@ -108,6 +108,7 @@ function SupportMenu() {
             type="task"
             btnName="New Task"
             action="create"
+            setGroup={false}
             initialData={{
               task: {
                 name: "",

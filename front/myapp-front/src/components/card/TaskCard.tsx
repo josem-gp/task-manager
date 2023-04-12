@@ -50,7 +50,7 @@ function TaskCard({ element }: TaskRendererProps) {
     <>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <ModalTask action="show" initialData={initialData} />
+          <ModalTask action="show" setGroup={true} initialData={initialData} />
         </Box>
       </Modal>
       <Paper

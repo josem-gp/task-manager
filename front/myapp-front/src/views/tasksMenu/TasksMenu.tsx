@@ -7,6 +7,7 @@ import { GroupContext } from "../../context/group/GroupContext";
 import { UserContext } from "../../context/user/UserContext";
 import { colors } from "../../utils/colors";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
+import ActionModal from "../../components/actionModal/ActionModal";
 
 const style = {
   position: "absolute" as "absolute",
@@ -75,7 +76,23 @@ function TasksMenu() {
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <ActionBtn name="New Task" onClick={handleOpen} />
+        <ActionModal
+          type="task"
+          btnName="New Task"
+          action="create"
+          setGroup={true}
+          initialData={{
+            task: {
+              name: "",
+              note: "",
+              finished: false,
+              due_date: "",
+              assignee_id: "",
+              group_id: groupState.group.id.toString(),
+              tag_ids: [],
+            },
+          }}
+        />
         <ActionBtn
           name="Filter by"
           fontColor={colors.textLight}

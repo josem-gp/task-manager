@@ -19,7 +19,13 @@ const style = {
   p: 4,
 };
 
-function ActionModal({ type, btnName, action, initialData }: ActionModalProps) {
+function ActionModal({
+  type,
+  btnName,
+  action,
+  initialData,
+  setGroup,
+}: ActionModalProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,7 +33,13 @@ function ActionModal({ type, btnName, action, initialData }: ActionModalProps) {
   function modalRenderer() {
     switch (type) {
       case "task":
-        return <ModalTask action={action} initialData={initialData} />;
+        return (
+          <ModalTask
+            action={action}
+            setGroup={setGroup}
+            initialData={initialData}
+          />
+        );
       case "group":
         return <ModalGroup />;
       case "tag":
