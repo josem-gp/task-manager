@@ -9,7 +9,7 @@ export interface UserFormDetails {
 export interface TaskFormDetails {
   task: {
     name: string;
-    note: string;
+    note: string | null;
     finished: boolean;
     due_date: string;
     assignee_id: string;
@@ -49,7 +49,7 @@ export interface GroupDetails {
 export interface TaskDetails {
   id: number;
   name: string;
-  note: string;
+  note: string | null;
   due_date: string;
   finished: boolean;
   group_id: number;

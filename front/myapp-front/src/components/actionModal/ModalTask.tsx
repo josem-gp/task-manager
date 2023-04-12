@@ -33,8 +33,6 @@ function ModalTask({ action, initialData }: TaskModalProps) {
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
-    console.log(name);
-    console.log(type);
     setData((prevState) => ({
       ...prevState,
       task: {
