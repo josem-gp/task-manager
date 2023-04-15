@@ -25,6 +25,9 @@ export interface UserResponse {
 export interface TasksResponse {
   task_value: DividedTaskDetails[];
 }
+export interface TaskResponse {
+  task_value: DividedTaskDetails;
+}
 
 export interface UserDetails {
   id: number;

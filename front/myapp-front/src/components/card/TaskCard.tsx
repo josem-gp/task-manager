@@ -16,7 +16,11 @@ import { TaskRendererProps } from "./Card.types";
 import { fetchIconUrl } from "../../utils/fetchUserIcon";
 import ModalTask from "../actionModal/ModalTask";
 import { UseApiProps } from "../../types/types";
-import { TaskFormDetails, TasksResponse } from "../../types/interfaces";
+import {
+  TaskFormDetails,
+  TaskResponse,
+  TasksResponse,
+} from "../../types/interfaces";
 import { UserContext } from "../../context/user/UserContext";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { fetchData } from "../../utils/fetchApiData";
@@ -67,15 +71,14 @@ function TaskCard({ element }: TaskRendererProps) {
       } as AxiosRequestHeaders,
     };
 
-    fetchData<TaskFormDetails, TasksResponse>(params)
-      .then((response: AxiosResponse<TasksResponse> | AxiosError) => {
+    fetchData<TaskFormDetails, TaskResponse>(params)
+      .then((response: AxiosResponse<TaskResponse> | AxiosError) => {
         if ("data" in response) {
           // To set the new group tasks in the context
-          console.log(response);
-          // groupDispatch({
-          //   type: "SET_GROUP_TASKS",
-          //   payload: response.data.task_value,
-          // });
+          groupDispatch({
+            type: "UPDATE_GROUP_TASK",
+            payload: response.data.task_value,
+          });
         } else {
           setError(
             response.response?.statusText as React.SetStateAction<string | null>
