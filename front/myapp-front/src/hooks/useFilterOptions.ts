@@ -5,7 +5,6 @@ import {
   reducer,
 } from "../components/filterBar/filterBarReducer";
 import { TaskStatus } from "../components/elementSelect/ElementSelect.types";
-import { colors } from "../utils/colors";
 import dayjs from "dayjs";
 
 export default function useFilterOptions() {

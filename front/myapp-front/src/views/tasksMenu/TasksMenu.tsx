@@ -81,6 +81,7 @@ function TasksMenu() {
           type="task"
           btnName="New Task"
           action="create"
+          setGroup={true}
           handleSubmit={() => console.log("hi")}
           initialData={{
             task: {
