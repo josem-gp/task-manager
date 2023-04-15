@@ -3,7 +3,7 @@ import { GroupContext, initialState, reducer } from "./GroupContext";
 import { UseApiProps } from "../../types/types";
 import { UserContext } from "../user/UserContext";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { Group } from "../../types/interfaces";
+import { DividedTaskDetails, Group } from "../../types/interfaces";
 import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../error/ErrorContext";
 import { SidebarBtnContext } from "../sidebarBtn/SidebarBtnContext";
@@ -17,6 +17,13 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
   const { selectedGroupId } = useContext(SidebarBtnContext);
+
+  function filterGroupTasks(
+    userTasks: DividedTaskDetails[],
+    groupId: string
+  ): DividedTaskDetails[] {
+    return userTasks.filter((t) => t.task.group_id.toString() === groupId);
+  }
 
   function fetchGroupInfo() {
     const params: UseApiProps<undefined> = {
@@ -41,11 +48,6 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
             type: "SET_GROUP_USERS",
             payload: response.data.groupUsers,
           });
-          // To set the group tasks in the context
-          dispatch({
-            type: "SET_GROUP_TASKS",
-            payload: response.data.groupTasks,
-          });
           // To set the group tags in the context
           dispatch({
             type: "SET_GROUP_TAGS",
@@ -68,6 +70,15 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
         );
       });
   }
+
+  // To update the group tasks based on the userTasks every time there is a change
+  useEffect(() => {
+    // To set the group tasks in the context
+    dispatch({
+      type: "SET_GROUP_TASKS",
+      payload: filterGroupTasks(userState.userTasks, selectedGroupId),
+    });
+  }, [userState.userTasks]);
 
   useEffect(() => {
     if (selectedGroupId) {

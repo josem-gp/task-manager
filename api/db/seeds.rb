@@ -38,7 +38,7 @@ def create_fake_data(group, admin, group_user, icons)
 
   
   puts "Creating Fake users for #{group.name}"
-  30.times do
+  3.times do
     fake_username = Faker::Internet.username(specifier: 6..15) # So it is not bigger than 15
     users_raw_data << fake_username
   end
@@ -64,7 +64,7 @@ def create_fake_data(group, admin, group_user, icons)
   # users.reject! { |user| user.is_a?(Hash) }
 
   puts "Create Tasks for #{group.name}"
-  50.times do 
+  5.times do 
     fake_task_name = "#{Faker::Verb.base} #{Faker::Hacker.noun}" # So it is not bigger than 15
     tasks_raw_data << fake_task_name
   end
@@ -85,7 +85,7 @@ def create_fake_data(group, admin, group_user, icons)
     ) 
   end
 
-  10.times do |i|
+  2.times do |i|
     # We want the date to be close to our current date
     rand_date = ((Date.current - 10) + rand((Date.current + 30) - (Date.current - 10))).strftime("%Y-%m-%d")
     tasks << Task.create!(
@@ -99,17 +99,17 @@ def create_fake_data(group, admin, group_user, icons)
   end
 
   puts "Creating Tags for #{group.name}"
-  20.times do
+  5.times do
     tags << Tag.create!(name: "#{Faker::Lorem.characters(number: rand(8..10))}_tag", user: users.sample, group: group)
   end
 
   puts "Creating TaggedTasks for #{group.name}"
-  30.times do 
+  5.times do 
     TaggedTask.create!(task: tasks.sample, tag: tags.sample)
   end
 
   puts "Creating Invitations for #{group.name}"
-  10.times do 
+  5.times do 
     Invitation.create!(sender: admin, group: group, email: Faker::Internet.email)
   end
 end 

@@ -42,7 +42,7 @@ const style = {
 function TaskCard({ element }: TaskRendererProps) {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
-  const { state: userState } = useContext(UserContext);
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -74,9 +74,10 @@ function TaskCard({ element }: TaskRendererProps) {
     fetchData<TaskFormDetails, TaskResponse>(params)
       .then((response: AxiosResponse<TaskResponse> | AxiosError) => {
         if ("data" in response) {
-          // To set the new group tasks in the context
-          groupDispatch({
-            type: "UPDATE_GROUP_TASK",
+          // This will update the userTasks and so it will update the group tasks
+          // thanks to the useEffect in the groupContext
+          userDispatch({
+            type: "UPDATE_USER_TASK",
             payload: response.data.task_value,
           });
         } else {

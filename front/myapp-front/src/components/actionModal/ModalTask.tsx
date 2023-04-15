@@ -50,9 +50,18 @@ function ModalTask({ action, initialData, handleSubmit }: TaskModalProps) {
       ...prevState,
       task: {
         ...prevState.task,
-        tag_ids: [...prevState.task.tag_ids, value[value.length - 1]?.id],
+        tag_ids: value.map((tag) => tag.id),
       },
     }));
+  }
+
+  function fetchTaskTags(): TagDetails[] {
+    if (taskGroup.groupTags) {
+      return taskGroup.groupTags.filter((obj) =>
+        data.task.tag_ids.includes(obj.id)
+      );
+    }
+    return [];
   }
 
   function fetchGroupInfo() {
@@ -154,7 +163,7 @@ function ModalTask({ action, initialData, handleSubmit }: TaskModalProps) {
           multiple
           options={taskGroup.groupTags}
           getOptionLabel={(tag) => tag.slug}
-          defaultValue={[]}
+          value={fetchTaskTags()}
           onChange={handleAutocompleteChange}
           filterSelectedOptions
           renderInput={(params) => (

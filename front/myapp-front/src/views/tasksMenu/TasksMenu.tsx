@@ -35,19 +35,19 @@ function TasksMenu() {
       label: "Today",
       value: "1",
       type: "task" as const, // added this so that type is not taking as a string but as the literal value we want. In this case "task"
-      data: divideTasksByDate(groupState.groupTasks).today || [],
+      data: divideTasksByDate(userState.userTasks).today || [],
     },
     {
       label: "Upcoming",
       value: "2",
       type: "task" as const,
-      data: divideTasksByDate(groupState.groupTasks).upcoming || [],
+      data: divideTasksByDate(userState.userTasks).upcoming || [],
     },
     {
       label: "Past",
       value: "3",
       type: "task" as const,
-      data: divideTasksByDate(groupState.groupTasks).past || [],
+      data: divideTasksByDate(userState.userTasks).past || [],
     },
   ];
 
@@ -67,7 +67,7 @@ function TasksMenu() {
         marginBottom="30px"
       >
         <Typography variant="h6">
-          There are {tabHeaders[2].data.length} tasks due today
+          There are {tabHeaders[0].data.length} tasks due today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>

@@ -37,7 +37,7 @@ function SupportMenu() {
 
   useEffect(() => {
     handleFilteredUserTasks();
-  }, [dateRange]);
+  }, [dateRange, userState.userTasks]);
 
   useEffect(() => {
     taskCardRenderer();
