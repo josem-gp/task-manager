@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import SidebarIconBtn from "../../components/sidebarIconBtn/SidebarIconBtn";
-import { ElementSelect as GroupSelect } from "../../components/elementSelect/ElementSelect";
+import { ElementSelect } from "../../components/elementSelect/ElementSelect";
 import { useContext } from "react";
 import { SidebarBtnContext } from "../../context/sidebarBtn/SidebarBtnContext";
 import { UserContext } from "../../context/user/UserContext";
@@ -44,7 +44,7 @@ function Sidebar({ isVertical }: SidebarProps) {
           ))}
         </Stack>
         <Box marginBottom="10px">
-          <GroupSelect
+          <ElementSelect
             name="Choose a group"
             elements={userState.userGroups}
             elementId={selectedGroupId}
@@ -69,7 +69,7 @@ function Sidebar({ isVertical }: SidebarProps) {
           ))}
         </Stack>
         <Box marginBottom="10px">
-          <GroupSelect
+          <ElementSelect
             name="Choose a group"
             elements={userState.userGroups}
             elementId={selectedGroupId}

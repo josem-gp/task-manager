@@ -9,6 +9,7 @@ import { ElementSelectProps } from "./ElementSelect.types";
 import { colors } from "../../utils/colors";
 
 export function ElementSelect({
+  disabled,
   name,
   elements,
   elementId,
@@ -42,6 +43,7 @@ export function ElementSelect({
 
   return (
     <FormControl
+      disabled={disabled ? true : undefined}
       fullWidth
       sx={{
         marginBottom: { xs: "20px", md: "0px" },

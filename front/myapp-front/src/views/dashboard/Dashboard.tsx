@@ -31,10 +31,10 @@ function Dashboard() {
             <Grid item xs={12} md={7} lg={6}>
               <MainMenu />
             </Grid>
+            <Grid item xs={12} md={5} lg={4}>
+              <SupportMenu />
+            </Grid>
           </GroupContextProvider>
-          <Grid item xs={12} md={5} lg={4}>
-            <SupportMenu />
-          </Grid>
         </Grid>
       </SidebarBtnContextProvider>
     </>

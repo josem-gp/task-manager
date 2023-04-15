@@ -6,6 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import ErrorContextProvider from "./context/error/ErrorContextProvider";
 import { theme, ThemeProvider } from "./assets/theme/ThemeProvider";
 import UserContextProvider from "./context/user/UserContextProvider";
+import { RouterProvider } from "react-router-dom";
+import router from "./routes/routes";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,7 +17,7 @@ root.render(
     <ThemeProvider theme={theme}>
       <UserContextProvider>
         <ErrorContextProvider>
-          <App />
+          <RouterProvider router={router} />
         </ErrorContextProvider>
       </UserContextProvider>
     </ThemeProvider>

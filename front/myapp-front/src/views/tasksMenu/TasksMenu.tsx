@@ -7,6 +7,13 @@ import { GroupContext } from "../../context/group/GroupContext";
 import { UserContext } from "../../context/user/UserContext";
 import { colors } from "../../utils/colors";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
+import ActionModal from "../../components/actionModal/ActionModal";
+import { divideTasksByDate } from "../../utils/dateUtils";
+import { UseApiProps } from "../../types/types";
+import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
+import { ErrorContext } from "../../context/error/ErrorContext";
+import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
+import { fetchData } from "../../utils/fetchApiData";
 
 const style = {
   position: "absolute" as "absolute",
@@ -21,6 +28,7 @@ const style = {
 };
 
 function TasksMenu() {
+  const { error, setError } = useContext(ErrorContext);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
@@ -33,21 +41,53 @@ function TasksMenu() {
       label: "Today",
       value: "1",
       type: "task" as const, // added this so that type is not taking as a string but as the literal value we want. In this case "task"
-      data: groupState.groupTasks?.today || [],
+      data: divideTasksByDate(userState.userTasks).today || [],
     },
     {
       label: "Upcoming",
       value: "2",
       type: "task" as const,
-      data: groupState.groupTasks?.upcoming || [],
+      data: divideTasksByDate(userState.userTasks).upcoming || [],
     },
     {
       label: "Past",
       value: "3",
       type: "task" as const,
-      data: groupState.groupTasks?.past || [],
+      data: divideTasksByDate(userState.userTasks).past || [],
     },
   ];
+
+  function handleSubmit(data: TaskFormDetails) {
+    const params: UseApiProps<TaskFormDetails> = {
+      method: "post",
+      url: "http://localhost:3000/api/v1/tasks",
+      data: data,
+      headers: {
+        Authorization: `Bearer ${userState.userAuth}`,
+        "Content-Type": "application/json",
+      } as AxiosRequestHeaders,
+    };
+
+    fetchData<TaskFormDetails, TaskResponse>(params)
+      .then((response: AxiosResponse<TaskResponse> | AxiosError) => {
+        if ("data" in response) {
+          userDispatch({
+            type: "ADD_USER_TASK",
+            payload: response.data.task_value,
+          });
+        } else {
+          setError(
+            response.response?.statusText as React.SetStateAction<string | null>
+          );
+        }
+      })
+      .catch((error: AxiosError) => {
+        setError(error.response?.data as React.SetStateAction<string | null>);
+      });
+
+    // After create/editing task, we close modal
+    handleClose();
+  }
 
   return (
     <>
@@ -65,7 +105,7 @@ function TasksMenu() {
         marginBottom="30px"
       >
         <Typography variant="h6">
-          You have {groupState.groupTasks?.today.length} tasks today
+          There are {tabHeaders[0].data.length} tasks due today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>
@@ -75,7 +115,24 @@ function TasksMenu() {
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <ActionBtn name="New Task" onClick={handleOpen} />
+        <ActionModal
+          type="task"
+          btnName="New Task"
+          action="create"
+          setGroup={true}
+          handleSubmit={handleSubmit}
+          initialData={{
+            task: {
+              name: "",
+              note: "",
+              finished: false,
+              due_date: "",
+              assignee_id: "",
+              group_id: groupState.group.id.toString(),
+              tag_ids: [],
+            },
+          }}
+        />
         <ActionBtn
           name="Filter by"
           fontColor={colors.textLight}

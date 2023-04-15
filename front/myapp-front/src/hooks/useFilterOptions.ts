@@ -5,7 +5,6 @@ import {
   reducer,
 } from "../components/filterBar/filterBarReducer";
 import { TaskStatus } from "../components/elementSelect/ElementSelect.types";
-import { colors } from "../utils/colors";
 import dayjs from "dayjs";
 
 export default function useFilterOptions() {
@@ -51,11 +50,8 @@ export default function useFilterOptions() {
 
   const elementDateProps = [
     {
-      state: state,
       label: "From",
       value: state.from_due_date,
-      fontColor: colors.primary,
-      borderColor: colors.primary,
       setElement: (newValue: dayjs.Dayjs | null) =>
         dispatch({
           type: "SET_FROM_DUE_DATE",
@@ -64,11 +60,8 @@ export default function useFilterOptions() {
         }),
     },
     {
-      state: state,
       label: "To",
       value: state.to_due_date,
-      fontColor: colors.primary,
-      borderColor: colors.primary,
       setElement: (newValue: dayjs.Dayjs | null) =>
         dispatch({
           type: "SET_TO_DUE_DATE",

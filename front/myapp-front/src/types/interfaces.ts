@@ -6,12 +6,27 @@ export interface UserFormDetails {
   };
 }
 
+export interface TaskFormDetails {
+  task: {
+    name: string;
+    note: string | null;
+    finished: boolean;
+    due_date: string;
+    assignee_id: string;
+    group_id: string;
+    tag_ids: number[];
+  };
+}
+
 export interface UserResponse {
   userObject: DividedUserDetails;
 }
 
 export interface TasksResponse {
-  tasks: DividedTasks;
+  task_value: DividedTaskDetails[];
+}
+export interface TaskResponse {
+  task_value: DividedTaskDetails;
 }
 
 export interface UserDetails {
@@ -37,7 +52,7 @@ export interface GroupDetails {
 export interface TaskDetails {
   id: number;
   name: string;
-  note: string;
+  note: string | null;
   due_date: string;
   finished: boolean;
   group_id: number;
@@ -89,7 +104,7 @@ export interface User {
 export interface Group {
   group: GroupDetails;
   groupUsers: DividedUserDetails[];
-  groupTasks: DividedTasks;
+  groupTasks: DividedTaskDetails[];
   groupTags: TagDetails[];
   groupInvitations: InvitationDetails[];
 }
