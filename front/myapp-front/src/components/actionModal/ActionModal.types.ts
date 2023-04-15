@@ -39,7 +39,6 @@ type InvitationDataProps = {
 
 type ModalActions = {
   action: "show" | "create" | "edit";
-  setGroup: boolean;
   handleSubmit: (data: TaskFormDetails) => void;
 };
 

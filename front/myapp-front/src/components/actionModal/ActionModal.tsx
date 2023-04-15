@@ -24,7 +24,6 @@ function ActionModal({
   btnName,
   action,
   initialData,
-  setGroup,
   handleSubmit,
 }: ActionModalProps) {
   const [open, setOpen] = useState(false);
@@ -37,7 +36,6 @@ function ActionModal({
         return (
           <ModalTask
             action={action}
-            setGroup={setGroup}
             initialData={initialData}
             handleSubmit={handleSubmit}
           />

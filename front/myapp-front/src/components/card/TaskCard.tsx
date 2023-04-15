@@ -99,7 +99,6 @@ function TaskCard({ element }: TaskRendererProps) {
         <Box sx={style}>
           <ModalTask
             action="show"
-            setGroup={true}
             initialData={initialData}
             handleSubmit={(data: TaskFormDetails) => handleSubmit(data)}
           />

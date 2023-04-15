@@ -20,12 +20,7 @@ import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../../context/error/ErrorContext";
 import ActionModalHeader from "./ActionModalHeader";
 
-function ModalTask({
-  action,
-  initialData,
-  setGroup,
-  handleSubmit,
-}: TaskModalProps) {
+function ModalTask({ action, initialData, handleSubmit }: TaskModalProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";
@@ -139,7 +134,7 @@ function ModalTask({
         />
 
         <ElementSelect
-          disabled={isShow || setGroup ? true : false}
+          disabled={isShow || isEdit ? true : false}
           name="Choose a group"
           elements={userState.userGroups}
           elementId={data.task.group_id}
