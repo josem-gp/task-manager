@@ -59,7 +59,7 @@ function TaskCard({ element }: TaskRendererProps) {
   function handleSubmit(data: TaskFormDetails) {
     const params: UseApiProps<TaskFormDetails> = {
       method: "patch",
-      url: `http://localhost:3000/api/v1/groups/:group_id/tags/${element.task.id}`,
+      url: `http://localhost:3000/api/v1/tasks/${element.task.id}`,
       data: data,
       headers: {
         Authorization: `Bearer ${userState.userAuth}`,

@@ -13,7 +13,7 @@ class Api::V1::GroupsController < ApplicationController
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']),
       groupUsers: build_user_json(users),
-      groupTasks: divide_tasks_by_date(tasks),
+      groupTasks: build_task_json(tasks),
       groupTags: except_attributes(tags, ['created_at', 'updated_at']),
       groupInvitations: except_attributes(invitations, ['oauth_token', 'created_at', 'updated_at'])
     }
@@ -66,7 +66,7 @@ class Api::V1::GroupsController < ApplicationController
     if filtered_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
-      render json: { task_value: divide_tasks_by_date(filtered_tasks) }
+      render json: { task_value: build_task_json(filter_tasks) }
     end
   end
 
@@ -120,17 +120,5 @@ class Api::V1::GroupsController < ApplicationController
 
   def render_error(message, status)
     render json: {message: message}, status: status
-  end
-
-  def divide_tasks_by_date(tasks)
-    today = Date.today
-    upcoming_tasks = tasks.filter { |task| task.due_date > today }
-    past_tasks = tasks.filter { |task| task.due_date < today }
-    today_tasks = tasks.filter { |task| task.due_date == today }
-    {
-      today: build_task_json(today_tasks),
-      upcoming: build_task_json(upcoming_tasks),
-      past: build_task_json(past_tasks)
-    }
   end
 end

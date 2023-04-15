@@ -23,7 +23,7 @@ export interface UserResponse {
 }
 
 export interface TasksResponse {
-  task_value: DividedTasks;
+  task_value: DividedTaskDetails[];
 }
 
 export interface UserDetails {
@@ -101,7 +101,7 @@ export interface User {
 export interface Group {
   group: GroupDetails;
   groupUsers: DividedUserDetails[];
-  groupTasks: DividedTasks;
+  groupTasks: DividedTaskDetails[];
   groupTags: TagDetails[];
   groupInvitations: InvitationDetails[];
 }

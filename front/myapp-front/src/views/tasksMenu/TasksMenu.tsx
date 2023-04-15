@@ -8,6 +8,7 @@ import { UserContext } from "../../context/user/UserContext";
 import { colors } from "../../utils/colors";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
 import ActionModal from "../../components/actionModal/ActionModal";
+import { divideTasksByDate } from "../../utils/dateUtils";
 
 const style = {
   position: "absolute" as "absolute",
@@ -34,19 +35,19 @@ function TasksMenu() {
       label: "Today",
       value: "1",
       type: "task" as const, // added this so that type is not taking as a string but as the literal value we want. In this case "task"
-      data: groupState.groupTasks?.today || [],
+      data: divideTasksByDate(groupState.groupTasks).today || [],
     },
     {
       label: "Upcoming",
       value: "2",
       type: "task" as const,
-      data: groupState.groupTasks?.upcoming || [],
+      data: divideTasksByDate(groupState.groupTasks).upcoming || [],
     },
     {
       label: "Past",
       value: "3",
       type: "task" as const,
-      data: groupState.groupTasks?.past || [],
+      data: divideTasksByDate(groupState.groupTasks).past || [],
     },
   ];
 
@@ -66,7 +67,7 @@ function TasksMenu() {
         marginBottom="30px"
       >
         <Typography variant="h6">
-          There are {groupState.groupTasks?.today.length} tasks due today
+          There are {tabHeaders[2].data.length} tasks due today
         </Typography>
         <CalendarMonthIcon fontSize="large" />
       </Stack>

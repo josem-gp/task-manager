@@ -1,17 +1,17 @@
 import { createContext } from "react";
 import {
-  DividedTasks,
   Group,
   GroupDetails,
   InvitationDetails,
   TagDetails,
   DividedUserDetails,
+  DividedTaskDetails,
 } from "../../types/interfaces";
 
 export const initialState: Group = {
   group: { id: 0, name: "", description: "", admin_id: 0 },
   groupUsers: [],
-  groupTasks: { past: [], today: [], upcoming: [] },
+  groupTasks: [],
   groupTags: [],
   groupInvitations: [],
 };
@@ -19,7 +19,8 @@ export const initialState: Group = {
 type GroupContextAction =
   | { type: "SET_GROUP"; payload: GroupDetails }
   | { type: "SET_GROUP_USERS"; payload: DividedUserDetails[] }
-  | { type: "SET_GROUP_TASKS"; payload: DividedTasks }
+  | { type: "SET_GROUP_TASKS"; payload: DividedTaskDetails[] }
+  | { type: "UPDATE_GROUP_TASK"; payload: DividedTaskDetails }
   | { type: "SET_GROUP_TAGS"; payload: TagDetails[] }
   | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] };
 
@@ -31,6 +32,14 @@ export function reducer(state: Group, action: GroupContextAction) {
       return { ...state, groupUsers: action.payload };
     case "SET_GROUP_TASKS":
       return { ...state, groupTasks: action.payload };
+    case "UPDATE_GROUP_TASK":
+      const updatedGroupTasks = state.groupTasks.map((task) => {
+        if (task.task.id === action.payload.task.id) {
+          return action.payload;
+        }
+        return task;
+      });
+      return { ...state, groupTasks: updatedGroupTasks };
     case "SET_GROUP_TAGS":
       return { ...state, groupTags: action.payload };
     case "SET_GROUP_INVITATIONS":

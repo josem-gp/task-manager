@@ -1,3 +1,5 @@
+import { DividedTaskDetails, DividedTasks } from "../types/interfaces";
+
 // This function is used to parse the dates we get from the Calendar
 export function parseDate() {
   const dateOptions = {
@@ -39,4 +41,24 @@ export function filterDates(
 
   const date = new Date(dateStr);
   return date >= startOfDay && date <= endOfDay;
+}
+
+// For the Group context. We divide the tasks by date
+export function divideTasksByDate(tasks: DividedTaskDetails[]): DividedTasks {
+  const today = new Date().toISOString().split("T")[0];
+  const past: DividedTaskDetails[] = [];
+  const upcoming: DividedTaskDetails[] = [];
+  const todayTasks: DividedTaskDetails[] = [];
+
+  tasks.forEach((t) => {
+    if (t.task.due_date < today) {
+      past.push(t);
+    } else if (t.task.due_date > today) {
+      upcoming.push(t);
+    } else {
+      todayTasks.push(t);
+    }
+  });
+
+  return { past, upcoming, today: todayTasks };
 }
