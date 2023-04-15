@@ -40,7 +40,6 @@ function ElementsTab({ tabHeaders }: CompoundTabProps) {
             key={uuidv4()}
             value={element.value}
             sx={{
-              padding: { xs: "24px 10px 0 10px", md: "24px 24px 0 24px" },
               maxHeight: { md: "30vh", lg: "44vh" },
               overflow: "scroll",
               display: tabValue === element.value ? "grid" : "none",

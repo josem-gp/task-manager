@@ -12,10 +12,7 @@ class Api::V1::Groups::TasksController < ApplicationController
       # Create the tagged_tasks if the tags param is not empty
       @task.create_tagged_tasks(task_params[:tag_ids]) if task_params[:tag_ids]
       render json: { 
-        task_value: { 
-          task: except_attributes(@task, ['created_at', 'updated_at']), 
-          task_tags: except_attributes(@task.tags, ['created_at', 'updated_at'])
-          }, 
+        task_value: build_task_json(@task), 
         message: "The task was successfully created" 
       }
     else
