@@ -1,7 +1,7 @@
 import { useContext, useEffect, useReducer } from "react";
 import { UserContext, initialState, reducer } from "./UserContext";
 import Cookies from "js-cookie";
-import { ErrorContext } from "../error/ErrorContext";
+import { PopupContext } from "../popup/PopupContext";
 
 type UserContextProviderProps = {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ type UserContextProviderProps = {
 
 function UserContextProvider({ children }: UserContextProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { error, setError } = useContext(ErrorContext);
+  const { popup, setPopup } = useContext(PopupContext);
 
   function fetchAuthToken() {
     try {
@@ -17,7 +17,7 @@ function UserContextProvider({ children }: UserContextProviderProps) {
       // To set the token in the context
       dispatch({ type: "SET_USER_AUTH", payload: token });
     } catch (error) {
-      setError("Error fetching auth token from cookie");
+      setPopup("Error fetching auth token from cookie");
     }
   }
 

@@ -15,7 +15,7 @@ import { UserContext } from "../../context/user/UserContext";
 import { initialState as GroupInitialState } from "../../context/group/GroupContext";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { ErrorContext } from "../../context/error/ErrorContext";
+import { PopupContext } from "../../context/popup/PopupContext";
 import ActionModalHeader from "./ActionModalHeader";
 import useAxios from "../../hooks/useAxios/useAxios";
 

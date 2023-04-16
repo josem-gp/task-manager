@@ -17,7 +17,7 @@ import { fetchIconUrl } from "../../utils/fetchUserIcon";
 import ModalTask from "../actionModal/ModalTask";
 import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
 import { UserContext } from "../../context/user/UserContext";
-import { ErrorContext } from "../../context/error/ErrorContext";
+import { PopupContext } from "../../context/popup/PopupContext";
 import useAxios from "../../hooks/useAxios/useAxios";
 
 const style = {

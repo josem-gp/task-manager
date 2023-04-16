@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { UserContext } from "../../context/user/UserContext";
-import { ErrorContext } from "../../context/error/ErrorContext";
+import { PopupContext } from "../../context/popup/PopupContext";
 import { fetchDataProps, handleAxiosCallProps } from "./useAxios.types";
 
 // Reusable generic function that calls the API using Axios.
@@ -9,7 +9,7 @@ import { fetchDataProps, handleAxiosCallProps } from "./useAxios.types";
 // If the response is 200, it returns it and we will be doing the state update separately
 export default function useAxios() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const { error, setError } = useContext(ErrorContext);
+  const { popup, setPopup } = useContext(PopupContext);
 
   function fetchData<T, R>(
     params: fetchDataProps<T>
@@ -48,13 +48,13 @@ export default function useAxios() {
         if ("data" in response) {
           return response;
         } else {
-          setError(
+          setPopup(
             response.response?.statusText as React.SetStateAction<string | null>
           );
         }
       })
       .catch((error: AxiosError) => {
-        setError(error.response?.data as React.SetStateAction<string | null>);
+        setPopup(error.response?.data as React.SetStateAction<string | null>);
       });
   }
 
