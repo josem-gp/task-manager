@@ -21,6 +21,7 @@ export type UserContextAction =
   | { type: "SET_USER_GROUPS"; payload: GroupDetails[] }
   | { type: "SET_USER_TASKS"; payload: DividedTaskDetails[] }
   | { type: "ADD_USER_TASK"; payload: DividedTaskDetails }
+  | { type: "REMOVE_USER_TASK"; payload: string }
   | { type: "UPDATE_USER_TASK"; payload: DividedTaskDetails }
   | { type: "SET_USER_AUTH"; payload: string };
 
@@ -34,6 +35,11 @@ export function reducer(state: User, action: UserContextAction) {
       return { ...state, userTasks: action.payload };
     case "ADD_USER_TASK":
       return { ...state, userTasks: [...state.userTasks, action.payload] };
+    case "REMOVE_USER_TASK":
+      const updatedTasks = state.userTasks.filter((task) => {
+        return task.task.id.toString() !== action.payload;
+      });
+      return { ...state, userTasks: updatedTasks };
     case "UPDATE_USER_TASK":
       const updatedUserTasks = state.userTasks.map((task) => {
         if (task.task.id === action.payload.task.id) {

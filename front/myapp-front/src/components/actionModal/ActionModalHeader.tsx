@@ -1,12 +1,13 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { ActionModalHeaderProps } from "./ActionModal.types";
-import ActionAlertDialog from "./ActionAlertDialog";
+import DeleteAlertDialog from "./DeleteAlertDialog";
 
 function ActionModalHeader({
   title,
   isShow,
   setFormAction,
+  elementId,
 }: ActionModalHeaderProps) {
   return (
     <Stack
@@ -35,7 +36,7 @@ function ActionModalHeader({
             >
               <EditIcon />
             </IconButton>
-            <ActionAlertDialog />
+            <DeleteAlertDialog elementId={elementId} />
           </>
         )}
       </Stack>
