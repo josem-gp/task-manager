@@ -23,6 +23,7 @@ export interface TagFormDetails {
   tag: {
     id?: string;
     name: string;
+    slug: string;
   };
 }
 
@@ -136,4 +137,8 @@ export interface FilterBarParams {
   by_status: string;
   from_due_date: string | null;
   to_due_date: string | null;
+}
+
+export interface ErrorResponse {
+  message: string;
 }

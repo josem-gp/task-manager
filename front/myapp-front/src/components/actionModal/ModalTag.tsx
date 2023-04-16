@@ -34,6 +34,7 @@ function ModalTag({
       tag: {
         ...prevState.tag,
         [name]: value,
+        slug: value.toLowerCase().split(" ").join("_"),
       },
     }));
   }
@@ -63,6 +64,13 @@ function ModalTag({
           onChange={handleChange}
           name="name"
           value={data.tag.name}
+        />
+
+        <TextField
+          disabled={true}
+          label="Slug"
+          name="slug"
+          value={data.tag.slug}
         />
 
         {!isShow && (

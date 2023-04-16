@@ -59,6 +59,7 @@ function GroupsMenu() {
             initialData={{
               tag: {
                 name: "",
+                slug: "",
               },
             }}
           />
