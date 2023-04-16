@@ -8,6 +8,7 @@ export interface UserFormDetails {
 
 export interface TaskFormDetails {
   task: {
+    id?: string;
     name: string;
     note: string | null;
     finished: boolean;
@@ -29,6 +30,10 @@ export interface TasksResponse {
 }
 export interface TaskResponse {
   task_value: DividedTaskDetails;
+  message: string;
+}
+
+export interface ApiMessageResponse {
   message: string;
 }
 

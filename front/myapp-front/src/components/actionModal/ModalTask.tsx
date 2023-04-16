@@ -12,10 +12,12 @@ import MyDatePicker from "../myDatePicker/MyDatePicker";
 import dayjs from "dayjs";
 import { ElementSelect } from "../elementSelect/ElementSelect";
 import { UserContext } from "../../context/user/UserContext";
-import { initialState as GroupInitialState } from "../../context/group/GroupContext";
+import {
+  GroupContext,
+  initialState as GroupInitialState,
+} from "../../context/group/GroupContext";
 import ActionBtn from "../actionBtn/ActionBtn";
 import ActionModalHeader from "./ActionModalHeader";
-import useAxios from "../../hooks/useAxios/useAxios";
 
 function ModalTask({
   action,
@@ -29,9 +31,10 @@ function ModalTask({
   const { state: userState } = useContext(UserContext);
   // We create this state to hold the groupState info because we want it to be empty in the beginning
   // And groupState is not empty since it is holding the value of the group we selected in the sidebar
-  const [taskGroup, setTaskGroup] = useState<Group>(GroupInitialState);
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
+  const [taskGroup, setTaskGroup] = useState<Group>(groupState);
   const [data, setData] = useState<TaskFormDetails>(initialData);
-  const { handleAxiosCall } = useAxios();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
@@ -66,25 +69,6 @@ function ModalTask({
     return [];
   }
 
-  // Fetch the task info when we click on the task card
-  async function fetchTaskInfo() {
-    const response = await handleAxiosCall<undefined, Group>({
-      method: "get",
-      url: `http://localhost:3000/api/v1/groups/${data.task.group_id}`,
-      needAuth: true,
-    });
-
-    if (response) {
-      setTaskGroup(response.data);
-    }
-  }
-
-  useEffect(() => {
-    if (data.task.group_id) {
-      fetchTaskInfo();
-    }
-  }, [data.task.group_id]);
-
   return (
     <>
       <ActionModalHeader
@@ -97,6 +81,7 @@ function ModalTask({
         }
         isShow={isShow}
         setFormAction={setFormAction}
+        elementId={data.task.id ?? ""}
       />
 
       <Box

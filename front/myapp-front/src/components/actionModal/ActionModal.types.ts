@@ -65,4 +65,8 @@ export type ActionModalHeaderProps = {
   setFormAction: React.Dispatch<
     React.SetStateAction<"show" | "create" | "edit">
   >;
+} & DeleteAlertDialogProps;
+
+export type DeleteAlertDialogProps = {
+  elementId: string;
 };
