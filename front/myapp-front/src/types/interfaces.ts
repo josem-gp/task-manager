@@ -21,11 +21,8 @@ export interface TaskFormDetails {
 
 export interface TagFormDetails {
   tag: {
-    id?: number;
+    id?: string;
     name: string;
-    slug: string;
-    group_id: string;
-    user_id: string;
   };
 }
 
@@ -40,6 +37,11 @@ export interface TasksResponse {
 }
 export interface TaskResponse {
   task_value: DividedTaskDetails;
+  message: string;
+}
+
+export interface TagResponse {
+  tag: TagDetails;
   message: string;
 }
 

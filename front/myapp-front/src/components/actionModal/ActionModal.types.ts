@@ -50,6 +50,7 @@ export type TaskModalProps = {
 
 export type TagModalProps = {
   initialData: TagFormDetails;
+  handleSubmit: (data: TagFormDetails) => void;
 } & ModalActions;
 
 export type GroupModalProps = {

@@ -11,8 +11,6 @@ function GroupsMenu() {
     useContext(GroupContext);
   const [onTagFocus, setOnTagFocus] = useState(false);
 
-  console.log(onTagFocus);
-
   const tabHeaders = [
     {
       label: "Members",
@@ -61,9 +59,6 @@ function GroupsMenu() {
             initialData={{
               tag: {
                 name: "",
-                slug: "",
-                group_id: "",
-                user_id: "",
               },
             }}
           />

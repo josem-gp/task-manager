@@ -21,6 +21,7 @@ export type GroupContextAction =
   | { type: "SET_GROUP_USERS"; payload: DividedUserDetails[] }
   | { type: "SET_GROUP_TASKS"; payload: DividedTaskDetails[] }
   | { type: "SET_GROUP_TAGS"; payload: TagDetails[] }
+  | { type: "ADD_GROUP_TAG"; payload: TagDetails }
   | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] };
 
 export function reducer(state: Group, action: GroupContextAction) {
@@ -33,6 +34,8 @@ export function reducer(state: Group, action: GroupContextAction) {
       return { ...state, groupTasks: action.payload };
     case "SET_GROUP_TAGS":
       return { ...state, groupTags: action.payload };
+    case "ADD_GROUP_TAG":
+      return { ...state, groupTags: [...state.groupTags, action.payload] };
     case "SET_GROUP_INVITATIONS":
       return { ...state, groupInvitations: action.payload };
     default:
