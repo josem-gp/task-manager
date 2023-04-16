@@ -46,7 +46,7 @@ function App() {
 
   return (
     <>
-      {popup && <ActionAlerts severity="error" />}
+      {popup.message && <ActionAlerts severity="error" />}
       {!userState.userAuth ? <AuthForm /> : <Dashboard />}
     </>
   );

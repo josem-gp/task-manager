@@ -1,4 +1,4 @@
-import { Alert, Box, Stack } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { useContext } from "react";
 import { PopupContext } from "../../context/popup/PopupContext";
 import { ActionAlertsProps } from "./ActionAlertsProps.types";
@@ -18,12 +18,12 @@ function ActionAlerts({ severity }: ActionAlertsProps) {
       }}
     >
       <Alert
-        severity={severity}
+        severity={popup.type}
         onClose={() => {
-          setPopup(null);
+          setPopup((prevState) => ({ ...prevState, message: null }));
         }}
       >
-        {popup}
+        {popup.message}
       </Alert>
     </Box>
   );

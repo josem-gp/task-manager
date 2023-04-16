@@ -14,8 +14,6 @@ import { ElementSelect } from "../elementSelect/ElementSelect";
 import { UserContext } from "../../context/user/UserContext";
 import { initialState as GroupInitialState } from "../../context/group/GroupContext";
 import ActionBtn from "../actionBtn/ActionBtn";
-import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { PopupContext } from "../../context/popup/PopupContext";
 import ActionModalHeader from "./ActionModalHeader";
 import useAxios from "../../hooks/useAxios/useAxios";
 
@@ -68,6 +66,7 @@ function ModalTask({
     return [];
   }
 
+  // Fetch the task info when we click on the task card
   async function fetchTaskInfo() {
     const response = await handleAxiosCall<undefined, Group>({
       method: "get",

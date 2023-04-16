@@ -36,6 +36,7 @@ function TaskCard({ element }: TaskRendererProps) {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { popup, setPopup } = useContext(PopupContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -53,6 +54,7 @@ function TaskCard({ element }: TaskRendererProps) {
     },
   };
 
+  // Update a specific task in the userTasks state
   async function handleSubmit(data: TaskFormDetails) {
     const response = await handleAxiosCall<TaskFormDetails, TaskResponse>({
       method: "patch",
@@ -68,6 +70,9 @@ function TaskCard({ element }: TaskRendererProps) {
         type: "UPDATE_USER_TASK",
         payload: response.data.task_value,
       });
+
+      // Add notification
+      setPopup({ message: response.data.message, type: "success" });
     }
   }
 

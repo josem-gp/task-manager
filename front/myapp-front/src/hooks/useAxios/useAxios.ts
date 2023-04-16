@@ -48,13 +48,17 @@ export default function useAxios() {
         if ("data" in response) {
           return response;
         } else {
-          setPopup(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
+          setPopup({
+            message: response.response?.statusText ?? null,
+            type: "error",
+          });
         }
       })
       .catch((error: AxiosError) => {
-        setPopup(error.response?.data as React.SetStateAction<string | null>);
+        setPopup({
+          message: (error.response?.data as string) ?? null,
+          type: "error",
+        });
       });
   }
 

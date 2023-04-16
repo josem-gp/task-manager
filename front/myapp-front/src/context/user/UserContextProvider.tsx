@@ -17,7 +17,10 @@ function UserContextProvider({ children }: UserContextProviderProps) {
       // To set the token in the context
       dispatch({ type: "SET_USER_AUTH", payload: token });
     } catch (error) {
-      setPopup("Error fetching auth token from cookie");
+      setPopup({
+        message: "Error fetching auth token from cookie",
+        type: "error",
+      });
     }
   }
 
