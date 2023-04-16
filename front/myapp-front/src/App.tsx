@@ -1,70 +1,53 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { ErrorContext } from "./context/error/ErrorContext";
 import Dashboard from "./views/dashboard/Dashboard";
 import AuthForm from "./components/authForm/AuthForm";
 import { UserContext } from "./context/user/UserContext";
-import { fetchData } from "./utils/fetchApiData";
 import { User } from "./types/interfaces";
-import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { UseApiProps } from "./types/types";
-import { Alert, Button, Stack } from "@mui/material";
 import ActionAlerts from "./components/actionAlerts/ActionAlerts";
+import useAxios from "./hooks/useAxios/useAxios";
 
 function App() {
   const { error, setError } = useContext(ErrorContext);
-  const { state, dispatch } = useContext(UserContext);
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { handleAxiosCall } = useAxios();
 
-  function fetchUserInfo() {
-    const params: UseApiProps<undefined> = {
+  async function fetchUserInfo() {
+    const response = await handleAxiosCall<undefined, User>({
       method: "get",
-      url: `http://localhost:3000/api/v1/users/fetch_user_info`,
-      headers: {
-        Authorization: `Bearer ${state.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
-    };
+      url: "http://localhost:3000/api/v1/users/fetch_user_info",
+      needAuth: true,
+    });
 
-    fetchData<undefined, User>(params)
-      .then((response: AxiosResponse<User> | AxiosError) => {
-        if ("data" in response) {
-          // To set the user in the context
-          dispatch({
-            type: "SET_USER",
-            payload: response.data.userObject,
-          });
-          // To set the user tasks in the context
-          dispatch({
-            type: "SET_USER_TASKS",
-            payload: response.data.userTasks,
-          });
-          // To set the user groups in the context
-          dispatch({
-            type: "SET_USER_GROUPS",
-            payload: response.data.userGroups,
-          });
-        } else {
-          setError(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
-        }
-      })
-      .catch((error: AxiosError) => {
-        setError(
-          error.response?.statusText as React.SetStateAction<string | null>
-        );
+    if (response) {
+      // To set the user in the context
+      userDispatch({
+        type: "SET_USER",
+        payload: response.data.userObject,
       });
+      // To set the user tasks in the context
+      userDispatch({
+        type: "SET_USER_TASKS",
+        payload: response.data.userTasks,
+      });
+      // To set the user groups in the context
+      userDispatch({
+        type: "SET_USER_GROUPS",
+        payload: response.data.userGroups,
+      });
+    }
   }
 
   useEffect(() => {
-    if (state.userAuth) {
+    if (userState.userAuth) {
       fetchUserInfo();
     }
-  }, [state.userAuth]);
+  }, [userState.userAuth]);
 
   return (
     <>
       {error && <ActionAlerts severity="error" />}
-      {!state.userAuth ? <AuthForm /> : <Dashboard />}
+      {!userState.userAuth ? <AuthForm /> : <Dashboard />}
     </>
   );
 }

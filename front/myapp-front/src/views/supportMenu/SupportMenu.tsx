@@ -1,22 +1,13 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import Navbar from "../../components/navbar/Navbar";
-import ActionBtn from "../../components/actionBtn/ActionBtn";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { filterDates, parseDate } from "../../utils/dateUtils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/user/UserContext";
-import {
-  DividedTaskDetails,
-  TaskFormDetails,
-  TaskResponse,
-} from "../../types/interfaces";
+import { DividedTaskDetails } from "../../types/interfaces";
 import TaskCard from "../../components/card/TaskCard";
 import ActionModal from "../../components/actionModal/ActionModal";
-import { UseApiProps } from "../../types/types";
-import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { fetchData } from "../../utils/fetchApiData";
-import { ErrorContext } from "../../context/error/ErrorContext";
 
 function SupportMenu() {
   const todaysDate = parseDate();
@@ -27,7 +18,6 @@ function SupportMenu() {
   const [filteredUserTasks, setFilteredUserTasks] = useState<
     DividedTaskDetails[]
   >(userState.userTasks);
-  const { error, setError } = useContext(ErrorContext);
 
   // In this function we filter the User tasks and update the state
   function handleFilteredUserTasks() {
@@ -42,35 +32,6 @@ function SupportMenu() {
     return filteredUserTasks.map((el) => (
       <TaskCard key={el.task.id} element={el} />
     ));
-  }
-
-  function handleSubmit(data: TaskFormDetails) {
-    const params: UseApiProps<TaskFormDetails> = {
-      method: "post",
-      url: "http://localhost:3000/api/v1/tasks",
-      data: data,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
-    };
-
-    fetchData<TaskFormDetails, TaskResponse>(params)
-      .then((response: AxiosResponse<TaskResponse> | AxiosError) => {
-        if ("data" in response) {
-          userDispatch({
-            type: "ADD_USER_TASK",
-            payload: response.data.task_value,
-          });
-        } else {
-          setError(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
-        }
-      })
-      .catch((error: AxiosError) => {
-        setError(error.response?.data as React.SetStateAction<string | null>);
-      });
   }
 
   useEffect(() => {
@@ -147,7 +108,6 @@ function SupportMenu() {
             btnName="New Task"
             action="create"
             setGroup={false}
-            handleSubmit={handleSubmit}
             initialData={{
               task: {
                 name: "",

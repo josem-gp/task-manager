@@ -15,17 +15,10 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { TaskRendererProps } from "./Card.types";
 import { fetchIconUrl } from "../../utils/fetchUserIcon";
 import ModalTask from "../actionModal/ModalTask";
-import { UseApiProps } from "../../types/types";
-import {
-  TaskFormDetails,
-  TaskResponse,
-  TasksResponse,
-} from "../../types/interfaces";
+import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
 import { UserContext } from "../../context/user/UserContext";
-import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../../context/error/ErrorContext";
-import { DividedTaskDetails } from "../../types/interfaces";
+import useAxios from "../../hooks/useAxios/useAxios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -43,10 +36,10 @@ function TaskCard({ element }: TaskRendererProps) {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const { error, setError } = useContext(ErrorContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { handleAxiosCall } = useAxios();
 
   const initialData: TaskFormDetails = {
     task: {
@@ -60,38 +53,22 @@ function TaskCard({ element }: TaskRendererProps) {
     },
   };
 
-  function handleSubmit(data: TaskFormDetails) {
-    const params: UseApiProps<TaskFormDetails> = {
+  async function handleSubmit(data: TaskFormDetails) {
+    const response = await handleAxiosCall<TaskFormDetails, TaskResponse>({
       method: "patch",
       url: `http://localhost:3000/api/v1/tasks/${element.task.id}`,
       data: data,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
-    };
+      needAuth: true,
+    });
 
-    fetchData<TaskFormDetails, TaskResponse>(params)
-      .then((response: AxiosResponse<TaskResponse> | AxiosError) => {
-        if ("data" in response) {
-          // This will update the userTasks and so it will update the group tasks
-          // thanks to the useEffect in the groupContext
-          userDispatch({
-            type: "UPDATE_USER_TASK",
-            payload: response.data.task_value,
-          });
-        } else {
-          setError(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
-        }
-      })
-      .catch((error: AxiosError) => {
-        setError(error.response?.data as React.SetStateAction<string | null>);
+    if (response) {
+      // This will update the userTasks and so it will update the group tasks
+      // thanks to the useEffect in the groupContext
+      userDispatch({
+        type: "UPDATE_USER_TASK",
+        payload: response.data.task_value,
       });
-
-    // After create/editing task, we close modal
-    handleClose();
+    }
   }
 
   return (

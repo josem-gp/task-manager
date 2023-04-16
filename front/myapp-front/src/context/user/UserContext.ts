@@ -16,7 +16,7 @@ export const initialState: User = {
   userAuth: "",
 };
 
-type UserContextAction =
+export type UserContextAction =
   | { type: "SET_USER"; payload: DividedUserDetails }
   | { type: "SET_USER_GROUPS"; payload: GroupDetails[] }
   | { type: "SET_USER_TASKS"; payload: DividedTaskDetails[] }

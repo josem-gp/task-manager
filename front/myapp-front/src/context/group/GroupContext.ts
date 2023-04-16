@@ -16,7 +16,7 @@ export const initialState: Group = {
   groupInvitations: [],
 };
 
-type GroupContextAction =
+export type GroupContextAction =
   | { type: "SET_GROUP"; payload: GroupDetails }
   | { type: "SET_GROUP_USERS"; payload: DividedUserDetails[] }
   | { type: "SET_GROUP_TASKS"; payload: DividedTaskDetails[] }
