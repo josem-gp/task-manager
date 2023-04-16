@@ -14,9 +14,11 @@ import { UserFormDetails, UserResponse } from "../../types/interfaces";
 import { AuthFormProps } from "./AuthForm.types";
 import { UserContext } from "../../context/user/UserContext";
 import useAxios from "../../hooks/useAxios/useAxios";
+import { PopupContext } from "../../context/popup/PopupContext";
 
 function AuthFormSignup({ setIsLogin }: AuthFormProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { popup, setPopup } = useContext(PopupContext);
   const [data, setData] = useState<UserFormDetails>({
     user: { username: "", email: "", password: "" },
   });
@@ -51,6 +53,9 @@ function AuthFormSignup({ setIsLogin }: AuthFormProps) {
       userDispatch({ type: "SET_USER_AUTH", payload: token });
       // To set the user info in the context
       userDispatch({ type: "SET_USER", payload: response.data.userObject });
+
+      // Add notification
+      setPopup({ message: response.data.message, type: "success" });
     }
   }
 

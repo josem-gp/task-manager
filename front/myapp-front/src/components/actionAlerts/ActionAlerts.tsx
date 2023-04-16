@@ -1,10 +1,10 @@
-import { Alert, Box, Stack } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { useContext } from "react";
-import { ErrorContext } from "../../context/error/ErrorContext";
+import { PopupContext } from "../../context/popup/PopupContext";
 import { ActionAlertsProps } from "./ActionAlertsProps.types";
 
 function ActionAlerts({ severity }: ActionAlertsProps) {
-  const { error, setError } = useContext(ErrorContext);
+  const { popup, setPopup } = useContext(PopupContext);
 
   return (
     <Box
@@ -18,12 +18,12 @@ function ActionAlerts({ severity }: ActionAlertsProps) {
       }}
     >
       <Alert
-        severity={severity}
+        severity={popup.type}
         onClose={() => {
-          setError(null);
+          setPopup((prevState) => ({ ...prevState, message: null }));
         }}
       >
-        {error}
+        {popup.message}
       </Alert>
     </Box>
   );
