@@ -44,6 +44,7 @@ function TaskCard({ element }: TaskRendererProps) {
 
   const initialData: TaskFormDetails = {
     task: {
+      id: element.task.id.toString() || "",
       name: element.task.name || "",
       note: element.task?.note || "",
       finished: element.task.finished,
