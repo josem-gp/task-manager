@@ -16,13 +16,18 @@ import {
 import { UserContext } from "../../context/user/UserContext";
 import { GroupContext } from "../../context/group/GroupContext";
 
-function ElementsTab({ tabHeaders }: CompoundTabProps) {
+function ElementsTab({ tabHeaders, setOnTagFocus }: CompoundTabProps) {
   const [tabValue, setTabValue] = useState("1");
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
 
   function handleTabChange(event: React.SyntheticEvent, newValue: string) {
     setTabValue(newValue);
+    if (newValue === "2") {
+      setOnTagFocus && setOnTagFocus(true);
+    } else {
+      setOnTagFocus && setOnTagFocus(false);
+    }
   }
 
   return (
