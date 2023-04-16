@@ -17,7 +17,7 @@ export function ElementSelect({
 }: ElementSelectProps) {
   const handleChange = (event: SelectChangeEvent) => {
     // The MUI component needs to be controlled so we set
-    setElementId(event.target.value);
+    setElementId(event.target.value.toString());
   };
 
   // Map over elements and render each one

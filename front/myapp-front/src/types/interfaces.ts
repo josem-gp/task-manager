@@ -19,6 +19,16 @@ export interface TaskFormDetails {
   };
 }
 
+export interface TagFormDetails {
+  tag: {
+    id?: number;
+    name: string;
+    slug: string;
+    group_id: string;
+    user_id: string;
+  };
+}
+
 export interface UserResponse {
   userObject: DividedUserDetails;
   message: string;

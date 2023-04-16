@@ -39,4 +39,5 @@ type TabHeader =
 
 export type CompoundTabProps = {
   tabHeaders: TabHeader[];
+  setOnTagFocus?: React.Dispatch<React.SetStateAction<boolean>>;
 };
