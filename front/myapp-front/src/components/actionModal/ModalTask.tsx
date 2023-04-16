@@ -14,11 +14,10 @@ import { ElementSelect } from "../elementSelect/ElementSelect";
 import { UserContext } from "../../context/user/UserContext";
 import { initialState as GroupInitialState } from "../../context/group/GroupContext";
 import ActionBtn from "../actionBtn/ActionBtn";
-import { UseApiProps } from "../../types/types";
 import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { fetchData } from "../../utils/fetchApiData";
 import { ErrorContext } from "../../context/error/ErrorContext";
 import ActionModalHeader from "./ActionModalHeader";
+import useAxios from "../../hooks/useAxios/useAxios";
 
 function ModalTask({
   action,
@@ -33,8 +32,8 @@ function ModalTask({
   // We create this state to hold the groupState info because we want it to be empty in the beginning
   // And groupState is not empty since it is holding the value of the group we selected in the sidebar
   const [taskGroup, setTaskGroup] = useState<Group>(GroupInitialState);
-  const { setError } = useContext(ErrorContext);
   const [data, setData] = useState<TaskFormDetails>(initialData);
+  const { handleAxiosCall } = useAxios();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
@@ -69,36 +68,21 @@ function ModalTask({
     return [];
   }
 
-  function fetchGroupInfo() {
-    const params: UseApiProps<undefined> = {
+  async function fetchTaskInfo() {
+    const response = await handleAxiosCall<undefined, Group>({
       method: "get",
       url: `http://localhost:3000/api/v1/groups/${data.task.group_id}`,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
-    };
+      needAuth: true,
+    });
 
-    fetchData<undefined, Group>(params)
-      .then((response: AxiosResponse<Group> | AxiosError) => {
-        if ("data" in response) {
-          setTaskGroup(response.data);
-        } else {
-          setError(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
-        }
-      })
-      .catch((error: AxiosError) => {
-        setError(
-          error.response?.statusText as React.SetStateAction<string | null>
-        );
-      });
+    if (response) {
+      setTaskGroup(response.data);
+    }
   }
 
   useEffect(() => {
     if (data.task.group_id) {
-      fetchGroupInfo();
+      fetchTaskInfo();
     }
   }, [data.task.group_id]);
 

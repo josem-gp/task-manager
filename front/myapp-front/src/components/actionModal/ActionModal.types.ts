@@ -40,11 +40,11 @@ type InvitationDataProps = {
 type ModalActions = {
   action: "show" | "create" | "edit";
   setGroup?: boolean;
-  handleSubmit: (data: TaskFormDetails) => void;
 };
 
 export type TaskModalProps = {
   initialData: TaskFormDetails;
+  handleSubmit: (data: TaskFormDetails) => void;
 } & ModalActions;
 
 export type TagModalProps = {

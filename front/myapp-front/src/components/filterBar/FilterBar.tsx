@@ -9,59 +9,41 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { ElementSelect } from "../elementSelect/ElementSelect";
-import { UserContext } from "../../context/user/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
-import { UseApiProps } from "../../types/types";
-import { fetchData } from "../../utils/fetchApiData";
-import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { ErrorContext } from "../../context/error/ErrorContext";
 import { FilterBarParams, TasksResponse } from "../../types/interfaces";
 import useFilterOptions from "../../hooks/useFilterOptions";
 import { FilterBarProps } from "./FilterBar.types";
+import useAxios from "../../hooks/useAxios/useAxios";
 
 function FilterBar({ closeModal }: FilterBarProps) {
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
-  const { error, setError } = useContext(ErrorContext);
   // Any asynchronous code that we run after dispatch (e.g. making API calls, setting timeouts/intervals)
   // may not complete before the state update is finished. In such cases, we need to use other mechanisms
   // like promises or useEffect to ensure that your code executes in the correct order.
   const [isResetting, setIsResetting] = useState(false);
   const { elementSelectProps, elementDateProps, state, dispatch } =
     useFilterOptions();
+  const { handleAxiosCall } = useAxios();
 
-  function handleFilter() {
-    const params: UseApiProps<FilterBarParams> = {
+  async function handleFilter() {
+    const response = await handleAxiosCall<FilterBarParams, TasksResponse>({
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
-    };
+      needAuth: true,
+    });
 
-    fetchData<FilterBarParams, TasksResponse>(params)
-      .then((response: AxiosResponse<TasksResponse> | AxiosError) => {
-        if ("data" in response) {
-          // To set the group tasks in the context
-          groupDispatch({
-            type: "SET_GROUP_TASKS",
-            payload: response.data.task_value,
-          });
-        } else {
-          setError(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
-        }
-      })
-      .catch((error: AxiosError) => {
-        setError(error.response?.data as React.SetStateAction<string | null>);
+    if (response) {
+      // To set the group tasks in the context
+      groupDispatch({
+        type: "SET_GROUP_TASKS",
+        payload: response.data.task_value,
       });
+    }
 
     // After filtering or resetting we close modal
     closeModal();
