@@ -73,6 +73,7 @@ function TagCard({ element }: TagRendererProps) {
         padding="2px 6px"
         borderRadius="4px"
         sx={{
+          cursor: "pointer",
           maxWidth: "fit-content",
         }}
         onClick={handleOpen}
