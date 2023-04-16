@@ -23,21 +23,15 @@ class Api::V1::TagsController < ApplicationController
   # Update a tag 
   # PATCH /api/v1/groups/:group_id/tags/:id
   def update
-    puts "'-----------"
-    puts "TAG: #{@tag}"
-    puts "PARAMS: #{tag_params}"
     if @tag.update(tag_params)
-      puts "insideeeee"
       render json: { 
         tag: except_attributes(@tag, ['created_at', 'updated_at']), 
         message: "The tag was successfully updated"
       }
     else
-      puts "insideeeee 2222"
       error_message = @tag.errors.objects.first.full_message
       render_error(error_message, :bad_request)
     end
-    puts "'-----------"
   end
 
   # Destroy a tag
