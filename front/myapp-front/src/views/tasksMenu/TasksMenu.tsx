@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import { Box, Modal, Stack, Typography } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FilterBar from "../../components/filterBar/FilterBar";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
@@ -9,11 +9,6 @@ import { colors } from "../../utils/colors";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
 import ActionModal from "../../components/actionModal/ActionModal";
 import { divideTasksByDate } from "../../utils/dateUtils";
-import { UseApiProps } from "../../types/types";
-import { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios";
-import { ErrorContext } from "../../context/error/ErrorContext";
-import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
-import { fetchData } from "../../utils/fetchApiData";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,7 +23,6 @@ const style = {
 };
 
 function TasksMenu() {
-  const { error, setError } = useContext(ErrorContext);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
@@ -41,53 +35,21 @@ function TasksMenu() {
       label: "Today",
       value: "1",
       type: "task" as const, // added this so that type is not taking as a string but as the literal value we want. In this case "task"
-      data: divideTasksByDate(userState.userTasks).today || [],
+      data: divideTasksByDate(groupState.groupTasks).today || [],
     },
     {
       label: "Upcoming",
       value: "2",
       type: "task" as const,
-      data: divideTasksByDate(userState.userTasks).upcoming || [],
+      data: divideTasksByDate(groupState.groupTasks).upcoming || [],
     },
     {
       label: "Past",
       value: "3",
       type: "task" as const,
-      data: divideTasksByDate(userState.userTasks).past || [],
+      data: divideTasksByDate(groupState.groupTasks).past || [],
     },
   ];
-
-  function handleSubmit(data: TaskFormDetails) {
-    const params: UseApiProps<TaskFormDetails> = {
-      method: "post",
-      url: "http://localhost:3000/api/v1/tasks",
-      data: data,
-      headers: {
-        Authorization: `Bearer ${userState.userAuth}`,
-        "Content-Type": "application/json",
-      } as AxiosRequestHeaders,
-    };
-
-    fetchData<TaskFormDetails, TaskResponse>(params)
-      .then((response: AxiosResponse<TaskResponse> | AxiosError) => {
-        if ("data" in response) {
-          userDispatch({
-            type: "ADD_USER_TASK",
-            payload: response.data.task_value,
-          });
-        } else {
-          setError(
-            response.response?.statusText as React.SetStateAction<string | null>
-          );
-        }
-      })
-      .catch((error: AxiosError) => {
-        setError(error.response?.data as React.SetStateAction<string | null>);
-      });
-
-    // After create/editing task, we close modal
-    handleClose();
-  }
 
   return (
     <>
@@ -120,7 +82,6 @@ function TasksMenu() {
           btnName="New Task"
           action="create"
           setGroup={true}
-          handleSubmit={handleSubmit}
           initialData={{
             task: {
               name: "",

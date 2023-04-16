@@ -13,7 +13,6 @@ class Api::V1::GroupsController < ApplicationController
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']),
       groupUsers: build_user_json(users),
-      groupTasks: build_task_json(tasks),
       groupTags: except_attributes(tags, ['created_at', 'updated_at']),
       groupInvitations: except_attributes(invitations, ['oauth_token', 'created_at', 'updated_at'])
     }
