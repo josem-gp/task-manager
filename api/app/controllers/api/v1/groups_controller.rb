@@ -65,7 +65,7 @@ class Api::V1::GroupsController < ApplicationController
     if filtered_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
-      render json: { task_value: build_task_json(filtered_tasks) }
+      render json: { task_value: build_task_json(filtered_tasks), message: "The tasks have been filtered" }
     end
   end
 

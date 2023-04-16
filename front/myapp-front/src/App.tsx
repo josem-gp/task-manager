@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { ErrorContext } from "./context/error/ErrorContext";
+import { PopupContext } from "./context/popup/PopupContext";
 import Dashboard from "./views/dashboard/Dashboard";
 import AuthForm from "./components/authForm/AuthForm";
 import { UserContext } from "./context/user/UserContext";
@@ -8,7 +8,7 @@ import ActionAlerts from "./components/actionAlerts/ActionAlerts";
 import useAxios from "./hooks/useAxios/useAxios";
 
 function App() {
-  const { error, setError } = useContext(ErrorContext);
+  const { popup, setPopup } = useContext(PopupContext);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { handleAxiosCall } = useAxios();
 
@@ -46,7 +46,7 @@ function App() {
 
   return (
     <>
-      {error && <ActionAlerts severity="error" />}
+      {popup.message && <ActionAlerts severity="error" />}
       {!userState.userAuth ? <AuthForm /> : <Dashboard />}
     </>
   );

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./assets/css/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import ErrorContextProvider from "./context/error/ErrorContextProvider";
+import PopupContextProvider from "./context/popup/PopupContextProvider";
 import { theme, ThemeProvider } from "./assets/theme/ThemeProvider";
 import UserContextProvider from "./context/user/UserContextProvider";
 import { RouterProvider } from "react-router-dom";
@@ -16,9 +16,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <UserContextProvider>
-        <ErrorContextProvider>
+        <PopupContextProvider>
           <RouterProvider router={router} />
-        </ErrorContextProvider>
+        </PopupContextProvider>
       </UserContextProvider>
     </ThemeProvider>
   </React.StrictMode>

@@ -20,13 +20,16 @@ export interface TaskFormDetails {
 
 export interface UserResponse {
   userObject: DividedUserDetails;
+  message: string;
 }
 
 export interface TasksResponse {
   task_value: DividedTaskDetails[];
+  message: string;
 }
 export interface TaskResponse {
   task_value: DividedTaskDetails;
+  message: string;
 }
 
 export interface UserDetails {

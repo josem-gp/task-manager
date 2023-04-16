@@ -17,10 +17,12 @@ import { FilterBarParams, TasksResponse } from "../../types/interfaces";
 import useFilterOptions from "../../hooks/useFilterOptions";
 import { FilterBarProps } from "./FilterBar.types";
 import useAxios from "../../hooks/useAxios/useAxios";
+import { PopupContext } from "../../context/popup/PopupContext";
 
 function FilterBar({ closeModal }: FilterBarProps) {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
+  const { popup, setPopup } = useContext(PopupContext);
   // Any asynchronous code that we run after dispatch (e.g. making API calls, setting timeouts/intervals)
   // may not complete before the state update is finished. In such cases, we need to use other mechanisms
   // like promises or useEffect to ensure that your code executes in the correct order.
@@ -43,6 +45,8 @@ function FilterBar({ closeModal }: FilterBarProps) {
         type: "SET_GROUP_TASKS",
         payload: response.data.task_value,
       });
+      // Add notification
+      setPopup({ message: response.data.message, type: "success" });
     }
 
     // After filtering or resetting we close modal

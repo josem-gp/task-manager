@@ -9,6 +9,7 @@ import ModalInvitation from "./ModalInvitation";
 import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { UserContext } from "../../context/user/UserContext";
+import { PopupContext } from "../../context/popup/PopupContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,6 +31,7 @@ function ActionModal({
   setGroup,
 }: ActionModalProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { popup, setPopup } = useContext(PopupContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -44,10 +46,13 @@ function ActionModal({
     });
 
     if (response) {
+      // Add task to userTasks after task creation
       userDispatch({
         type: "ADD_USER_TASK",
         payload: response.data.task_value,
       });
+      // Add notification
+      setPopup({ message: response.data.message, type: "success" });
     }
 
     // Closing the modal
