@@ -1,22 +1,23 @@
 import { Box, TextField } from "@mui/material";
-import { TagModalProps } from "./ActionModal.types";
+
 import { useContext, useState } from "react";
-import { TagFormDetails } from "../../types/interfaces";
+import { TagFormDetails } from "../../../types/interfaces";
 import {
   GroupContext,
   initialState as GroupInitialState,
-} from "../../context/group/GroupContext";
-import ActionBtn from "../actionBtn/ActionBtn";
-import ActionModalHeader from "./ActionModalHeader";
-import { ElementSelect } from "../elementSelect/ElementSelect";
-import { UserContext } from "../../context/user/UserContext";
+} from "../../../context/group/GroupContext";
+import ActionBtn from "../../actionBtn/ActionBtn";
+import ActionModalHeader from "../header/ActionModalHeader";
+import { ElementSelect } from "../../elementSelect/ElementSelect";
+import { UserContext } from "../../../context/user/UserContext";
+import { ModalTagProps } from "./ModalTag.types";
 
 function ModalTag({
   action,
   initialData,
   handleSubmit,
   setGroup,
-}: TagModalProps) {
+}: ModalTagProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";

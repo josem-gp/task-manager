@@ -6,7 +6,7 @@ import { filterDates, parseDate } from "../../utils/dateUtils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/user/UserContext";
 import { DividedTaskDetails } from "../../types/interfaces";
-import TaskCard from "../../components/card/TaskCard";
+import TaskCard from "../../components/card/task/TaskCard";
 import ActionModal from "../../components/actionModal/ActionModal";
 
 function SupportMenu() {

@@ -3,10 +3,10 @@ import { Box, Tab, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import { CompoundTabProps } from "./ElementsTab.types";
 import { v4 as uuidv4 } from "uuid";
-import TaskCard from "../card/TaskCard";
-import InvitationCard from "../card/InvitationCard";
-import TagCard from "../card/TagCard";
-import UserCard from "../card/UserCard";
+import TaskCard from "../card/task/TaskCard";
+import InvitationCard from "../card/invitation/InvitationCard";
+import TagCard from "../card/tag/TagCard";
+import UserCard from "../card/user/UserCard";
 import {
   DividedTaskDetails,
   DividedUserDetails,

@@ -7,18 +7,18 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { colors } from "../../utils/colors";
+import { colors } from "../../../utils/colors";
 import { useContext, useState } from "react";
-import { GroupContext } from "../../context/group/GroupContext";
+import { GroupContext } from "../../../context/group/GroupContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { TaskRendererProps } from "./Card.types";
-import { fetchIconUrl } from "../../utils/fetchUserIcon";
-import ModalTask from "../actionModal/ModalTask";
-import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
-import { UserContext } from "../../context/user/UserContext";
-import { PopupContext } from "../../context/popup/PopupContext";
-import useAxios from "../../hooks/useAxios/useAxios";
+import { fetchIconUrl } from "../../../utils/fetchUserIcon";
+import ModalTask from "../../actionModal/task/ModalTask";
+import { TaskFormDetails, TaskResponse } from "../../../types/interfaces";
+import { UserContext } from "../../../context/user/UserContext";
+import { PopupContext } from "../../../context/popup/PopupContext";
+import useAxios from "../../../hooks/useAxios/useAxios";
+import { TaskRendererProps } from "./TaskCard.types";
 
 const style = {
   position: "absolute" as "absolute",

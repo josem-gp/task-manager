@@ -2,10 +2,10 @@ import { Box, Modal, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { ActionModalProps } from "./ActionModal.types";
-import ModalTask from "./ModalTask";
-import ModalGroup from "./ModalGroup";
-import ModalTag from "./ModalTag";
-import ModalInvitation from "./ModalInvitation";
+import ModalTask from "./task/ModalTask";
+import ModalGroup from "./group/ModalGroup";
+import ModalTag from "./tag/ModalTag";
+import ModalInvitation from "./invitation/ModalInvitation";
 import {
   TagFormDetails,
   TagResponse,

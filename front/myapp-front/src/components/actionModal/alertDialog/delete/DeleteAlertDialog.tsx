@@ -7,11 +7,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useContext, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
-import useAxios from "../../hooks/useAxios/useAxios";
-import { ApiMessageResponse } from "../../types/interfaces";
-import { PopupContext } from "../../context/popup/PopupContext";
-import { UserContext } from "../../context/user/UserContext";
-import { DeleteAlertDialogProps } from "./ActionModal.types";
+import useAxios from "../../../../hooks/useAxios/useAxios";
+import { ApiMessageResponse } from "../../../../types/interfaces";
+import { PopupContext } from "../../../../context/popup/PopupContext";
+import { UserContext } from "../../../../context/user/UserContext";
+import { DeleteAlertDialogProps } from "./DeleteAlertDialog.types";
 
 export default function DeleteAlertDialog({
   elementId,

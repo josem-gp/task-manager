@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { InvitationRendererProps } from "./Card.types";
 import { Avatar, IconButton, Paper, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { GroupContext } from "../../context/group/GroupContext";
-import { fetchIconUrl } from "../../utils/fetchUserIcon";
-import { UserContext } from "../../context/user/UserContext";
+import { GroupContext } from "../../../context/group/GroupContext";
+import { fetchIconUrl } from "../../../utils/fetchUserIcon";
+import { UserContext } from "../../../context/user/UserContext";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { InvitationRendererProps } from "./InvitationCard.types";
 
 function InvitationCard({ element }: InvitationRendererProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);

@@ -1,22 +1,21 @@
 import {
-  GroupDetails,
   InvitationDetails,
   TagFormDetails,
   TaskFormDetails,
 } from "../../types/interfaces";
-import { TagDetails, UserDetails } from "../../types/interfaces";
+import { UserDetails } from "../../types/interfaces";
 
-export type ActionModalProps = BaseModal & ModalActions & DataProps;
+export type ActionModalProps =
+  | (BaseActionModalProps & TaskDataProps)
+  | (BaseActionModalProps & GroupDataProps)
+  | (BaseActionModalProps & TagDataProps)
+  | (BaseActionModalProps & InvitationDataProps);
 
-type BaseModal = {
+export type BaseActionModalProps = {
   btnName: string;
+  action: "show" | "create" | "edit";
+  setGroup?: boolean;
 };
-
-type DataProps =
-  | TaskDataProps
-  | GroupDataProps
-  | TagDataProps
-  | InvitationDataProps;
 
 type TaskDataProps = {
   type: "task";
@@ -36,39 +35,4 @@ type TagDataProps = {
 type InvitationDataProps = {
   type: "invitation";
   initialData: InvitationDetails;
-};
-
-type ModalActions = {
-  action: "show" | "create" | "edit";
-  setGroup?: boolean;
-};
-
-export type TaskModalProps = {
-  initialData: TaskFormDetails;
-  handleSubmit: (data: TaskFormDetails) => void;
-} & ModalActions;
-
-export type TagModalProps = {
-  initialData: TagFormDetails;
-  handleSubmit: (data: TagFormDetails) => void;
-} & ModalActions;
-
-export type GroupModalProps = {
-  initialData: GroupDetails;
-} & ModalActions;
-
-export type InvitationModalProps = {
-  initialData: InvitationDetails;
-} & ModalActions;
-
-export type ActionModalHeaderProps = {
-  title: string;
-  isShow: boolean;
-  setFormAction: React.Dispatch<
-    React.SetStateAction<"show" | "create" | "edit">
-  >;
-} & DeleteAlertDialogProps;
-
-export type DeleteAlertDialogProps = {
-  elementId: string;
 };

@@ -5,26 +5,27 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import { TaskModalProps } from "./ActionModal.types";
+
 import { SyntheticEvent, useContext, useEffect, useState } from "react";
-import { Group, TagDetails, TaskFormDetails } from "../../types/interfaces";
-import MyDatePicker from "../myDatePicker/MyDatePicker";
+import { Group, TagDetails, TaskFormDetails } from "../../../types/interfaces";
+import MyDatePicker from "../../myDatePicker/MyDatePicker";
 import dayjs from "dayjs";
-import { ElementSelect } from "../elementSelect/ElementSelect";
-import { UserContext } from "../../context/user/UserContext";
+import { ElementSelect } from "../../elementSelect/ElementSelect";
+import { UserContext } from "../../../context/user/UserContext";
 import {
   GroupContext,
   initialState as GroupInitialState,
-} from "../../context/group/GroupContext";
-import ActionBtn from "../actionBtn/ActionBtn";
-import ActionModalHeader from "./ActionModalHeader";
+} from "../../../context/group/GroupContext";
+import ActionBtn from "../../actionBtn/ActionBtn";
+import ActionModalHeader from "../header/ActionModalHeader";
+import { ModalTaskProps } from "./ModalTask.types";
 
 function ModalTask({
   action,
   initialData,
   handleSubmit,
   setGroup,
-}: TaskModalProps) {
+}: ModalTaskProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";

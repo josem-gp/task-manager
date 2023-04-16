@@ -1,7 +1,8 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { ActionModalHeaderProps } from "./ActionModal.types";
-import DeleteAlertDialog from "./DeleteAlertDialog";
+
+import DeleteAlertDialog from "../alertDialog/delete/DeleteAlertDialog";
+import { ActionModalHeaderProps } from "./ActionModalHeader.types";
 
 function ActionModalHeader({
   title,

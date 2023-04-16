@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import { TagRendererProps } from "./Card.types";
 import { Box, Grid, Modal, Typography } from "@mui/material";
-import useAxios from "../../hooks/useAxios/useAxios";
-import ModalTag from "../actionModal/ModalTag";
-import { TagFormDetails, TagResponse } from "../../types/interfaces";
-import { PopupContext } from "../../context/popup/PopupContext";
-import { GroupContext } from "../../context/group/GroupContext";
+import useAxios from "../../../hooks/useAxios/useAxios";
+import ModalTag from "../../actionModal/tag/ModalTag";
+import { TagFormDetails, TagResponse } from "../../../types/interfaces";
+import { PopupContext } from "../../../context/popup/PopupContext";
+import { GroupContext } from "../../../context/group/GroupContext";
+import { TagRendererProps } from "./TagCard.types";
 
 const style = {
   position: "absolute" as "absolute",
