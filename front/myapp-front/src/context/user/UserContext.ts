@@ -1,12 +1,9 @@
 import { createContext } from "react";
-import {
-  GroupDetails,
-  User,
-  DividedUserDetails,
-  DividedTaskDetails,
-} from "../../types/interfaces";
+import { DetailedUser, UserObject } from "../../shared/user/interfaces";
+import { Group } from "../../shared/group/interfaces";
+import { TaskObject } from "../../shared/task/interfaces";
 
-export const initialState: User = {
+export const initialState: DetailedUser = {
   userObject: {
     user: { id: 0, username: "", email: "", icon_id: 0 },
     user_icon: { id: 0, name: "", url: "" },
@@ -17,15 +14,15 @@ export const initialState: User = {
 };
 
 export type UserContextAction =
-  | { type: "SET_USER"; payload: DividedUserDetails }
-  | { type: "SET_USER_GROUPS"; payload: GroupDetails[] }
-  | { type: "SET_USER_TASKS"; payload: DividedTaskDetails[] }
-  | { type: "ADD_USER_TASK"; payload: DividedTaskDetails }
-  | { type: "REMOVE_USER_TASK"; payload: string }
-  | { type: "UPDATE_USER_TASK"; payload: DividedTaskDetails }
+  | { type: "SET_USER"; payload: UserObject }
+  | { type: "SET_USER_GROUPS"; payload: Group[] }
+  | { type: "SET_USER_TASKS"; payload: TaskObject[] }
+  | { type: "ADD_USER_TASK"; payload: TaskObject }
+  | { type: "REMOVE_USER_TASK"; payload: number }
+  | { type: "UPDATE_USER_TASK"; payload: TaskObject }
   | { type: "SET_USER_AUTH"; payload: string };
 
-export function reducer(state: User, action: UserContextAction) {
+export function reducer(state: DetailedUser, action: UserContextAction) {
   switch (action.type) {
     case "SET_USER":
       return { ...state, userObject: action.payload };
@@ -37,7 +34,7 @@ export function reducer(state: User, action: UserContextAction) {
       return { ...state, userTasks: [...state.userTasks, action.payload] };
     case "REMOVE_USER_TASK":
       const updatedTasks = state.userTasks.filter((task) => {
-        return task.task.id.toString() !== action.payload;
+        return task.task.id !== action.payload;
       });
       return { ...state, userTasks: updatedTasks };
     case "UPDATE_USER_TASK":
@@ -56,7 +53,7 @@ export function reducer(state: User, action: UserContextAction) {
 }
 
 type UserContextType = {
-  state: User;
+  state: DetailedUser;
   dispatch: React.Dispatch<UserContextAction>;
 };
 

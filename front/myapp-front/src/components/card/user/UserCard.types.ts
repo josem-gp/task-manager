@@ -1,5 +1,5 @@
-import { DividedUserDetails } from "../../../types/interfaces";
+import { UserObject } from "../../../shared/user/interfaces";
 
 export type UserRendererProps = {
-  element: DividedUserDetails;
+  element: UserObject;
 };

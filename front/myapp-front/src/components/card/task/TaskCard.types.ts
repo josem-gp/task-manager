@@ -1,5 +1,5 @@
-import { DividedTaskDetails } from "../../../types/interfaces";
+import { TaskObject } from "../../../shared/task/interfaces";
 
 export type TaskRendererProps = {
-  element: DividedTaskDetails;
+  element: TaskObject;
 };

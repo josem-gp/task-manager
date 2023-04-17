@@ -1,3 +1,3 @@
 export type DeleteAlertDialogProps = {
-  elementId: string;
+  elementId: number;
 };

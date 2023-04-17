@@ -14,11 +14,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { fetchIconUrl } from "../../../utils/fetchUserIcon";
 import ModalTask from "../../actionModal/task/ModalTask";
-import { TaskFormDetails, TaskResponse } from "../../../types/interfaces";
 import { UserContext } from "../../../context/user/UserContext";
 import { PopupContext } from "../../../context/popup/PopupContext";
 import useAxios from "../../../hooks/useAxios/useAxios";
 import { TaskRendererProps } from "./TaskCard.types";
+import { TaskRequest, TaskResponse } from "../../../shared/task/interfaces";
 
 const style = {
   position: "absolute" as "absolute",
@@ -33,31 +33,29 @@ const style = {
 };
 
 function TaskCard({ element }: TaskRendererProps) {
-  const { state: groupState, dispatch: groupDispatch } =
-    useContext(GroupContext);
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const { popup, setPopup } = useContext(PopupContext);
+  const { state: groupState } = useContext(GroupContext);
+  const { dispatch: userDispatch } = useContext(UserContext);
+  const { setPopup } = useContext(PopupContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { handleAxiosCall } = useAxios();
 
-  const initialData: TaskFormDetails = {
+  const initialData: TaskRequest = {
     task: {
-      id: element.task.id.toString() || "",
-      name: element.task.name || "",
-      note: element.task?.note || "",
+      name: element.task.name,
+      note: element.task?.note,
       finished: element.task.finished,
-      due_date: element.task.due_date || "",
-      assignee_id: element.task.assignee_id.toString() || "",
-      group_id: element.task.group_id.toString() || "",
+      due_date: element.task.due_date,
+      assignee_id: element.task.assignee_id,
+      group_id: element.task.group_id,
       tag_ids: element.task_tags.map((tag) => tag.id),
     },
   };
 
   // Update a specific task in the userTasks state
-  async function handleSubmit(data: TaskFormDetails) {
-    const response = await handleAxiosCall<TaskFormDetails, TaskResponse>({
+  async function handleSubmit(data: TaskRequest) {
+    const response = await handleAxiosCall<TaskRequest, TaskResponse>({
       method: "patch",
       url: `http://localhost:3000/api/v1/tasks/${element.task.id}`,
       data: data,
@@ -84,7 +82,7 @@ function TaskCard({ element }: TaskRendererProps) {
           <ModalTask
             action="show"
             initialData={initialData}
-            handleSubmit={(data: TaskFormDetails) => handleSubmit(data)}
+            handleSubmit={(data: TaskRequest) => handleSubmit(data)}
           />
         </Box>
       </Modal>

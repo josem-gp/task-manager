@@ -9,7 +9,7 @@ type UserContextProviderProps = {
 
 function UserContextProvider({ children }: UserContextProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { popup, setPopup } = useContext(PopupContext);
+  const { setPopup } = useContext(PopupContext);
 
   function fetchAuthToken() {
     try {

@@ -12,7 +12,7 @@ import {
   DividedUserDetails,
   InvitationDetails,
   TagDetails,
-} from "../../types/interfaces";
+} from "../../shared/general/interfaces";
 import { UserContext } from "../../context/user/UserContext";
 import { GroupContext } from "../../context/group/GroupContext";
 

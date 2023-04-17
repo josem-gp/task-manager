@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Box, Grid, Modal, Typography } from "@mui/material";
 import useAxios from "../../../hooks/useAxios/useAxios";
 import ModalTag from "../../actionModal/tag/ModalTag";
-import { TagFormDetails, TagResponse } from "../../../types/interfaces";
 import { PopupContext } from "../../../context/popup/PopupContext";
 import { GroupContext } from "../../../context/group/GroupContext";
 import { TagRendererProps } from "./TagCard.types";
+import { TagResponse, TagRequest } from "../../../shared/tag/interfaces";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,7 +20,7 @@ const style = {
 };
 
 function TagCard({ element }: TagRendererProps) {
-  const { popup, setPopup } = useContext(PopupContext);
+  const { setPopup } = useContext(PopupContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
   const [open, setOpen] = useState(false);
@@ -28,17 +28,15 @@ function TagCard({ element }: TagRendererProps) {
   const handleClose = () => setOpen(false);
   const { handleAxiosCall } = useAxios();
 
-  const initialData: TagFormDetails = {
+  const initialData: TagRequest = {
     tag: {
-      id: element.id.toString() || "",
       name: element.name || "",
-      slug: element.slug || "",
     },
   };
 
   // Update a specific tag in the groupTags state
-  async function handleSubmit(data: TagFormDetails) {
-    const response = await handleAxiosCall<TagFormDetails, TagResponse>({
+  async function handleSubmit(data: TagRequest) {
+    const response = await handleAxiosCall<TagRequest, TagResponse>({
       method: "patch",
       url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/tags/${element.id}`,
       data: data,
@@ -63,7 +61,8 @@ function TagCard({ element }: TagRendererProps) {
           <ModalTag
             action="show"
             initialData={initialData}
-            handleSubmit={(data: TagFormDetails) => handleSubmit(data)}
+            handleSubmit={(data: TagRequest) => handleSubmit(data)}
+            elementId={element.id}
           />
         </Box>
       </Modal>

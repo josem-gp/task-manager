@@ -1,6 +1,6 @@
-import { GroupDetails } from "../../../types/interfaces";
+import { Group } from "../../../shared/group/interfaces";
 import { BaseActionModalProps } from "../ActionModal.types";
 
 export type GroupModalProps = {
-  initialData: GroupDetails;
+  initialData: Group;
 } & Omit<BaseActionModalProps, "btnName">;

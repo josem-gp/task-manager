@@ -1,5 +1,5 @@
-import { TagDetails } from "../../../types/interfaces";
+import { Tag } from "../../../shared/tag/interfaces";
 
 export type TagRendererProps = {
-  element: TagDetails;
+  element: Tag;
 };

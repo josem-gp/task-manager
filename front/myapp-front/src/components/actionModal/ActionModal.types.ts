@@ -1,9 +1,7 @@
-import {
-  InvitationDetails,
-  TagFormDetails,
-  TaskFormDetails,
-} from "../../types/interfaces";
-import { UserDetails } from "../../types/interfaces";
+import { GroupRequest } from "../../shared/group/interfaces";
+import { InvitationRequest } from "../../shared/invitation/interfaces";
+import { TagRequest } from "../../shared/tag/interfaces";
+import { TaskRequest } from "../../shared/task/interfaces";
 
 export type ActionModalProps =
   | (BaseActionModalProps & TaskDataProps)
@@ -15,24 +13,25 @@ export type BaseActionModalProps = {
   btnName: string;
   action: "show" | "create" | "edit";
   setGroup?: boolean;
+  elementId?: number;
 };
 
 type TaskDataProps = {
   type: "task";
-  initialData: TaskFormDetails;
+  initialData: TaskRequest;
 };
 
 type GroupDataProps = {
   type: "group";
-  initialData: UserDetails;
+  initialData: GroupRequest;
 };
 
 type TagDataProps = {
   type: "tag";
-  initialData: TagFormDetails;
+  initialData: TagRequest;
 };
 
 type InvitationDataProps = {
   type: "invitation";
-  initialData: InvitationDetails;
+  initialData: InvitationRequest;
 };

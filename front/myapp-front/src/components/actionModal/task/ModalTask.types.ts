@@ -1,7 +1,7 @@
-import { TaskFormDetails } from "../../../types/interfaces";
+import { TaskRequest } from "../../../shared/task/interfaces";
 import { BaseActionModalProps } from "../ActionModal.types";
 
 export type ModalTaskProps = {
-  initialData: TaskFormDetails;
-  handleSubmit: (data: TaskFormDetails) => void;
+  initialData: TaskRequest;
+  handleSubmit: (data: TaskRequest) => void;
 } & Omit<BaseActionModalProps, "btnName">;

@@ -3,7 +3,7 @@ import { PopupContext } from "./context/popup/PopupContext";
 import Dashboard from "./views/dashboard/Dashboard";
 import AuthForm from "./components/authForm/AuthForm";
 import { UserContext } from "./context/user/UserContext";
-import { User } from "./types/interfaces";
+import { User } from "./shared/general/interfaces";
 import ActionAlerts from "./components/actionAlerts/ActionAlerts";
 import useAxios from "./hooks/useAxios/useAxios";
 

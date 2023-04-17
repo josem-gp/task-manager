@@ -1,32 +1,20 @@
 import { Box, TextField } from "@mui/material";
-
-import { useContext, useState } from "react";
-import { TagFormDetails } from "../../../types/interfaces";
-import {
-  GroupContext,
-  initialState as GroupInitialState,
-} from "../../../context/group/GroupContext";
+import { useState } from "react";
 import ActionBtn from "../../actionBtn/ActionBtn";
 import ActionModalHeader from "../header/ActionModalHeader";
-import { ElementSelect } from "../../elementSelect/ElementSelect";
-import { UserContext } from "../../../context/user/UserContext";
 import { ModalTagProps } from "./ModalTag.types";
+import { TagRequest } from "../../../shared/tag/interfaces";
 
 function ModalTag({
   action,
   initialData,
   handleSubmit,
-  setGroup,
+  elementId,
 }: ModalTagProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";
-  const { state: userState } = useContext(UserContext);
-  // We create this state to hold the groupState info because we want it to be empty in the beginning
-  // And groupState is not empty since it is holding the value of the group we selected in the sidebar
-  const { state: groupState, dispatch: groupDispatch } =
-    useContext(GroupContext);
-  const [data, setData] = useState<TagFormDetails>(initialData);
+  const [data, setData] = useState<TagRequest>(initialData);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -35,7 +23,6 @@ function ModalTag({
       tag: {
         ...prevState.tag,
         [name]: value,
-        slug: value.toLowerCase().split(" ").join("_"),
       },
     }));
   }
@@ -48,7 +35,7 @@ function ModalTag({
         }
         isShow={isShow}
         setFormAction={setFormAction}
-        elementId={data.tag.id ?? ""}
+        elementId={elementId}
       />
 
       <Box
@@ -71,7 +58,7 @@ function ModalTag({
           disabled={true}
           label="Slug"
           name="slug"
-          value={data.tag.slug}
+          value={data.tag.name.toLowerCase().split(" ").join("_")}
         />
 
         {!isShow && (

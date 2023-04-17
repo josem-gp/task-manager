@@ -1,7 +1,7 @@
-import { TagDetails } from "../../types/interfaces";
-import { InvitationDetails } from "../../types/interfaces";
-import { DividedUserDetails } from "../../types/interfaces";
-import { DividedTaskDetails } from "../../types/interfaces";
+import { TagDetails } from "../../shared/general/interfaces";
+import { InvitationDetails } from "../../shared/general/interfaces";
+import { DividedUserDetails } from "../../shared/general/interfaces";
+import { DividedTaskDetails } from "../../shared/general/interfaces";
 
 type TaskTabHeader = {
   type: "task";

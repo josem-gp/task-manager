@@ -1,4 +1,4 @@
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import { useContext, useState } from "react";
 import ActionBtn from "../actionBtn/ActionBtn";
 import { ActionModalProps } from "./ActionModal.types";
@@ -6,16 +6,13 @@ import ModalTask from "./task/ModalTask";
 import ModalGroup from "./group/ModalGroup";
 import ModalTag from "./tag/ModalTag";
 import ModalInvitation from "./invitation/ModalInvitation";
-import {
-  TagFormDetails,
-  TagResponse,
-  TaskFormDetails,
-  TaskResponse,
-} from "../../types/interfaces";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { UserContext } from "../../context/user/UserContext";
 import { PopupContext } from "../../context/popup/PopupContext";
 import { GroupContext } from "../../context/group/GroupContext";
+import { TaskRequest } from "../../shared/task/interfaces";
+import { TaskResponse } from "../../shared/task/interfaces";
+import { TagResponse, TagRequest } from "../../shared/tag/interfaces";
 
 const style = {
   position: "absolute" as "absolute",
@@ -45,8 +42,8 @@ function ActionModal({
   const handleClose = () => setOpen(false);
   const { handleAxiosCall } = useAxios();
 
-  async function handleTaskSubmit(data: TaskFormDetails) {
-    const response = await handleAxiosCall<TaskFormDetails, TaskResponse>({
+  async function handleTaskSubmit(data: TaskRequest) {
+    const response = await handleAxiosCall<TaskRequest, TaskResponse>({
       method: "post",
       url: "http://localhost:3000/api/v1/tasks",
       data: data,
@@ -67,8 +64,8 @@ function ActionModal({
     handleClose();
   }
 
-  async function handleTagSubmit(data: TagFormDetails) {
-    const response = await handleAxiosCall<TagFormDetails, TagResponse>({
+  async function handleTagSubmit(data: TagRequest) {
+    const response = await handleAxiosCall<TagRequest, TagResponse>({
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/tags`,
       data: data,
@@ -97,7 +94,7 @@ function ActionModal({
             action={action}
             setGroup={setGroup}
             initialData={initialData}
-            handleSubmit={(data: TaskFormDetails) => handleTaskSubmit(data)}
+            handleSubmit={(data: TaskRequest) => handleTaskSubmit(data)}
           />
         );
       case "group":
@@ -106,9 +103,8 @@ function ActionModal({
         return (
           <ModalTag
             action={action}
-            setGroup={setGroup}
             initialData={initialData}
-            handleSubmit={(data: TagFormDetails) => handleTagSubmit(data)}
+            handleSubmit={(data: TagRequest) => handleTagSubmit(data)}
           />
         );
       case "invitation":

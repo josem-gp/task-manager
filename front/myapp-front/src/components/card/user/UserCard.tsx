@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Avatar, IconButton, Paper, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { GroupContext } from "../../../context/group/GroupContext";
-import { fetchIconUrl } from "../../../utils/fetchUserIcon";
 import { UserContext } from "../../../context/user/UserContext";
 import { UserRendererProps } from "./UserCard.types";
 
 function UserCard({ element }: UserRendererProps) {
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: userState } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
 
   return (

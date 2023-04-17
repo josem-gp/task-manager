@@ -6,8 +6,7 @@ import {
   TextField,
 } from "@mui/material";
 
-import { SyntheticEvent, useContext, useEffect, useState } from "react";
-import { Group, TagDetails, TaskFormDetails } from "../../../types/interfaces";
+import { SyntheticEvent, useContext, useState } from "react";
 import MyDatePicker from "../../myDatePicker/MyDatePicker";
 import dayjs from "dayjs";
 import { ElementSelect } from "../../elementSelect/ElementSelect";
@@ -19,23 +18,26 @@ import {
 import ActionBtn from "../../actionBtn/ActionBtn";
 import ActionModalHeader from "../header/ActionModalHeader";
 import { ModalTaskProps } from "./ModalTask.types";
+import { Tag } from "../../../shared/tag/interfaces";
+import { TaskRequest } from "../../../shared/task/interfaces";
+import { DetailedGroup } from "../../../shared/group/interfaces";
 
 function ModalTask({
   action,
   initialData,
   handleSubmit,
   setGroup,
+  elementId,
 }: ModalTaskProps) {
   const [formAction, setFormAction] = useState(action);
   const isShow = formAction === "show";
   const isEdit = formAction === "edit";
   const { state: userState } = useContext(UserContext);
+  const { state: groupState } = useContext(GroupContext);
   // We create this state to hold the groupState info because we want it to be empty in the beginning
   // And groupState is not empty since it is holding the value of the group we selected in the sidebar
-  const { state: groupState, dispatch: groupDispatch } =
-    useContext(GroupContext);
-  const [taskGroup, setTaskGroup] = useState<Group>(groupState);
-  const [data, setData] = useState<TaskFormDetails>(initialData);
+  const [taskGroup] = useState<DetailedGroup>(groupState);
+  const [data, setData] = useState<TaskRequest>(initialData);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
@@ -50,7 +52,7 @@ function ModalTask({
 
   function handleAutocompleteChange(
     event: SyntheticEvent<Element, Event>,
-    value: TagDetails[]
+    value: Tag[]
   ) {
     setData((prevState) => ({
       ...prevState,
@@ -61,7 +63,7 @@ function ModalTask({
     }));
   }
 
-  function fetchTaskTags(): TagDetails[] {
+  function fetchTaskTags(): Tag[] {
     if (taskGroup.groupTags) {
       return taskGroup.groupTags.filter((obj) =>
         data.task.tag_ids.includes(obj.id)
@@ -82,7 +84,7 @@ function ModalTask({
         }
         isShow={isShow}
         setFormAction={setFormAction}
-        elementId={data.task.id ?? ""}
+        elementId={elementId}
       />
 
       <Box
@@ -121,7 +123,7 @@ function ModalTask({
           name="Choose a group"
           elements={userState.userGroups}
           elementId={data.task.group_id}
-          setElementId={(id: string) =>
+          setElementId={(id: number) =>
             setData((prevState) => ({
               ...prevState,
               task: {
@@ -150,7 +152,7 @@ function ModalTask({
           name="Choose assignee"
           elements={taskGroup.groupUsers}
           elementId={data.task.assignee_id}
-          setElementId={(id: string) =>
+          setElementId={(id: number) =>
             setData((prevState) => ({
               ...prevState,
               task: {

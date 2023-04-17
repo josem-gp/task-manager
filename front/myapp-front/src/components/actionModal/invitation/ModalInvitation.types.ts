@@ -1,6 +1,6 @@
-import { InvitationDetails } from "../../../types/interfaces";
+import { Invitation } from "../../../shared/invitation/interfaces";
 import { BaseActionModalProps } from "../ActionModal.types";
 
 export type InvitationModalProps = {
-  initialData: InvitationDetails;
+  initialData: Invitation;
 } & Omit<BaseActionModalProps, "btnName">;

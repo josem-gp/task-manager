@@ -13,7 +13,10 @@ import { useContext, useEffect, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
-import { FilterBarParams, TasksResponse } from "../../types/interfaces";
+import {
+  FilterBarParams,
+  TasksResponse,
+} from "../../shared/general/interfaces";
 import useFilterOptions from "../../hooks/useFilterOptions";
 import { FilterBarProps } from "./FilterBar.types";
 import useAxios from "../../hooks/useAxios/useAxios";

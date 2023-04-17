@@ -37,7 +37,7 @@ function ActionModalHeader({
             >
               <EditIcon />
             </IconButton>
-            <DeleteAlertDialog elementId={elementId} />
+            {elementId && <DeleteAlertDialog elementId={elementId} />}
           </>
         )}
       </Stack>

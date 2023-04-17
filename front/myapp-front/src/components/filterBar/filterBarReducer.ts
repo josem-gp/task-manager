@@ -1,4 +1,4 @@
-import { FilterBarParams } from "../../types/interfaces";
+import { FilterBarParams } from "../../shared/general/interfaces";
 
 export const initialState: FilterBarParams = {
   by_fuzzy_name: "",

@@ -1,5 +1,5 @@
-import { InvitationDetails } from "../../../types/interfaces";
+import { Invitation } from "../../../shared/invitation/interfaces";
 
 export type InvitationRendererProps = {
-  element: InvitationDetails;
+  element: Invitation;
 };
