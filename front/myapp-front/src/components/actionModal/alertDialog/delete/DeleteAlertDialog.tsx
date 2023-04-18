@@ -7,19 +7,19 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useContext, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
-import useAxios from "../../hooks/useAxios/useAxios";
-import { ApiMessageResponse } from "../../types/interfaces";
-import { PopupContext } from "../../context/popup/PopupContext";
-import { UserContext } from "../../context/user/UserContext";
-import { DeleteAlertDialogProps } from "./ActionModal.types";
+import useAxios from "../../../../hooks/useAxios/useAxios";
+import { PopupContext } from "../../../../context/popup/PopupContext";
+import { UserContext } from "../../../../context/user/UserContext";
+import { DeleteAlertDialogProps } from "./DeleteAlertDialog.types";
+import { GenericMessageResponse } from "../../../../shared/general/interfaces";
 
 export default function DeleteAlertDialog({
   elementId,
 }: DeleteAlertDialogProps) {
   const [open, setOpen] = useState(false);
   const { handleAxiosCall } = useAxios();
-  const { popup, setPopup } = useContext(PopupContext);
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { setPopup } = useContext(PopupContext);
+  const { dispatch: userDispatch } = useContext(UserContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -31,7 +31,7 @@ export default function DeleteAlertDialog({
 
   // Remove a task
   async function handleDelete() {
-    const response = await handleAxiosCall<undefined, ApiMessageResponse>({
+    const response = await handleAxiosCall<undefined, GenericMessageResponse>({
       method: "delete",
       url: `http://localhost:3000/api/v1/tasks/${elementId}`,
       needAuth: true,

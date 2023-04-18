@@ -10,16 +10,17 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { setAuthToken } from "../../utils/setAuthToken";
-import { UserFormDetails, UserResponse } from "../../types/interfaces";
 import { AuthFormProps } from "./AuthForm.types";
 import { UserContext } from "../../context/user/UserContext";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../context/popup/PopupContext";
+import { UserAuthRequest } from "../../shared/auth/interfaces";
+import { UserResponse } from "../../shared/user/interfaces";
 
 function AuthFormSignup({ setIsLogin }: AuthFormProps) {
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const { popup, setPopup } = useContext(PopupContext);
-  const [data, setData] = useState<UserFormDetails>({
+  const { dispatch: userDispatch } = useContext(UserContext);
+  const { setPopup } = useContext(PopupContext);
+  const [data, setData] = useState<UserAuthRequest>({
     user: { username: "", email: "", password: "" },
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +39,7 @@ function AuthFormSignup({ setIsLogin }: AuthFormProps) {
   }
 
   async function handleSubmit() {
-    const response = await handleAxiosCall<UserFormDetails, UserResponse>({
+    const response = await handleAxiosCall<UserAuthRequest, UserResponse>({
       method: "post",
       url: "http://localhost:3000/users",
       data: data,

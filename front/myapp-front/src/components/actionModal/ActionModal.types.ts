@@ -1,74 +1,37 @@
-import {
-  GroupDetails,
-  InvitationDetails,
-  TagFormDetails,
-  TaskFormDetails,
-} from "../../types/interfaces";
-import { TagDetails, UserDetails } from "../../types/interfaces";
+import { GroupRequest } from "../../shared/group/interfaces";
+import { InvitationRequest } from "../../shared/invitation/interfaces";
+import { TagRequest } from "../../shared/tag/interfaces";
+import { TaskRequest } from "../../shared/task/interfaces";
 
-export type ActionModalProps = BaseModal & ModalActions & DataProps;
+export type ActionModalProps =
+  | (BaseActionModalProps & TaskDataProps)
+  | (BaseActionModalProps & GroupDataProps)
+  | (BaseActionModalProps & TagDataProps)
+  | (BaseActionModalProps & InvitationDataProps);
 
-type BaseModal = {
+export type BaseActionModalProps = {
   btnName: string;
+  action: "show" | "create" | "edit";
+  setGroup?: boolean;
+  elementId?: number;
 };
-
-type DataProps =
-  | TaskDataProps
-  | GroupDataProps
-  | TagDataProps
-  | InvitationDataProps;
 
 type TaskDataProps = {
   type: "task";
-  initialData: TaskFormDetails;
+  initialData: TaskRequest;
 };
 
 type GroupDataProps = {
   type: "group";
-  initialData: UserDetails;
+  initialData: GroupRequest;
 };
 
 type TagDataProps = {
   type: "tag";
-  initialData: TagFormDetails;
+  initialData: TagRequest;
 };
 
 type InvitationDataProps = {
   type: "invitation";
-  initialData: InvitationDetails;
-};
-
-type ModalActions = {
-  action: "show" | "create" | "edit";
-  setGroup?: boolean;
-};
-
-export type TaskModalProps = {
-  initialData: TaskFormDetails;
-  handleSubmit: (data: TaskFormDetails) => void;
-} & ModalActions;
-
-export type TagModalProps = {
-  initialData: TagFormDetails;
-  handleSubmit: (data: TagFormDetails) => void;
-} & ModalActions;
-
-export type GroupModalProps = {
-  initialData: GroupDetails;
-} & ModalActions;
-
-export type InvitationModalProps = {
-  initialData: InvitationDetails;
-} & ModalActions;
-
-export type ActionModalHeaderProps = {
-  title: string;
-  isShow: boolean;
-  setFormAction: React.Dispatch<
-    React.SetStateAction<"show" | "create" | "edit">
-  >;
-} & DeleteAlertDialogProps;
-
-export type DeleteAlertDialogProps = {
-  elementId: string;
+  initialData: InvitationRequest;
 };

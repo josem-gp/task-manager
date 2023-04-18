@@ -1,14 +1,11 @@
 import { createContext } from "react";
-import {
-  Group,
-  GroupDetails,
-  InvitationDetails,
-  TagDetails,
-  DividedUserDetails,
-  DividedTaskDetails,
-} from "../../types/interfaces";
+import { DetailedGroup, Group } from "../../shared/group/interfaces";
+import { TaskObject } from "../../shared/task/interfaces";
+import { UserObject } from "../../shared/user/interfaces";
+import { Tag } from "../../shared/tag/interfaces";
+import { Invitation } from "../../shared/invitation/interfaces";
 
-export const initialState: Group = {
+export const initialState: DetailedGroup = {
   group: { id: 0, name: "", description: "", admin_id: 0 },
   groupUsers: [],
   groupTasks: [],
@@ -17,15 +14,15 @@ export const initialState: Group = {
 };
 
 export type GroupContextAction =
-  | { type: "SET_GROUP"; payload: GroupDetails }
-  | { type: "SET_GROUP_USERS"; payload: DividedUserDetails[] }
-  | { type: "SET_GROUP_TASKS"; payload: DividedTaskDetails[] }
-  | { type: "SET_GROUP_TAGS"; payload: TagDetails[] }
-  | { type: "ADD_GROUP_TAG"; payload: TagDetails }
-  | { type: "UPDATE_GROUP_TAG"; payload: TagDetails }
-  | { type: "SET_GROUP_INVITATIONS"; payload: InvitationDetails[] };
+  | { type: "SET_GROUP"; payload: Group }
+  | { type: "SET_GROUP_USERS"; payload: UserObject[] }
+  | { type: "SET_GROUP_TASKS"; payload: TaskObject[] }
+  | { type: "SET_GROUP_TAGS"; payload: Tag[] }
+  | { type: "ADD_GROUP_TAG"; payload: Tag }
+  | { type: "UPDATE_GROUP_TAG"; payload: Tag }
+  | { type: "SET_GROUP_INVITATIONS"; payload: Invitation[] };
 
-export function reducer(state: Group, action: GroupContextAction) {
+export function reducer(state: DetailedGroup, action: GroupContextAction) {
   switch (action.type) {
     case "SET_GROUP":
       return { ...state, group: action.payload };
@@ -53,7 +50,7 @@ export function reducer(state: Group, action: GroupContextAction) {
 }
 
 type GroupContextType = {
-  state: Group;
+  state: DetailedGroup;
   dispatch: React.Dispatch<GroupContextAction>;
 };
 

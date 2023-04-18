@@ -6,9 +6,8 @@ import { UserContext } from "../../context/user/UserContext";
 import ActionModal from "../../components/actionModal/ActionModal";
 
 function GroupsMenu() {
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const { state: groupState, dispatch: groupDispatch } =
-    useContext(GroupContext);
+  const { state: userState } = useContext(UserContext);
+  const { state: groupState } = useContext(GroupContext);
   const [onTagFocus, setOnTagFocus] = useState(false);
 
   const tabHeaders = [
@@ -59,7 +58,6 @@ function GroupsMenu() {
             initialData={{
               tag: {
                 name: "",
-                slug: "",
               },
             }}
           />

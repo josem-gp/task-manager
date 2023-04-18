@@ -8,17 +8,16 @@ import { TaskStatus } from "../components/elementSelect/ElementSelect.types";
 import dayjs from "dayjs";
 
 export default function useFilterOptions() {
-  const { state: groupState, dispatch: groupDispatch } =
-    useContext(GroupContext);
+  const { state: groupState } = useContext(GroupContext);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const taskStatus: TaskStatus[] = [
     {
-      id: "0",
+      id: 0,
       name: "false",
     },
     {
-      id: "1",
+      id: 1,
       name: "true",
     },
   ];
@@ -28,7 +27,7 @@ export default function useFilterOptions() {
       name: "Owner",
       elements: groupState.groupUsers,
       elementId: state.by_owner_id,
-      setElementId: (id: string) => {
+      setElementId: (id: number) => {
         dispatch({ type: "SET_OWNER_ID", payload: id });
       },
     },
@@ -36,14 +35,14 @@ export default function useFilterOptions() {
       name: "Assignee",
       elements: groupState.groupUsers,
       elementId: state.by_assignee_id,
-      setElementId: (id: string) =>
+      setElementId: (id: number) =>
         dispatch({ type: "SET_ASSIGNEE_ID", payload: id }),
     },
     {
       name: "Status",
       elements: taskStatus,
       elementId: state.by_status,
-      setElementId: (id: string) =>
+      setElementId: (id: number) =>
         dispatch({ type: "SET_STATUS", payload: id }),
     },
   ];

@@ -1,9 +1,11 @@
 import { useContext, useEffect, useReducer } from "react";
 import { GroupContext, initialState, reducer } from "./GroupContext";
 import { UserContext } from "../user/UserContext";
-import { DividedTaskDetails, Group } from "../../types/interfaces";
 import { SidebarBtnContext } from "../sidebarBtn/SidebarBtnContext";
 import useAxios from "../../hooks/useAxios/useAxios";
+import { divideTasksByDate } from "../../utils/dateUtils";
+import { DetailedGroup } from "../../shared/group/interfaces";
+import { TaskObject } from "../../shared/task/interfaces";
 
 type GroupContextProviderProps = {
   children: React.ReactNode;
@@ -11,21 +13,21 @@ type GroupContextProviderProps = {
 
 function GroupContextProvider({ children }: GroupContextProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: userState } = useContext(UserContext);
   const { selectedGroupId } = useContext(SidebarBtnContext);
   const { handleAxiosCall } = useAxios();
 
   // From all the userTasks, filter those that belong to the group that was selected
   function filterGroupTasks(
-    userTasks: DividedTaskDetails[],
+    userTasks: TaskObject[],
     groupId: string
-  ): DividedTaskDetails[] {
+  ): TaskObject[] {
     return userTasks.filter((t) => t.task.group_id.toString() === groupId);
   }
 
   // Fetch Group info from the API
   async function fetchGroupInfo() {
-    const response = await handleAxiosCall<undefined, Group>({
+    const response = await handleAxiosCall<undefined, DetailedGroup>({
       method: "get",
       url: `http://localhost:3000/api/v1/groups/${selectedGroupId}`,
       needAuth: true,
