@@ -6,10 +6,16 @@ import ModalTask from "./ModalTask";
 import ModalGroup from "./ModalGroup";
 import ModalTag from "./ModalTag";
 import ModalInvitation from "./ModalInvitation";
-import { TaskFormDetails, TaskResponse } from "../../types/interfaces";
+import {
+  TagFormDetails,
+  TagResponse,
+  TaskFormDetails,
+  TaskResponse,
+} from "../../types/interfaces";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { UserContext } from "../../context/user/UserContext";
 import { PopupContext } from "../../context/popup/PopupContext";
+import { GroupContext } from "../../context/group/GroupContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,13 +37,15 @@ function ActionModal({
   setGroup,
 }: ActionModalProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
   const { popup, setPopup } = useContext(PopupContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { handleAxiosCall } = useAxios();
 
-  async function handleSubmit(data: TaskFormDetails) {
+  async function handleTaskSubmit(data: TaskFormDetails) {
     const response = await handleAxiosCall<TaskFormDetails, TaskResponse>({
       method: "post",
       url: "http://localhost:3000/api/v1/tasks",
@@ -59,6 +67,28 @@ function ActionModal({
     handleClose();
   }
 
+  async function handleTagSubmit(data: TagFormDetails) {
+    const response = await handleAxiosCall<TagFormDetails, TagResponse>({
+      method: "post",
+      url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/tags`,
+      data: data,
+      needAuth: true,
+    });
+
+    if (response) {
+      // Add task to userTasks after task creation
+      groupDispatch({
+        type: "ADD_GROUP_TAG",
+        payload: response.data.tag,
+      });
+      // Add notification
+      setPopup({ message: response.data.message, type: "success" });
+    }
+
+    // Closing the modal
+    handleClose();
+  }
+
   function modalRenderer() {
     switch (type) {
       case "task":
@@ -67,13 +97,20 @@ function ActionModal({
             action={action}
             setGroup={setGroup}
             initialData={initialData}
-            handleSubmit={(data: TaskFormDetails) => handleSubmit(data)}
+            handleSubmit={(data: TaskFormDetails) => handleTaskSubmit(data)}
           />
         );
       case "group":
         return <ModalGroup />;
       case "tag":
-        return <ModalTag />;
+        return (
+          <ModalTag
+            action={action}
+            setGroup={setGroup}
+            initialData={initialData}
+            handleSubmit={(data: TagFormDetails) => handleTagSubmit(data)}
+          />
+        );
       case "invitation":
         return <ModalInvitation />;
       default:

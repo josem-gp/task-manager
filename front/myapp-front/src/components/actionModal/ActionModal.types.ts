@@ -1,6 +1,7 @@
 import {
   GroupDetails,
   InvitationDetails,
+  TagFormDetails,
   TaskFormDetails,
 } from "../../types/interfaces";
 import { TagDetails, UserDetails } from "../../types/interfaces";
@@ -29,7 +30,7 @@ type GroupDataProps = {
 
 type TagDataProps = {
   type: "tag";
-  initialData: TagDetails;
+  initialData: TagFormDetails;
 };
 
 type InvitationDataProps = {
@@ -48,7 +49,8 @@ export type TaskModalProps = {
 } & ModalActions;
 
 export type TagModalProps = {
-  initialData: TagDetails;
+  initialData: TagFormDetails;
+  handleSubmit: (data: TagFormDetails) => void;
 } & ModalActions;
 
 export type GroupModalProps = {

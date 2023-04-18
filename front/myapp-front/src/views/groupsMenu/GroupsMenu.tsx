@@ -1,17 +1,15 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ActionBtn from "../../components/actionBtn/ActionBtn";
+import { Box, Stack, Typography } from "@mui/material";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import { UserContext } from "../../context/user/UserContext";
+import ActionModal from "../../components/actionModal/ActionModal";
 
 function GroupsMenu() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
+  const [onTagFocus, setOnTagFocus] = useState(false);
 
   const tabHeaders = [
     {
@@ -44,16 +42,31 @@ function GroupsMenu() {
         spacing={2}
         width="100%"
         alignItems="center"
-        marginBottom="60px"
+        marginBottom="40px"
       >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           Welcome to {groupState.group.name}
         </Typography>
       </Stack>
 
-      {/* <ActionBtn /> */}
+      <Box height={40} display="flex" justifyContent="flex-end">
+        {onTagFocus && (
+          <ActionModal
+            type="tag"
+            btnName="New Tag"
+            action="create"
+            setGroup={true}
+            initialData={{
+              tag: {
+                name: "",
+                slug: "",
+              },
+            }}
+          />
+        )}
+      </Box>
 
-      <ElementsTab tabHeaders={tabHeaders} />
+      <ElementsTab tabHeaders={tabHeaders} setOnTagFocus={setOnTagFocus} />
     </>
   );
 }

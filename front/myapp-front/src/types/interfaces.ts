@@ -19,6 +19,14 @@ export interface TaskFormDetails {
   };
 }
 
+export interface TagFormDetails {
+  tag: {
+    id?: string;
+    name: string;
+    slug: string;
+  };
+}
+
 export interface UserResponse {
   userObject: DividedUserDetails;
   message: string;
@@ -30,6 +38,11 @@ export interface TasksResponse {
 }
 export interface TaskResponse {
   task_value: DividedTaskDetails;
+  message: string;
+}
+
+export interface TagResponse {
+  tag: TagDetails;
   message: string;
 }
 
@@ -124,4 +137,8 @@ export interface FilterBarParams {
   by_status: string;
   from_due_date: string | null;
   to_due_date: string | null;
+}
+
+export interface ErrorResponse {
+  message: string;
 }
