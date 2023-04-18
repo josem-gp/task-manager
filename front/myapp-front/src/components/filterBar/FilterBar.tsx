@@ -13,19 +13,20 @@ import { useContext, useEffect, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
 import { colors } from "../../utils/colors";
 import MyDatePicker from "../myDatePicker/MyDatePicker";
-import {
-  FilterBarParams,
-  TasksResponse,
-} from "../../shared/general/interfaces";
 import useFilterOptions from "../../hooks/useFilterOptions";
 import { FilterBarProps } from "./FilterBar.types";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../context/popup/PopupContext";
+import {
+  FilterTasksRequest,
+  TaskObject,
+  TaskResponse,
+} from "../../shared/task/interfaces";
 
 function FilterBar({ closeModal }: FilterBarProps) {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
-  const { popup, setPopup } = useContext(PopupContext);
+  const { setPopup } = useContext(PopupContext);
   // Any asynchronous code that we run after dispatch (e.g. making API calls, setting timeouts/intervals)
   // may not complete before the state update is finished. In such cases, we need to use other mechanisms
   // like promises or useEffect to ensure that your code executes in the correct order.
@@ -35,7 +36,10 @@ function FilterBar({ closeModal }: FilterBarProps) {
   const { handleAxiosCall } = useAxios();
 
   async function handleFilter() {
-    const response = await handleAxiosCall<FilterBarParams, TasksResponse>({
+    const response = await handleAxiosCall<
+      FilterTasksRequest,
+      TaskResponse<TaskObject[]>
+    >({
       method: "post",
       url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
       data: state,

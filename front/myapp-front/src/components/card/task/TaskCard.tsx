@@ -18,7 +18,11 @@ import { UserContext } from "../../../context/user/UserContext";
 import { PopupContext } from "../../../context/popup/PopupContext";
 import useAxios from "../../../hooks/useAxios/useAxios";
 import { TaskRendererProps } from "./TaskCard.types";
-import { TaskRequest, TaskResponse } from "../../../shared/task/interfaces";
+import {
+  TaskObject,
+  TaskRequest,
+  TaskResponse,
+} from "../../../shared/task/interfaces";
 
 const style = {
   position: "absolute" as "absolute",
@@ -55,7 +59,10 @@ function TaskCard({ element }: TaskRendererProps) {
 
   // Update a specific task in the userTasks state
   async function handleSubmit(data: TaskRequest) {
-    const response = await handleAxiosCall<TaskRequest, TaskResponse>({
+    const response = await handleAxiosCall<
+      TaskRequest,
+      TaskResponse<TaskObject>
+    >({
       method: "patch",
       url: `http://localhost:3000/api/v1/tasks/${element.task.id}`,
       data: data,
@@ -82,6 +89,7 @@ function TaskCard({ element }: TaskRendererProps) {
           <ModalTask
             action="show"
             initialData={initialData}
+            elementId={element.task.id}
             handleSubmit={(data: TaskRequest) => handleSubmit(data)}
           />
         </Box>

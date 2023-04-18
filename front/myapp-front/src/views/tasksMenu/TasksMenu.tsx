@@ -35,19 +35,19 @@ function TasksMenu() {
       label: "Today",
       value: "1",
       type: "task" as const, // added this so that type is not taking as a string but as the literal value we want. In this case "task"
-      data: groupState.groupTasks.today || [],
+      data: divideTasksByDate(groupState.groupTasks).today || [],
     },
     {
       label: "Upcoming",
       value: "2",
       type: "task" as const,
-      data: groupState.groupTasks.upcoming || [],
+      data: divideTasksByDate(groupState.groupTasks).upcoming || [],
     },
     {
       label: "Past",
       value: "3",
       type: "task" as const,
-      data: groupState.groupTasks.past || [],
+      data: divideTasksByDate(groupState.groupTasks).past || [],
     },
   ];
 
@@ -88,8 +88,8 @@ function TasksMenu() {
               note: "",
               finished: false,
               due_date: "",
-              assignee_id: "",
-              group_id: groupState.group.id.toString(),
+              assignee_id: null,
+              group_id: groupState.group.id,
               tag_ids: [],
             },
           }}

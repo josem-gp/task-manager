@@ -7,18 +7,16 @@ import TaskCard from "../card/task/TaskCard";
 import InvitationCard from "../card/invitation/InvitationCard";
 import TagCard from "../card/tag/TagCard";
 import UserCard from "../card/user/UserCard";
-import {
-  DividedTaskDetails,
-  DividedUserDetails,
-  InvitationDetails,
-  TagDetails,
-} from "../../shared/general/interfaces";
 import { UserContext } from "../../context/user/UserContext";
 import { GroupContext } from "../../context/group/GroupContext";
+import { Invitation } from "../../shared/invitation/interfaces";
+import { TaskObject } from "../../shared/task/interfaces";
+import { Tag } from "../../shared/tag/interfaces";
+import { UserObject } from "../../shared/user/interfaces";
 
 function ElementsTab({ tabHeaders, setOnTagFocus }: CompoundTabProps) {
   const [tabValue, setTabValue] = useState("1");
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: userState } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
 
   function handleTabChange(event: React.SyntheticEvent, newValue: string) {
@@ -55,12 +53,7 @@ function ElementsTab({ tabHeaders, setOnTagFocus }: CompoundTabProps) {
             {element.data.map((el) => {
               switch (element.type) {
                 case "task":
-                  return (
-                    <TaskCard
-                      key={uuidv4()}
-                      element={el as DividedTaskDetails}
-                    />
-                  );
+                  return <TaskCard key={uuidv4()} element={el as TaskObject} />;
                 case "invitation":
                   if (
                     userState.userObject.user.id === groupState.group.admin_id
@@ -68,7 +61,7 @@ function ElementsTab({ tabHeaders, setOnTagFocus }: CompoundTabProps) {
                     return (
                       <InvitationCard
                         key={uuidv4()}
-                        element={el as InvitationDetails}
+                        element={el as Invitation}
                       />
                     );
                   } else {
@@ -83,14 +76,9 @@ function ElementsTab({ tabHeaders, setOnTagFocus }: CompoundTabProps) {
                     );
                   }
                 case "tag":
-                  return <TagCard key={uuidv4()} element={el as TagDetails} />;
+                  return <TagCard key={uuidv4()} element={el as Tag} />;
                 case "user":
-                  return (
-                    <UserCard
-                      key={uuidv4()}
-                      element={el as DividedUserDetails}
-                    />
-                  );
+                  return <UserCard key={uuidv4()} element={el as UserObject} />;
                 default:
                   return null;
               }

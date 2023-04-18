@@ -8,7 +8,7 @@ export interface Task {
   finished: boolean;
   group_id: number;
   user_id: number;
-  assignee_id: number;
+  assignee_id: number | null;
 }
 
 export interface TaskRequest {
@@ -22,8 +22,8 @@ export interface TaskObject {
   task_tags: Tag[];
 }
 
-export interface TaskResponse {
-  task_value: TaskObject;
+export interface TaskResponse<T> {
+  task_value: T;
   message: string;
 }
 
@@ -35,9 +35,9 @@ export interface TasksDividedByDate {
 
 export interface FilterTasksRequest {
   by_fuzzy_name: string;
-  by_owner_id: string;
-  by_assignee_id: string;
-  by_status: string;
+  by_owner_id: number | null;
+  by_assignee_id: number | null;
+  by_status: number | null;
   from_due_date: string | null;
   to_due_date: string | null;
 }

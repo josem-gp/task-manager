@@ -5,19 +5,21 @@ import "react-calendar/dist/Calendar.css";
 import { filterDates, parseDate } from "../../utils/dateUtils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/user/UserContext";
-import { DividedTaskDetails } from "../../shared/general/interfaces";
 import TaskCard from "../../components/card/task/TaskCard";
 import ActionModal from "../../components/actionModal/ActionModal";
+import { TaskObject } from "../../shared/task/interfaces";
+import { GroupContext } from "../../context/group/GroupContext";
 
 function SupportMenu() {
   const todaysDate = parseDate();
   // https://www.npmjs.com/package/react-calendar
   const [dateRange, onChange] = useState(() => new Date());
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: groupState } = useContext(GroupContext);
   // We create this temporary state in order not to make changes to our base state (userState.userTasks)
-  const [filteredUserTasks, setFilteredUserTasks] = useState<
-    DividedTaskDetails[]
-  >(userState.userTasks);
+  const [filteredUserTasks, setFilteredUserTasks] = useState<TaskObject[]>(
+    userState.userTasks
+  );
 
   // In this function we filter the User tasks and update the state
   function handleFilteredUserTasks() {
@@ -114,8 +116,8 @@ function SupportMenu() {
                 note: "",
                 finished: false,
                 due_date: "",
-                assignee_id: "",
-                group_id: "",
+                assignee_id: null,
+                group_id: groupState.group.id,
                 tag_ids: [],
               },
             }}

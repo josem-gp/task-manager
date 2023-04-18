@@ -17,7 +17,7 @@ export function ElementSelect({
 }: ElementSelectProps) {
   const handleChange = (event: SelectChangeEvent) => {
     // The MUI component needs to be controlled so we set
-    setElementId(event.target.value);
+    setElementId(parseInt(event.target.value));
   };
 
   // Map over elements and render each one
@@ -66,7 +66,7 @@ export function ElementSelect({
         {name}
       </InputLabel>
       <Select
-        value={elementId}
+        value={elementId?.toString()}
         onChange={handleChange}
         sx={{
           color: colors.textDark,

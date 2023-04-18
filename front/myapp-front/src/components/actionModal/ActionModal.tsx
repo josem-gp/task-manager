@@ -10,7 +10,7 @@ import useAxios from "../../hooks/useAxios/useAxios";
 import { UserContext } from "../../context/user/UserContext";
 import { PopupContext } from "../../context/popup/PopupContext";
 import { GroupContext } from "../../context/group/GroupContext";
-import { TaskRequest } from "../../shared/task/interfaces";
+import { TaskObject, TaskRequest } from "../../shared/task/interfaces";
 import { TaskResponse } from "../../shared/task/interfaces";
 import { TagResponse, TagRequest } from "../../shared/tag/interfaces";
 
@@ -43,7 +43,10 @@ function ActionModal({
   const { handleAxiosCall } = useAxios();
 
   async function handleTaskSubmit(data: TaskRequest) {
-    const response = await handleAxiosCall<TaskRequest, TaskResponse>({
+    const response = await handleAxiosCall<
+      TaskRequest,
+      TaskResponse<TaskObject>
+    >({
       method: "post",
       url: "http://localhost:3000/api/v1/tasks",
       data: data,

@@ -62,9 +62,7 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
     // To set the group tasks in the context
     dispatch({
       type: "SET_GROUP_TASKS",
-      payload: divideTasksByDate(
-        filterGroupTasks(userState.userTasks, selectedGroupId)
-      ),
+      payload: filterGroupTasks(userState.userTasks, selectedGroupId),
     });
   }, [userState.userTasks, selectedGroupId]);
 

@@ -1,34 +1,34 @@
-import { TagDetails } from "../../shared/general/interfaces";
-import { InvitationDetails } from "../../shared/general/interfaces";
-import { DividedUserDetails } from "../../shared/general/interfaces";
-import { DividedTaskDetails } from "../../shared/general/interfaces";
+import { Invitation } from "../../shared/invitation/interfaces";
+import { Tag } from "../../shared/tag/interfaces";
+import { TaskObject } from "../../shared/task/interfaces";
+import { UserObject } from "../../shared/user/interfaces";
 
 type TaskTabHeader = {
   type: "task";
   label: string;
   value: string;
-  data: DividedTaskDetails[];
+  data: TaskObject[];
 };
 
 type UserTabHeader = {
   type: "user";
   label: string;
   value: string;
-  data: DividedUserDetails[];
+  data: UserObject[];
 };
 
 type TagTabHeader = {
   type: "tag";
   label: string;
   value: string;
-  data: TagDetails[];
+  data: Tag[];
 };
 
 type InvitationTabHeader = {
   type: "invitation";
   label: string;
   value: string;
-  data: InvitationDetails[];
+  data: Invitation[];
 };
 
 type TabHeader =
