@@ -3,17 +3,17 @@ import { PopupContext } from "./context/popup/PopupContext";
 import Dashboard from "./views/dashboard/Dashboard";
 import AuthForm from "./components/authForm/AuthForm";
 import { UserContext } from "./context/user/UserContext";
-import { User } from "./types/interfaces";
 import ActionAlerts from "./components/actionAlerts/ActionAlerts";
 import useAxios from "./hooks/useAxios/useAxios";
+import { DetailedUser } from "./shared/user/interfaces";
 
 function App() {
-  const { popup, setPopup } = useContext(PopupContext);
+  const { popup } = useContext(PopupContext);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { handleAxiosCall } = useAxios();
 
   async function fetchUserInfo() {
-    const response = await handleAxiosCall<undefined, User>({
+    const response = await handleAxiosCall<undefined, DetailedUser>({
       method: "get",
       url: "http://localhost:3000/api/v1/users/fetch_user_info",
       needAuth: true,

@@ -1,12 +1,12 @@
 import { Avatar, Box, Stack, TextField, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../context/user/UserContext";
-import { UserFormDetails } from "../../types/interfaces";
 import { fetchIconUrl } from "../../utils/fetchUserIcon";
+import { UserAuthRequest } from "../../shared/auth/interfaces";
 
 function ProfileMenu() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const [data, setData] = useState<UserFormDetails>({
+  const [data, setData] = useState<UserAuthRequest>({
     user: {
       username: userState.userObject.user.username,
       email: userState.userObject.user.email,

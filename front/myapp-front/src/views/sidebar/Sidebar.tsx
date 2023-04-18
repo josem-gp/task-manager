@@ -9,7 +9,7 @@ import { SidebarProps } from "./Sidebar.types";
 function Sidebar({ isVertical }: SidebarProps) {
   const { setSidebarBtns, sidebarBtns, selectedGroupId, setSelectedGroupId } =
     useContext(SidebarBtnContext);
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { state: userState } = useContext(UserContext);
 
   function handleSidebarIconBtn(id: number) {
     setSidebarBtns((prevState) =>
@@ -47,8 +47,8 @@ function Sidebar({ isVertical }: SidebarProps) {
           <ElementSelect
             name="Choose a group"
             elements={userState.userGroups}
-            elementId={selectedGroupId}
-            setElementId={(id: string) => setSelectedGroupId(id)}
+            elementId={parseInt(selectedGroupId)}
+            setElementId={(id: number) => setSelectedGroupId(id.toString())}
           />
         </Box>
       </Stack>
@@ -72,8 +72,8 @@ function Sidebar({ isVertical }: SidebarProps) {
           <ElementSelect
             name="Choose a group"
             elements={userState.userGroups}
-            elementId={selectedGroupId}
-            setElementId={(id: string) => setSelectedGroupId(id)}
+            elementId={parseInt(selectedGroupId)}
+            setElementId={(id: number) => setSelectedGroupId(id.toString())}
           />
         </Box>
       </Stack>

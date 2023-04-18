@@ -88,8 +88,8 @@ function TasksMenu() {
               note: "",
               finished: false,
               due_date: "",
-              assignee_id: "",
-              group_id: groupState.group.id.toString(),
+              assignee_id: null,
+              group_id: groupState.group.id,
               tag_ids: [],
             },
           }}
