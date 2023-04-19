@@ -1,3 +1,3 @@
 export type FilterBarProps = {
-  closeModal: () => void;
+  handleClose: () => void;
 };

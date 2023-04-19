@@ -11,7 +11,7 @@ import useAxios from "../../../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../../../context/popup/PopupContext";
 import { UserContext } from "../../../../context/user/UserContext";
 import { DeleteAlertDialogProps } from "./DeleteAlertDialog.types";
-import { GenericMessageResponse } from "../../../../shared/general/interfaces";
+import { handleTaskDelete } from "../../../../api/task/api";
 
 export default function DeleteAlertDialog({
   elementId,
@@ -29,25 +29,6 @@ export default function DeleteAlertDialog({
     setOpen(false);
   };
 
-  // Remove a task
-  async function handleDelete() {
-    const response = await handleAxiosCall<undefined, GenericMessageResponse>({
-      method: "delete",
-      url: `http://localhost:3000/api/v1/tasks/${elementId}`,
-      needAuth: true,
-    });
-
-    if (response) {
-      // Remove task from UserTasks
-      userDispatch({
-        type: "REMOVE_USER_TASK",
-        payload: elementId,
-      });
-      // Add notification
-      setPopup({ message: response.data.message, type: "success" });
-    }
-  }
-
   return (
     <div>
       <IconButton onClick={handleClickOpen} size="small">
@@ -62,7 +43,17 @@ export default function DeleteAlertDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleDelete} autoFocus>
+          <Button
+            onClick={() =>
+              handleTaskDelete({
+                userDispatch,
+                setPopup,
+                handleAxiosCall,
+                elementId,
+              })
+            }
+            autoFocus
+          >
             Agree
           </Button>
         </DialogActions>

@@ -12,8 +12,8 @@ import { PopupContext } from "../../context/popup/PopupContext";
 import { GroupContext } from "../../context/group/GroupContext";
 import { TaskRequest } from "../../shared/task/interfaces";
 import { TagRequest } from "../../shared/tag/interfaces";
-import { handleTaskSubmit } from "../../api/task/api";
-import { handleTagSubmit } from "../../api/tag/api";
+import { handleTaskCreate } from "../../api/task/api";
+import { handleTagCreate } from "../../api/tag/api";
 
 const style = {
   position: "absolute" as "absolute",
@@ -52,7 +52,7 @@ function ActionModal({
             setGroup={setGroup}
             initialData={initialData}
             handleSubmit={(data: TaskRequest) =>
-              handleTaskSubmit(
+              handleTaskCreate(
                 { userDispatch, setPopup, handleAxiosCall, handleClose },
                 data
               )
@@ -67,7 +67,7 @@ function ActionModal({
             action={action}
             initialData={initialData}
             handleSubmit={(data: TagRequest) =>
-              handleTagSubmit(
+              handleTagCreate(
                 {
                   groupState,
                   groupDispatch,

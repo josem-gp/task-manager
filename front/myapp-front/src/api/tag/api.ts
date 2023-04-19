@@ -1,8 +1,8 @@
 import { TagRequest, TagResponse } from "../../shared/tag/interfaces";
-import { HandleTagSubmitProps } from "./api.types";
+import { HandleTagCreateProps, HandleTagUpdateProps } from "./api.types";
 
-export async function handleTagSubmit(
-  props: HandleTagSubmitProps,
+export async function handleTagCreate(
+  props: HandleTagCreateProps,
   data: TagRequest
 ) {
   const { groupState, groupDispatch, setPopup, handleAxiosCall, handleClose } =
@@ -26,4 +26,39 @@ export async function handleTagSubmit(
 
   // Closing the modal
   handleClose();
+}
+
+// Update a specific tag in the groupTags state
+export async function handleTagUpdate(
+  props: HandleTagUpdateProps,
+  data: TagRequest
+) {
+  const {
+    groupState,
+    groupDispatch,
+    setPopup,
+    handleAxiosCall,
+    element,
+    handleClose,
+  } = props;
+
+  const response = await handleAxiosCall<TagRequest, TagResponse>({
+    method: "patch",
+    url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/tags/${element.id}`,
+    data: data,
+    needAuth: true,
+  });
+
+  if (response) {
+    groupDispatch({
+      type: "UPDATE_GROUP_TAG",
+      payload: response.data.tag,
+    });
+
+    // Add notification
+    setPopup({ message: response.data.message, type: "success" });
+
+    // Closing the modal
+    handleClose();
+  }
 }

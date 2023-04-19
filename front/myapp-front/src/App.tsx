@@ -12,7 +12,6 @@ function App() {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { handleAxiosCall } = useAxios();
 
-  console.log(userState);
   useEffect(() => {
     if (userState.userAuth) {
       fetchUserInfo(handleAxiosCall, userDispatch);

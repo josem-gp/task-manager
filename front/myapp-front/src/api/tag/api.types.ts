@@ -2,8 +2,9 @@ import { AxiosResponse } from "axios";
 import { handleAxiosCallProps } from "../../hooks/useAxios/useAxios.types";
 import { GroupContextAction } from "../../context/group/GroupContext";
 import { DetailedGroup } from "../../shared/group/interfaces";
+import { Tag } from "../../shared/tag/interfaces";
 
-export type HandleTagSubmitProps = {
+type CommonHandleTagProps = {
   groupState: DetailedGroup;
   groupDispatch: React.Dispatch<GroupContextAction>;
   setPopup: React.Dispatch<
@@ -20,5 +21,13 @@ export type HandleTagSubmitProps = {
   }: handleAxiosCallProps<T>) => Promise<
     void | AxiosResponse<U, any> | undefined
   >;
+};
+
+export type HandleTagCreateProps = CommonHandleTagProps & {
+  handleClose: () => void;
+};
+
+export type HandleTagUpdateProps = CommonHandleTagProps & {
+  element: Tag;
   handleClose: () => void;
 };
