@@ -3,9 +3,8 @@ import { GroupContext, initialState, reducer } from "./GroupContext";
 import { UserContext } from "../user/UserContext";
 import { SidebarBtnContext } from "../sidebarBtn/SidebarBtnContext";
 import useAxios from "../../hooks/useAxios/useAxios";
-import { divideTasksByDate } from "../../utils/dateUtils";
-import { DetailedGroup } from "../../shared/group/interfaces";
 import { TaskObject } from "../../shared/task/interfaces";
+import { fetchGroupInfo } from "../../api/group/api";
 
 type GroupContextProviderProps = {
   children: React.ReactNode;
@@ -25,50 +24,24 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
     return userTasks.filter((t) => t.task.group_id.toString() === groupId);
   }
 
-  // Fetch Group info from the API
-  async function fetchGroupInfo() {
-    const response = await handleAxiosCall<undefined, DetailedGroup>({
-      method: "get",
-      url: `http://localhost:3000/api/v1/groups/${selectedGroupId}`,
-      needAuth: true,
-    });
-
-    if (response) {
-      // To set the group in the context
-      dispatch({
-        type: "SET_GROUP",
-        payload: response.data.group,
-      });
-      // To set the group users in the context
-      dispatch({
-        type: "SET_GROUP_USERS",
-        payload: response.data.groupUsers,
-      });
-      // To set the group tags in the context
-      dispatch({
-        type: "SET_GROUP_TAGS",
-        payload: response.data.groupTags,
-      });
-      // To set the group invitations in the context
-      dispatch({
-        type: "SET_GROUP_INVITATIONS",
-        payload: response.data.groupInvitations,
-      });
-    }
-  }
-
   // To update the group tasks based on the userTasks every time there is a change
   useEffect(() => {
-    // To set the group tasks in the context
-    dispatch({
-      type: "SET_GROUP_TASKS",
-      payload: filterGroupTasks(userState.userTasks, selectedGroupId),
-    });
+    if (selectedGroupId) {
+      // To set the group tasks in the context
+      dispatch({
+        type: "SET_GROUP_TASKS",
+        payload: filterGroupTasks(userState.userTasks, selectedGroupId),
+      });
+    }
   }, [userState.userTasks, selectedGroupId]);
 
   useEffect(() => {
     if (selectedGroupId) {
-      fetchGroupInfo();
+      fetchGroupInfo({
+        handleAxiosCall,
+        dispatch,
+        selectedGroupId,
+      });
     }
   }, [selectedGroupId]);
 

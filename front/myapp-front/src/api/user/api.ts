@@ -1,19 +1,9 @@
-import { AxiosResponse } from "axios";
-import { UserContextAction } from "../../context/user/UserContext";
-import { handleAxiosCallProps } from "../../hooks/useAxios/useAxios.types";
 import { DetailedUser } from "../../shared/user/interfaces";
+import { FetchUserInfoProps } from "./api.types";
 
-export async function fetchUserInfo(
-  handleAxiosCall: <T, U>({
-    method,
-    url,
-    data,
-    needAuth,
-  }: handleAxiosCallProps<T>) => Promise<
-    void | AxiosResponse<U, any> | undefined
-  >,
-  userDispatch: React.Dispatch<UserContextAction>
-) {
+export async function fetchUserInfo(props: FetchUserInfoProps) {
+  const { handleAxiosCall, userDispatch } = props;
+
   const response = await handleAxiosCall<undefined, DetailedUser>({
     method: "get",
     url: "http://localhost:3000/api/v1/users/fetch_user_info",

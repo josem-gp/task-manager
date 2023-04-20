@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     if (userState.userAuth) {
-      fetchUserInfo(handleAxiosCall, userDispatch);
+      fetchUserInfo({ handleAxiosCall, userDispatch });
     }
   }, [userState.userAuth]);
 
