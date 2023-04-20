@@ -16,6 +16,7 @@ import useAxios from "../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../context/popup/PopupContext";
 import { UserAuthRequest } from "../../shared/auth/interfaces";
 import { UserResponse } from "../../shared/user/interfaces";
+import { handleUserAuth } from "../../api/auth/api";
 
 function AuthFormLogin({ setIsLogin }: AuthFormProps) {
   const { dispatch: userDispatch } = useContext(UserContext);
@@ -36,31 +37,6 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
         },
       };
     });
-  }
-
-  async function handleSubmit() {
-    const response = await handleAxiosCall<UserAuthRequest, UserResponse>({
-      method: "post",
-      url: "http://localhost:3000/users/sign_in",
-      data: data,
-      needAuth: false,
-    });
-
-    if (response) {
-      const token = response.headers.authorization.split(" ")[1];
-      // To set the Cookie
-      setAuthToken(token);
-      // To set the token in the context
-      userDispatch({ type: "SET_USER_AUTH", payload: token });
-      // To set the user info in the context
-      userDispatch({
-        type: "SET_USER",
-        payload: response.data.userObject,
-      });
-
-      // Add notification
-      setPopup({ message: response.data.message, type: "success" });
-    }
   }
 
   return (
@@ -118,7 +94,16 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
       />
       <Button
         variant="contained"
-        onClick={handleSubmit}
+        onClick={() =>
+          handleUserAuth({
+            handleAxiosCall,
+            data,
+            url: "http://localhost:3000/users/sign_in",
+            setAuthToken,
+            userDispatch,
+            setPopup,
+          })
+        }
         sx={{
           color: "#515151",
           fontWeight: "bold",

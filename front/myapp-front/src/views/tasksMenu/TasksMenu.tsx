@@ -73,7 +73,7 @@ function TasksMenu() {
       </Stack>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <FilterBar closeModal={handleClose} />
+          <FilterBar handleClose={handleClose} />
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} justifyContent="flex-end">
