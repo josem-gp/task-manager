@@ -43,6 +43,8 @@ function SidebarBtnContextProvider({
   const [sidebarBtns, setSidebarBtns] =
     useState<SidebarBtn[]>(initialSidebarBtns);
 
+  // Left selectedGroupId as a string because it is easier to handle an initial empty string
+  // in a MUI Select Component
   const [selectedGroupId, setSelectedGroupId] = useState<string>("");
 
   // This Use Effect will run once there is some userGroup available and will put the first one as a default
