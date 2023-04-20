@@ -18,11 +18,8 @@ import { UserContext } from "../../../context/user/UserContext";
 import { PopupContext } from "../../../context/popup/PopupContext";
 import useAxios from "../../../hooks/useAxios/useAxios";
 import { TaskRendererProps } from "./TaskCard.types";
-import {
-  TaskObject,
-  TaskRequest,
-  TaskResponse,
-} from "../../../shared/task/interfaces";
+import { TaskRequest } from "../../../shared/task/interfaces";
+import { handleTaskUpdate } from "../../../api/task/api";
 
 const style = {
   position: "absolute" as "absolute",
@@ -57,31 +54,6 @@ function TaskCard({ element }: TaskRendererProps) {
     },
   };
 
-  // Update a specific task in the userTasks state
-  async function handleSubmit(data: TaskRequest) {
-    const response = await handleAxiosCall<
-      TaskRequest,
-      TaskResponse<TaskObject>
-    >({
-      method: "patch",
-      url: `http://localhost:3000/api/v1/tasks/${element.task.id}`,
-      data: data,
-      needAuth: true,
-    });
-
-    if (response) {
-      // This will update the userTasks and so it will update the group tasks
-      // thanks to the useEffect in the groupContext
-      userDispatch({
-        type: "UPDATE_USER_TASK",
-        payload: response.data.task_value,
-      });
-
-      // Add notification
-      setPopup({ message: response.data.message, type: "success" });
-    }
-  }
-
   return (
     <>
       <Modal open={open} onClose={handleClose}>
@@ -90,7 +62,18 @@ function TaskCard({ element }: TaskRendererProps) {
             action="show"
             initialData={initialData}
             elementId={element.task.id}
-            handleSubmit={(data: TaskRequest) => handleSubmit(data)}
+            handleSubmit={(data: TaskRequest) =>
+              handleTaskUpdate(
+                {
+                  userDispatch,
+                  setPopup,
+                  handleAxiosCall,
+                  element,
+                  handleClose,
+                },
+                data
+              )
+            }
           />
         </Box>
       </Modal>

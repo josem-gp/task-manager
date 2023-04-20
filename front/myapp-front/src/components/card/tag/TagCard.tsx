@@ -6,6 +6,7 @@ import { PopupContext } from "../../../context/popup/PopupContext";
 import { GroupContext } from "../../../context/group/GroupContext";
 import { TagRendererProps } from "./TagCard.types";
 import { TagResponse, TagRequest } from "../../../shared/tag/interfaces";
+import { handleTagUpdate } from "../../../api/tag/api";
 
 const style = {
   position: "absolute" as "absolute",
@@ -34,26 +35,6 @@ function TagCard({ element }: TagRendererProps) {
     },
   };
 
-  // Update a specific tag in the groupTags state
-  async function handleSubmit(data: TagRequest) {
-    const response = await handleAxiosCall<TagRequest, TagResponse>({
-      method: "patch",
-      url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/tags/${element.id}`,
-      data: data,
-      needAuth: true,
-    });
-
-    if (response) {
-      groupDispatch({
-        type: "UPDATE_GROUP_TAG",
-        payload: response.data.tag,
-      });
-
-      // Add notification
-      setPopup({ message: response.data.message, type: "success" });
-    }
-  }
-
   return (
     <Grid item>
       <Modal open={open} onClose={handleClose}>
@@ -61,7 +42,19 @@ function TagCard({ element }: TagRendererProps) {
           <ModalTag
             action="show"
             initialData={initialData}
-            handleSubmit={(data: TagRequest) => handleSubmit(data)}
+            handleSubmit={(data: TagRequest) =>
+              handleTagUpdate(
+                {
+                  groupState,
+                  groupDispatch,
+                  setPopup,
+                  handleAxiosCall,
+                  element,
+                  handleClose,
+                },
+                data
+              )
+            }
             elementId={element.id}
           />
         </Box>

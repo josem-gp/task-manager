@@ -17,13 +17,9 @@ import useFilterOptions from "../../hooks/useFilterOptions";
 import { FilterBarProps } from "./FilterBar.types";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../context/popup/PopupContext";
-import {
-  FilterTasksRequest,
-  TaskObject,
-  TaskResponse,
-} from "../../shared/task/interfaces";
+import { handleTaskFilter } from "../../api/task/api";
 
-function FilterBar({ closeModal }: FilterBarProps) {
+function FilterBar({ handleClose }: FilterBarProps) {
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
   const { setPopup } = useContext(PopupContext);
@@ -35,29 +31,15 @@ function FilterBar({ closeModal }: FilterBarProps) {
     useFilterOptions();
   const { handleAxiosCall } = useAxios();
 
-  async function handleFilter() {
-    const response = await handleAxiosCall<
-      FilterTasksRequest,
-      TaskResponse<TaskObject[]>
-    >({
-      method: "post",
-      url: `http://localhost:3000/api/v1/groups/${groupState.group?.id}/filter_tasks`,
-      data: state,
-      needAuth: true,
+  function handleFilter() {
+    handleTaskFilter({
+      handleAxiosCall,
+      groupState,
+      state,
+      groupDispatch,
+      setPopup,
+      handleClose,
     });
-
-    if (response) {
-      // To set the group tasks in the context
-      groupDispatch({
-        type: "SET_GROUP_TASKS",
-        payload: response.data.task_value,
-      });
-      // Add notification
-      setPopup({ message: response.data.message, type: "success" });
-    }
-
-    // After filtering or resetting we close modal
-    closeModal();
   }
 
   function handleReset() {
