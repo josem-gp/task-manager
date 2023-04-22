@@ -85,7 +85,6 @@ function ModalTask({
         isShow={isShow}
         setFormAction={setFormAction}
         elementId={elementId}
-        type="task"
       />
 
       <Box
