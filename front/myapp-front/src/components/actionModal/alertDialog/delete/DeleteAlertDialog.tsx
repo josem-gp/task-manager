@@ -10,6 +10,7 @@ import { IconButton } from "@mui/material";
 import { DeleteAlertDialogProps } from "./DeleteAlertDialog.types";
 
 export default function DeleteAlertDialog({
+  type,
   handleDelete,
 }: DeleteAlertDialogProps) {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function DeleteAlertDialog({
         <DialogTitle>{"Confirm Deletion"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this task?
+            Are you sure you want to delete this {type}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

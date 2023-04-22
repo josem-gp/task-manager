@@ -15,7 +15,8 @@ export const initialState: DetailedGroup = {
 
 export type GroupContextAction =
   | { type: "SET_GROUP"; payload: Group }
-  | { type: "SET_GROUP_USERS"; payload: UserObject[] }
+  | { type: "SET_GROUP_MEMBERS"; payload: UserObject[] }
+  | { type: "REMOVE_GROUP_MEMBER"; payload: number }
   | { type: "SET_GROUP_TASKS"; payload: TaskObject[] }
   | { type: "SET_GROUP_TAGS"; payload: Tag[] }
   | { type: "ADD_GROUP_TAG"; payload: Tag }
@@ -27,8 +28,13 @@ export function reducer(state: DetailedGroup, action: GroupContextAction) {
   switch (action.type) {
     case "SET_GROUP":
       return { ...state, group: action.payload };
-    case "SET_GROUP_USERS":
+    case "SET_GROUP_MEMBERS":
       return { ...state, groupUsers: action.payload };
+    case "REMOVE_GROUP_MEMBER":
+      const updatedMembers = state.groupUsers.filter((member) => {
+        return member.user.id !== action.payload;
+      });
+      return { ...state, groupUsers: updatedMembers };
     case "SET_GROUP_TASKS":
       return { ...state, groupTasks: action.payload };
     case "SET_GROUP_TAGS":

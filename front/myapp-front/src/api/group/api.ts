@@ -18,7 +18,7 @@ export async function fetchGroupInfo(props: FetchGroupInfoProps) {
     });
     // To set the group users in the context
     dispatch({
-      type: "SET_GROUP_USERS",
+      type: "SET_GROUP_MEMBERS",
       payload: response.data.groupUsers,
     });
     // To set the group tags in the context
