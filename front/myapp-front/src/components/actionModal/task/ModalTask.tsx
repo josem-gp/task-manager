@@ -85,6 +85,7 @@ function ModalTask({
         isShow={isShow}
         setFormAction={setFormAction}
         elementId={elementId}
+        type="task"
       />
 
       <Box
@@ -122,7 +123,7 @@ function ModalTask({
           disabled={isShow || setGroup ? true : false}
           name="Choose a group"
           elements={userState.userGroups}
-          elementId={data.task.group_id}
+          elementId={data.task.group_id.toString()}
           setElementId={(id: number) =>
             setData((prevState) => ({
               ...prevState,
@@ -151,7 +152,7 @@ function ModalTask({
           disabled={isShow ? true : false}
           name="Choose assignee"
           elements={taskGroup.groupUsers}
-          elementId={data.task.assignee_id}
+          elementId={data.task.assignee_id?.toString() ?? ""}
           setElementId={(id: number) =>
             setData((prevState) => ({
               ...prevState,

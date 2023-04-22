@@ -9,6 +9,6 @@ export type ElementSelectProps = {
   disabled?: boolean;
   name: string;
   elements: (Group | UserObject | TaskStatus)[] | null;
-  elementId?: number | null;
+  elementId: string;
   setElementId: (id: number) => void;
 };

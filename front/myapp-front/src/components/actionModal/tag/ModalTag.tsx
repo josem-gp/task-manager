@@ -36,6 +36,7 @@ function ModalTag({
         isShow={isShow}
         setFormAction={setFormAction}
         elementId={elementId}
+        type="tag"
       />
 
       <Box

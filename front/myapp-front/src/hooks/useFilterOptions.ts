@@ -26,7 +26,7 @@ export default function useFilterOptions() {
     {
       name: "Owner",
       elements: groupState.groupUsers,
-      elementId: state.by_owner_id,
+      elementId: state.by_owner_id?.toString() || "",
       setElementId: (id: number) => {
         dispatch({ type: "SET_OWNER_ID", payload: id });
       },
@@ -34,14 +34,14 @@ export default function useFilterOptions() {
     {
       name: "Assignee",
       elements: groupState.groupUsers,
-      elementId: state.by_assignee_id,
+      elementId: state.by_assignee_id?.toString() || "",
       setElementId: (id: number) =>
         dispatch({ type: "SET_ASSIGNEE_ID", payload: id }),
     },
     {
       name: "Status",
       elements: taskStatus,
-      elementId: state.by_status,
+      elementId: state.by_status?.toString() || "",
       setElementId: (id: number) =>
         dispatch({ type: "SET_STATUS", payload: id }),
     },
