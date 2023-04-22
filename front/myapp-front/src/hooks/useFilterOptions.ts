@@ -14,11 +14,11 @@ export default function useFilterOptions() {
   const taskStatus: TaskStatus[] = [
     {
       id: 0,
-      name: "false",
+      name: "not finished",
     },
     {
       id: 1,
-      name: "true",
+      name: "finished",
     },
   ];
 
