@@ -20,18 +20,7 @@ import useAxios from "../../../hooks/useAxios/useAxios";
 import { TaskRendererProps } from "./TaskCard.types";
 import { TaskRequest } from "../../../shared/task/interfaces";
 import { handleTaskUpdate } from "../../../api/task/api";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { modalStyles } from "../../../utils/modalStyles";
 
 function TaskCard({ element }: TaskRendererProps) {
   const { state: groupState } = useContext(GroupContext);
@@ -57,7 +46,7 @@ function TaskCard({ element }: TaskRendererProps) {
   return (
     <>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box sx={modalStyles}>
           <ModalTask
             action="show"
             initialData={initialData}

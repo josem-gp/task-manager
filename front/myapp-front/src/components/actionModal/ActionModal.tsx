@@ -14,18 +14,7 @@ import { TaskRequest } from "../../shared/task/interfaces";
 import { TagRequest } from "../../shared/tag/interfaces";
 import { handleTaskCreate } from "../../api/task/api";
 import { handleTagCreate } from "../../api/tag/api";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { modalStyles } from "../../utils/modalStyles";
 
 function ActionModal({
   type,
@@ -91,7 +80,7 @@ function ActionModal({
     <div>
       <ActionBtn name={btnName} onClick={handleOpen} />
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>{modalRenderer()}</Box>
+        <Box sx={modalStyles}>{modalRenderer()}</Box>
       </Modal>
     </div>
   );

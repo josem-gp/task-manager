@@ -47,7 +47,7 @@ function Sidebar({ isVertical }: SidebarProps) {
           <ElementSelect
             name="Choose a group"
             elements={userState.userGroups}
-            elementId={parseInt(selectedGroupId)}
+            elementId={selectedGroupId}
             setElementId={(id: number) => setSelectedGroupId(id.toString())}
           />
         </Box>
@@ -72,7 +72,7 @@ function Sidebar({ isVertical }: SidebarProps) {
           <ElementSelect
             name="Choose a group"
             elements={userState.userGroups}
-            elementId={parseInt(selectedGroupId)}
+            elementId={selectedGroupId}
             setElementId={(id: number) => setSelectedGroupId(id.toString())}
           />
         </Box>
