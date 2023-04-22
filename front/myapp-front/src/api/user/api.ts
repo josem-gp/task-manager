@@ -1,5 +1,6 @@
+import { GenericMessageResponse } from "../../shared/general/interfaces";
 import { DetailedUser } from "../../shared/user/interfaces";
-import { FetchUserInfoProps } from "./api.types";
+import { FetchUserInfoProps, HandleMemberDeleteProps } from "./api.types";
 
 export async function fetchUserInfo(props: FetchUserInfoProps) {
   const { handleAxiosCall, userDispatch } = props;
@@ -26,5 +27,27 @@ export async function fetchUserInfo(props: FetchUserInfoProps) {
       type: "SET_USER_GROUPS",
       payload: response.data.userGroups,
     });
+  }
+}
+
+// Remove a member from group
+export async function handleMemberDelete(props: HandleMemberDeleteProps) {
+  const { groupState, groupDispatch, setPopup, handleAxiosCall, elementId } =
+    props;
+
+  const response = await handleAxiosCall<undefined, GenericMessageResponse>({
+    method: "delete",
+    url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/remove_user/${elementId}`,
+    needAuth: true,
+  });
+
+  if (response) {
+    // Remove task from UserTask
+    groupDispatch({
+      type: "REMOVE_GROUP_MEMBER",
+      payload: elementId,
+    });
+    // Add notification
+    setPopup({ message: response.data.message, type: "success" });
   }
 }
