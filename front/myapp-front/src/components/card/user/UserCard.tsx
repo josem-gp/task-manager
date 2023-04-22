@@ -1,13 +1,19 @@
 import { useContext } from "react";
-import { Avatar, IconButton, Paper, Stack, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import { GroupContext } from "../../../context/group/GroupContext";
 import { UserContext } from "../../../context/user/UserContext";
 import { UserRendererProps } from "./UserCard.types";
+import DeleteAlertDialog from "../../actionModal/alertDialog/delete/DeleteAlertDialog";
+import { handleMemberDelete } from "../../../api/user/api";
+import { PopupContext } from "../../../context/popup/PopupContext";
+import useAxios from "../../../hooks/useAxios/useAxios";
 
 function UserCard({ element }: UserRendererProps) {
   const { state: userState } = useContext(UserContext);
-  const { state: groupState } = useContext(GroupContext);
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
+  const { setPopup } = useContext(PopupContext);
+  const { handleAxiosCall } = useAxios();
 
   return (
     <Paper
@@ -25,7 +31,6 @@ function UserCard({ element }: UserRendererProps) {
           elevation: "3",
         },
       }}
-      // onClick={() => handleOpenUserProfile(user)}
     >
       <Stack
         direction="row"
@@ -48,12 +53,18 @@ function UserCard({ element }: UserRendererProps) {
         </Stack>
         {userState.userObject.user.id === groupState.group.admin_id && // user needs to be admin
           element.user.id !== groupState.group.admin_id && ( // the admin won't see its own delete icon
-            <IconButton
-              // onClick={() => handleUserDelete(user.id)}
-              size="small"
-            >
-              <DeleteIcon />
-            </IconButton>
+            <DeleteAlertDialog
+              type="user"
+              handleDelete={() =>
+                handleMemberDelete({
+                  groupState,
+                  groupDispatch,
+                  setPopup,
+                  handleAxiosCall,
+                  elementId: element.user.id,
+                })
+              }
+            />
           )}
       </Stack>
     </Paper>

@@ -4,6 +4,6 @@ export type ActionModalHeaderProps = {
   setFormAction: React.Dispatch<
     React.SetStateAction<"show" | "create" | "edit">
   >;
-  type: "task" | "tag" | "group" | "invitation";
+  type: "task" | "tag";
   elementId?: number;
 };

@@ -74,7 +74,7 @@ function ActionModalHeader({
             >
               <EditIcon />
             </IconButton>
-            <DeleteAlertDialog handleDelete={handleDelete} />
+            <DeleteAlertDialog type={type} handleDelete={handleDelete} />
           </>
         )}
       </Stack>

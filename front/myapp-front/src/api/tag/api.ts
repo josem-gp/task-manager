@@ -68,7 +68,7 @@ export async function handleTagUpdate(
   }
 }
 
-// Remove a task
+// Remove a tag
 export async function handleTagDelete(props: HandleTagDeleteProps) {
   const { groupState, groupDispatch, setPopup, handleAxiosCall, elementId } =
     props;
