@@ -20,6 +20,7 @@ export type GroupContextAction =
   | { type: "SET_GROUP_TAGS"; payload: Tag[] }
   | { type: "ADD_GROUP_TAG"; payload: Tag }
   | { type: "UPDATE_GROUP_TAG"; payload: Tag }
+  | { type: "REMOVE_GROUP_TAG"; payload: number }
   | { type: "SET_GROUP_INVITATIONS"; payload: Invitation[] };
 
 export function reducer(state: DetailedGroup, action: GroupContextAction) {
@@ -42,6 +43,11 @@ export function reducer(state: DetailedGroup, action: GroupContextAction) {
         return tag;
       });
       return { ...state, groupTags: updatedUserTags };
+    case "REMOVE_GROUP_TAG":
+      const updatedTags = state.groupTags.filter((tag) => {
+        return tag.id !== action.payload;
+      });
+      return { ...state, groupTags: updatedTags };
     case "SET_GROUP_INVITATIONS":
       return { ...state, groupInvitations: action.payload };
     default:

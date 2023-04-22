@@ -84,6 +84,7 @@ function ModalTask({
         }
         isShow={isShow}
         setFormAction={setFormAction}
+        type="task"
         elementId={elementId}
       />
 

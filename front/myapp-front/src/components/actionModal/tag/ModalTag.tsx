@@ -35,6 +35,7 @@ function ModalTag({
         }
         isShow={isShow}
         setFormAction={setFormAction}
+        type="tag"
         elementId={elementId}
       />
 

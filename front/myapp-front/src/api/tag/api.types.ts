@@ -4,7 +4,7 @@ import { GroupContextAction } from "../../context/group/GroupContext";
 import { DetailedGroup } from "../../shared/group/interfaces";
 import { Tag } from "../../shared/tag/interfaces";
 
-type CommonHandleTagProps = {
+type HandleTagCommonProps = {
   groupState: DetailedGroup;
   groupDispatch: React.Dispatch<GroupContextAction>;
   setPopup: React.Dispatch<
@@ -23,11 +23,15 @@ type CommonHandleTagProps = {
   >;
 };
 
-export type HandleTagCreateProps = CommonHandleTagProps & {
+export type HandleTagCreateProps = HandleTagCommonProps & {
   handleClose: () => void;
 };
 
-export type HandleTagUpdateProps = CommonHandleTagProps & {
+export type HandleTagUpdateProps = HandleTagCommonProps & {
   element: Tag;
   handleClose: () => void;
+};
+
+export type HandleTagDeleteProps = HandleTagCommonProps & {
+  elementId: number;
 };

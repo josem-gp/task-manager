@@ -1,5 +1,10 @@
+import { GenericMessageResponse } from "../../shared/general/interfaces";
 import { TagRequest, TagResponse } from "../../shared/tag/interfaces";
-import { HandleTagCreateProps, HandleTagUpdateProps } from "./api.types";
+import {
+  HandleTagCreateProps,
+  HandleTagDeleteProps,
+  HandleTagUpdateProps,
+} from "./api.types";
 
 export async function handleTagCreate(
   props: HandleTagCreateProps,
@@ -60,5 +65,27 @@ export async function handleTagUpdate(
 
     // Closing the modal
     handleClose();
+  }
+}
+
+// Remove a task
+export async function handleTagDelete(props: HandleTagDeleteProps) {
+  const { groupState, groupDispatch, setPopup, handleAxiosCall, elementId } =
+    props;
+
+  const response = await handleAxiosCall<undefined, GenericMessageResponse>({
+    method: "delete",
+    url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/tags/${elementId}`,
+    needAuth: true,
+  });
+
+  if (response) {
+    // Remove task from UserTask
+    groupDispatch({
+      type: "REMOVE_GROUP_TAG",
+      payload: elementId,
+    });
+    // Add notification
+    setPopup({ message: response.data.message, type: "success" });
   }
 }
