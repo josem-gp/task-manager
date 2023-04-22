@@ -5,20 +5,9 @@ import ModalTag from "../../actionModal/tag/ModalTag";
 import { PopupContext } from "../../../context/popup/PopupContext";
 import { GroupContext } from "../../../context/group/GroupContext";
 import { TagRendererProps } from "./TagCard.types";
-import { TagResponse, TagRequest } from "../../../shared/tag/interfaces";
+import { TagRequest } from "../../../shared/tag/interfaces";
 import { handleTagUpdate } from "../../../api/tag/api";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { modalStyles } from "../../../utils/modalStyles";
 
 function TagCard({ element }: TagRendererProps) {
   const { setPopup } = useContext(PopupContext);
@@ -38,7 +27,7 @@ function TagCard({ element }: TagRendererProps) {
   return (
     <Grid item>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box sx={modalStyles}>
           <ModalTag
             action="show"
             initialData={initialData}

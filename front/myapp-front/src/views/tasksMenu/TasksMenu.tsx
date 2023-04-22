@@ -9,23 +9,11 @@ import { colors } from "../../utils/colors";
 import ActionBtn from "../../components/actionBtn/ActionBtn";
 import ActionModal from "../../components/actionModal/ActionModal";
 import { divideTasksByDate } from "../../utils/dateUtils";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { modalStyles } from "../../utils/modalStyles";
 
 function TasksMenu() {
-  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
-  const { state: groupState, dispatch: groupDispatch } =
-    useContext(GroupContext);
+  const { state: userState } = useContext(UserContext);
+  const { state: groupState } = useContext(GroupContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -72,7 +60,7 @@ function TasksMenu() {
         <CalendarMonthIcon fontSize="large" />
       </Stack>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box sx={modalStyles}>
           <FilterBar handleClose={handleClose} />
         </Box>
       </Modal>
