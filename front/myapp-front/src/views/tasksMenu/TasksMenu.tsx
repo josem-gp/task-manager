@@ -14,6 +14,7 @@ import { modalStyles } from "../../utils/modalStyles";
 function TasksMenu() {
   const { state: userState } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
+  const [tabValue, setTabValue] = useState("1");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -90,7 +91,11 @@ function TasksMenu() {
           onClick={handleOpen}
         />
       </Stack>
-      <ElementsTab tabHeaders={tabHeaders} />
+      <ElementsTab
+        tabHeaders={tabHeaders}
+        tabValue={tabValue}
+        setTabValue={setTabValue}
+      />
     </>
   );
 }
