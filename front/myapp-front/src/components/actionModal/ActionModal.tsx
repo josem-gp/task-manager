@@ -15,6 +15,8 @@ import { TagRequest } from "../../shared/tag/interfaces";
 import { handleTaskCreate } from "../../api/task/api";
 import { handleTagCreate } from "../../api/tag/api";
 import { modalStyles } from "../../utils/modalStyles";
+import { InvitationRequest } from "../../shared/invitation/interfaces";
+import { handleInvitationCreate } from "../../api/invitation/api";
 
 function ActionModal({
   type,
@@ -70,7 +72,23 @@ function ActionModal({
           />
         );
       case "invitation":
-        return <ModalInvitation />;
+        return (
+          <ModalInvitation
+            initialData={initialData}
+            handleSubmit={(data: InvitationRequest) =>
+              handleInvitationCreate(
+                {
+                  groupState,
+                  groupDispatch,
+                  setPopup,
+                  handleAxiosCall,
+                  handleClose,
+                },
+                data
+              )
+            }
+          />
+        );
       default:
         return null;
     }

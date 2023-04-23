@@ -11,3 +11,8 @@ export interface Invitation {
 export interface InvitationRequest {
   invitation: Pick<Invitation, "email">;
 }
+
+export interface InvitationResponse {
+  invitation: Invitation;
+  message: string;
+}

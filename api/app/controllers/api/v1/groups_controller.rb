@@ -81,7 +81,7 @@ class Api::V1::GroupsController < ApplicationController
       # We also enqueue the job to disable the invitation in a week
       DisableInvitationJob.set(wait_until: Date.tomorrow.noon + 7.days).perform_later(invitation: invitation)
       render json: { 
-        invitation: except_attributes(invitations, ['oauth_token', 'created_at', 'updated_at']),
+        invitation: except_attributes(invitation, ['oauth_token', 'created_at', 'updated_at']),
         message: "The invitation was successfully sent" 
       }
     else
