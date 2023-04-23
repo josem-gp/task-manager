@@ -13,6 +13,9 @@ export interface UserRequest {
   user: {
     username: string;
     icon_id: number;
+    current_password: string;
+    password: string;
+    password_confirmation: string;
   };
 }
 
@@ -30,6 +33,7 @@ export interface DetailedUserResponse {
   userObject: UserObject;
   userGroups: Group[];
   userTasks: TaskObject[];
+  allIcons: Icon[];
 }
 
 export interface DetailedUser extends DetailedUserResponse {

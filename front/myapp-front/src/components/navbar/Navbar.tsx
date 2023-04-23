@@ -1,4 +1,4 @@
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
@@ -28,9 +28,14 @@ function Navbar({ showSidebar }: NavbarProps) {
     >
       {showSidebar && <Sidebar isVertical={false} />}
       <Stack direction="row" alignItems="center">
-        <IconButton>
-          <AccountCircleIcon fontSize="large" />
-        </IconButton>
+        <Avatar
+          src={userState.userObject.user_icon.url}
+          alt="User's profile picture"
+          sx={{
+            width: 35,
+            height: 35,
+          }}
+        />
         <Typography variant="caption" display="block" lineHeight={0}>
           {userState.userObject.user.username}
         </Typography>
