@@ -19,11 +19,13 @@ class Api::V1::UsersController < ApplicationController
   # GET /api/v1/users/fetch_user_info
   def fetch_user_info
     user_tasks = Task.where(user: current_user).or(Task.where(assignee: current_user))
+    all_icons = Icon.all
     
     render json: { 
       userObject: build_user_json(current_user), 
       userGroups: except_attributes(current_user.groups, ['created_at', 'updated_at']),
       userTasks: build_task_json(user_tasks),
+      allIcons: select_attributes(all_icons, ['id', 'name', 'url']),
     }
   end
 

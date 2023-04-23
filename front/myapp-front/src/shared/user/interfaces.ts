@@ -30,6 +30,7 @@ export interface DetailedUserResponse {
   userObject: UserObject;
   userGroups: Group[];
   userTasks: TaskObject[];
+  allIcons: Icon[];
 }
 
 export interface DetailedUser extends DetailedUserResponse {

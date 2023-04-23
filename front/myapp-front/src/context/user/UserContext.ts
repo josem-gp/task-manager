@@ -2,6 +2,7 @@ import { createContext } from "react";
 import { DetailedUser, UserObject } from "../../shared/user/interfaces";
 import { Group } from "../../shared/group/interfaces";
 import { TaskObject } from "../../shared/task/interfaces";
+import { Icon } from "../../shared/icon/interfaces";
 
 export const initialState: DetailedUser = {
   userObject: {
@@ -10,11 +11,14 @@ export const initialState: DetailedUser = {
   },
   userGroups: [],
   userTasks: [],
+  allIcons: [],
   userAuth: "",
 };
 
 export type UserContextAction =
   | { type: "SET_USER"; payload: UserObject }
+  | { type: "UPDATE_USER"; payload: UserObject }
+  | { type: "SET_ALL_ICONS"; payload: Icon[] }
   | { type: "SET_USER_GROUPS"; payload: Group[] }
   | { type: "SET_USER_TASKS"; payload: TaskObject[] }
   | { type: "ADD_USER_TASK"; payload: TaskObject }
@@ -26,6 +30,10 @@ export function reducer(state: DetailedUser, action: UserContextAction) {
   switch (action.type) {
     case "SET_USER":
       return { ...state, userObject: action.payload };
+    case "UPDATE_USER":
+      return { ...state, userObject: action.payload };
+    case "SET_ALL_ICONS":
+      return { ...state, allIcons: action.payload };
     case "SET_USER_GROUPS":
       return { ...state, userGroups: action.payload };
     case "SET_USER_TASKS":
