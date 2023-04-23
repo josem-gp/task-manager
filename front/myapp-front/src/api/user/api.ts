@@ -85,6 +85,7 @@ export async function updateUser(
       type: "UPDATE_USER",
       payload: response.data.userObject,
     });
+
     // Add notification
     setPopup({ message: response.data.message, type: "success" });
   }

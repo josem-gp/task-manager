@@ -29,6 +29,9 @@ function ProfileMenu() {
     user: {
       username: userState.userObject.user.username,
       icon_id: userState.userObject.user_icon.id,
+      current_password: "",
+      password: "",
+      password_confirmation: "",
     },
   });
 
@@ -56,6 +59,29 @@ function ProfileMenu() {
 
     // Close the modal
     handleClose();
+  }
+
+  function handleUserUpdate() {
+    updateUser(
+      {
+        userState,
+        userDispatch,
+        setPopup,
+        handleAxiosCall,
+      },
+      data
+    );
+
+    // Set data back to initial state so that password dont show
+    setData((prevState) => ({
+      ...prevState,
+      user: {
+        ...prevState.user,
+        current_password: "",
+        password: "",
+        password_confirmation: "",
+      },
+    }));
   }
 
   return (
@@ -116,41 +142,45 @@ function ProfileMenu() {
             marginBottom: "30px",
           }}
         />
-        {/* <Stack direction="row" spacing={2}>
+        <TextField
+          required
+          id="current password"
+          label="Current Password"
+          onChange={handleChange}
+          type="password"
+          name="current_password"
+          value={data.user.current_password}
+          sx={{
+            marginBottom: "30px",
+          }}
+        />
+        <Stack direction="row" spacing={2}>
           <TextField
             required
-            id="old password"
-            label="Old Password"
-            onChange={handleChange}
-            type="password"
-            name="password" // this should change to old_password (check Api forgot password logic)
-            value={data.user.password}
-          />
-          <TextField
-            required
-            id="new password"
+            id="password"
             label="New Password"
             onChange={handleChange}
             type="password"
-            name="password" // this should change to new_password (check Api forgot password logic)
+            name="password"
             value={data.user.password}
           />
-        </Stack> */}
+          <TextField
+            required
+            id="new password confirmation"
+            label="New Password Confirmation"
+            onChange={handleChange}
+            type="password"
+            name="password_confirmation"
+            value={data.user.password_confirmation}
+          />
+        </Stack>
         <Box
           sx={{
             float: "right",
             marginTop: "30px",
           }}
         >
-          <ActionBtn
-            name="Update"
-            onClick={() =>
-              updateUser(
-                { userState, userDispatch, setPopup, handleAxiosCall },
-                data
-              )
-            }
-          />
+          <ActionBtn name="Update" onClick={handleUserUpdate} />
         </Box>
       </Box>
     </>

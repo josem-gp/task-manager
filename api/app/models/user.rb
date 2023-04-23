@@ -19,6 +19,7 @@ class User < ApplicationRecord
   validates :username, presence: true
   validates :username, :email, uniqueness: { case_sensitive: false }
   validates :username, length: { in: 3..15 }
+  validates_confirmation_of :password
 
   # Callbacks
   before_validation :add_default_icon, on: :create
