@@ -22,7 +22,8 @@ export type GroupContextAction =
   | { type: "ADD_GROUP_TAG"; payload: Tag }
   | { type: "UPDATE_GROUP_TAG"; payload: Tag }
   | { type: "REMOVE_GROUP_TAG"; payload: number }
-  | { type: "SET_GROUP_INVITATIONS"; payload: Invitation[] };
+  | { type: "SET_GROUP_INVITATIONS"; payload: Invitation[] }
+  | { type: "ADD_GROUP_INVITATION"; payload: Invitation };
 
 export function reducer(state: DetailedGroup, action: GroupContextAction) {
   switch (action.type) {
@@ -56,6 +57,11 @@ export function reducer(state: DetailedGroup, action: GroupContextAction) {
       return { ...state, groupTags: updatedTags };
     case "SET_GROUP_INVITATIONS":
       return { ...state, groupInvitations: action.payload };
+    case "ADD_GROUP_INVITATION":
+      return {
+        ...state,
+        groupInvitations: [...state.groupInvitations, action.payload],
+      };
     default:
       return state;
   }

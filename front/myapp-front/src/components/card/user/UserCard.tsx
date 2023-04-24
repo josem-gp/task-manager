@@ -26,10 +26,6 @@ function UserCard({ element }: UserRendererProps) {
         maxWidth: "360px",
         padding: "10px 0",
         marginBottom: "10px !important",
-        cursor: "pointer",
-        "&:hover": {
-          elevation: "3",
-        },
       }}
     >
       <Stack

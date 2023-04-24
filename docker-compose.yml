@@ -26,6 +26,7 @@ services:
       GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
       APP_NAME: ${APP_NAME}
       REDIS_URL: ${REDIS_URL}
+      SHOP_FRONTEND_URL: ${SHOP_FRONTEND_URL}
     depends_on:
       - db
       - redis
@@ -58,6 +59,8 @@ services:
       GMAIL_SMTP_USER: ${GMAIL_SMTP_USER}
       GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
       APP_NAME: ${APP_NAME}
+      SHOP_FRONTEND_URL: ${SHOP_FRONTEND_URL}
+      SHOP_API_URL: ${SHOP_API_URL}
     depends_on:
       - db
       - redis

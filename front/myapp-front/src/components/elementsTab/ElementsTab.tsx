@@ -14,24 +14,19 @@ import { TaskObject } from "../../shared/task/interfaces";
 import { Tag } from "../../shared/tag/interfaces";
 import { UserObject } from "../../shared/user/interfaces";
 
-function ElementsTab({ tabHeaders, setOnTagFocus }: CompoundTabProps) {
-  const [tabValue, setTabValue] = useState("1");
+function ElementsTab({ tabHeaders, tabValue, setTabValue }: CompoundTabProps) {
   const { state: userState } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
-
-  function handleTabChange(event: React.SyntheticEvent, newValue: string) {
-    setTabValue(newValue);
-    if (newValue === "2") {
-      setOnTagFocus && setOnTagFocus(true);
-    } else {
-      setOnTagFocus && setOnTagFocus(false);
-    }
-  }
 
   return (
     <TabContext value={tabValue}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <TabList onChange={handleTabChange} aria-label="main dashboard tabs">
+        <TabList
+          onChange={(event: React.SyntheticEvent, newValue: string) => {
+            setTabValue(newValue);
+          }}
+          aria-label="main dashboard tabs"
+        >
           {tabHeaders.map((header) => (
             <Tab key={uuidv4()} label={header.label} value={header.value} />
           ))}

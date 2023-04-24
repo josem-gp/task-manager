@@ -8,7 +8,7 @@ import ActionModal from "../../components/actionModal/ActionModal";
 function GroupsMenu() {
   const { state: userState } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
-  const [onTagFocus, setOnTagFocus] = useState(false);
+  const [tabValue, setTabValue] = useState("1");
 
   const tabHeaders = [
     {
@@ -49,22 +49,60 @@ function GroupsMenu() {
       </Stack>
 
       <Box height={40} display="flex" justifyContent="flex-end">
-        {onTagFocus && (
-          <ActionModal
-            type="tag"
-            btnName="New Tag"
-            action="create"
-            setGroup={true}
-            initialData={{
-              tag: {
-                name: "",
-              },
-            }}
-          />
-        )}
+        {(() => {
+          switch (tabValue) {
+            case "1":
+              return (
+                <ActionModal
+                  type="group"
+                  btnName="New Group"
+                  action="create"
+                  initialData={{
+                    group: {
+                      name: "",
+                      description: "",
+                    },
+                  }}
+                />
+              );
+            case "2":
+              return (
+                <ActionModal
+                  type="tag"
+                  btnName="New Tag"
+                  action="create"
+                  setGroup={true}
+                  initialData={{
+                    tag: {
+                      name: "",
+                    },
+                  }}
+                />
+              );
+            case "3":
+              return (
+                <ActionModal
+                  type="invitation"
+                  btnName="New Invitation"
+                  action="create"
+                  initialData={{
+                    invitation: {
+                      email: "",
+                    },
+                  }}
+                />
+              );
+            default:
+              return null;
+          }
+        })()}
       </Box>
 
-      <ElementsTab tabHeaders={tabHeaders} setOnTagFocus={setOnTagFocus} />
+      <ElementsTab
+        tabHeaders={tabHeaders}
+        tabValue={tabValue}
+        setTabValue={setTabValue}
+      />
     </>
   );
 }

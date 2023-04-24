@@ -80,7 +80,10 @@ class Api::V1::GroupsController < ApplicationController
       InvitationMailer.with(recipient: invitation.email, sender: invitation.sender, url: invitation.oauth_token).send_invite.deliver_later
       # We also enqueue the job to disable the invitation in a week
       DisableInvitationJob.set(wait_until: Date.tomorrow.noon + 7.days).perform_later(invitation: invitation)
-      render json: { message: "The invitation was successfully sent" }
+      render json: { 
+        invitation: except_attributes(invitation, ['oauth_token', 'created_at', 'updated_at']),
+        message: "The invitation was successfully sent" 
+      }
     else
       render_error("The invitation couldn't be created", :bad_request)
     end
