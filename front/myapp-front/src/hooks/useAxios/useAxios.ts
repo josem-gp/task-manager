@@ -39,10 +39,17 @@ export default function useAxios() {
         return response;
       })
       .catch((error: CustomAxiosError) => {
-        setPopup({
-          message: error.response.data.message,
-          type: "error",
-        });
+        if (typeof error.response.data === "string") {
+          setPopup({
+            message: error.response.data,
+            type: "error",
+          });
+        } else {
+          setPopup({
+            message: error.response.data.message,
+            type: "error",
+          });
+        }
       });
   }
 
