@@ -18,7 +18,7 @@ function PopupContextProvider({ children }: PopupContextProviderProps) {
     if (popup.message !== null) {
       const timer = setTimeout(() => {
         setPopup((prevState) => ({ ...prevState, message: null }));
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [popup.message]);

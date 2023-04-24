@@ -4,6 +4,7 @@ type baseAxiosProps<T> = {
   method: "get" | "post" | "patch" | "delete";
   url: string;
   data?: T;
+  withCredentials?: boolean;
 };
 
 export type fetchDataProps<T> = {

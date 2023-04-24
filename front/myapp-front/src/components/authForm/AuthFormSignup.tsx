@@ -10,21 +10,22 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { setAuthToken } from "../../utils/setAuthToken";
-import { AuthFormProps } from "./AuthForm.types";
+import { AuthFormSignupProps } from "./AuthForm.types";
 import { UserContext } from "../../context/user/UserContext";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../context/popup/PopupContext";
 import { UserAuthRequest } from "../../shared/auth/interfaces";
-import { handleUserAuth } from "../../api/auth/api";
+import useHandleUserAuth from "../../api/auth/useHandleUserAuth";
 
-function AuthFormSignup({ setIsLogin }: AuthFormProps) {
+function AuthFormSignup({ setIsLogin, email }: AuthFormSignupProps) {
   const { dispatch: userDispatch } = useContext(UserContext);
   const { setPopup } = useContext(PopupContext);
   const [data, setData] = useState<UserAuthRequest>({
-    user: { username: "", email: "", password: "" },
+    user: { username: "", email: email || "", password: "" },
   });
   const [showPassword, setShowPassword] = useState(false);
   const { handleAxiosCall } = useAxios();
+  const handleUserAuth = useHandleUserAuth();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -68,6 +69,7 @@ function AuthFormSignup({ setIsLogin }: AuthFormProps) {
       />
       <TextField
         required
+        disabled={email ? true : false}
         id="email"
         label="Email"
         onChange={handleChange}
@@ -125,24 +127,26 @@ function AuthFormSignup({ setIsLogin }: AuthFormProps) {
       >
         Sign up
       </Button>
-      <Typography
-        variant="caption"
-        display="block"
-        gutterBottom
-        textAlign="center"
-        onClick={() => setIsLogin(true)}
-        sx={{
-          marginTop: "20px",
-          marginBottom: "10px",
-          cursor: "pointer",
-          "&:hover": {
-            color: "#f7b613",
-            fontWeight: "600",
-          },
-        }}
-      >
-        Already signed up? Log in
-      </Typography>
+      {!email ?? (
+        <Typography
+          variant="caption"
+          display="block"
+          gutterBottom
+          textAlign="center"
+          onClick={() => setIsLogin(true)}
+          sx={{
+            marginTop: "20px",
+            marginBottom: "10px",
+            cursor: "pointer",
+            "&:hover": {
+              color: "#f7b613",
+              fontWeight: "600",
+            },
+          }}
+        >
+          Already signed up? Log in
+        </Typography>
+      )}
     </Box>
   );
 }

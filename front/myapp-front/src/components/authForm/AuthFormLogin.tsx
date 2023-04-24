@@ -15,8 +15,7 @@ import { UserContext } from "../../context/user/UserContext";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { PopupContext } from "../../context/popup/PopupContext";
 import { UserAuthRequest } from "../../shared/auth/interfaces";
-import { UserResponse } from "../../shared/user/interfaces";
-import { handleUserAuth } from "../../api/auth/api";
+import useHandleUserAuth from "../../api/auth/useHandleUserAuth";
 
 function AuthFormLogin({ setIsLogin }: AuthFormProps) {
   const { dispatch: userDispatch } = useContext(UserContext);
@@ -26,6 +25,7 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
   });
   const [showPassword, setShowPassword] = useState(false);
   const { handleAxiosCall } = useAxios();
+  const handleUserAuth = useHandleUserAuth();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;

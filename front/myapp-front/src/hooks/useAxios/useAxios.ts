@@ -17,11 +17,13 @@ export default function useAxios() {
     url,
     data,
     needAuth,
+    withCredentials,
   }: handleAxiosCallProps<T>) {
     const params: fetchDataProps<T> = {
       method: method,
       url: url,
       data: data,
+      withCredentials: withCredentials ? true : false,
       ...(needAuth
         ? {
             headers: {
