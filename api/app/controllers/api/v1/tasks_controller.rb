@@ -56,8 +56,4 @@ class Api::V1::TasksController < ApplicationController
   def task_params
     params.require(:task).permit(:name, :note, :finished, :due_date, :assignee_id, :group_id, tag_ids: [])
   end
-
-  def render_error(message, status)
-    render json: {message: message}, status: status
-  end
 end

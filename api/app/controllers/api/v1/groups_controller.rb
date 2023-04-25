@@ -8,7 +8,7 @@ class Api::V1::GroupsController < ApplicationController
     users = @group.users
     tasks = @group.tasks
     tags = @group.tags
-    invitations = @group.invitations
+    invitations = @group.invitations.where(disabled: false)
     
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']),
@@ -118,9 +118,5 @@ class Api::V1::GroupsController < ApplicationController
   def filter_params
     # The assignee_id works both as a string and number
     params.permit(:by_fuzzy_name, :by_owner_id,  :by_assignee_id, :by_status, :from_due_date, :to_due_date)
-  end
-
-  def render_error(message, status)
-    render json: {message: message}, status: status
   end
 end

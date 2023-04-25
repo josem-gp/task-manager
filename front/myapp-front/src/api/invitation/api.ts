@@ -1,8 +1,12 @@
+import { GenericMessageResponse } from "../../shared/general/interfaces";
 import {
   InvitationRequest,
   InvitationResponse,
 } from "../../shared/invitation/interfaces";
-import { HandleInvitationCreateProps } from "./api.types";
+import {
+  HandleInvitationCreateProps,
+  HandleInvitationDeleteProps,
+} from "./api.types";
 
 export async function handleInvitationCreate(
   props: HandleInvitationCreateProps,
@@ -31,4 +35,28 @@ export async function handleInvitationCreate(
 
   // Closing the modal
   handleClose();
+}
+
+// Disable invitation
+export async function handleInvitationDelete(
+  props: HandleInvitationDeleteProps
+) {
+  const { groupDispatch, setPopup, handleAxiosCall, elementId } = props;
+
+  const response = await handleAxiosCall<undefined, GenericMessageResponse>({
+    method: "delete",
+    url: `http://localhost:3000/api/v1/disable_invitation/${elementId}`,
+    needAuth: true,
+  });
+
+  if (response) {
+    // Remove task from UserTasks
+    groupDispatch({
+      type: "REMOVE_GROUP_INVITATION",
+      payload: elementId,
+    });
+
+    // Add notification
+    setPopup({ message: response.data.message, type: "success" });
+  }
 }

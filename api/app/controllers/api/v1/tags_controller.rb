@@ -58,8 +58,4 @@ class Api::V1::TagsController < ApplicationController
   def tag_params
     params.require(:tag).permit(:name)
   end
-
-  def render_error(message, status)
-    render json: {message: message}, status: status
-  end
 end
