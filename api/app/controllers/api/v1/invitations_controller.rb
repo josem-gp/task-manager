@@ -17,6 +17,31 @@ class Api::V1::InvitationsController < ApplicationController
     end
   end
 
+  # Cancel invitation by doing a logical delete
+  def disable_invitation
+    @invitation = Invitation.find(params[:id])
+    authorize @invitation, policy_class: Api::V1::InvitationPolicy # check the user is the sender (since sender can only be admin)
+
+    # Disable invitation
+    @invitation.disabled = true 
+    if @invitation.save!
+      # Find the scheduled job by its arguments
+      scheduled_set = Sidekiq::ScheduledSet.new
+      scheduled_job = scheduled_set.detect do |job|
+        job.klass == "ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper" &&
+          job.args[0]["job_class"] == "DisableInvitationJob" &&
+          job.args[0]["arguments"][0]["invitation"]["_aj_globalid"] == "gid://api/Invitation/#{@invitation.id}"
+      end
+
+      # Delete the scheduled job if it exists
+      scheduled_job.delete if scheduled_job
+
+      render json: { message: "The invitation was successfully removed" }
+    else
+      render_error("The invitation couldn't be removed", :bad_request)
+    end
+  end
+
   private 
 
   # Fetch invitation and check if the expired date has passed
