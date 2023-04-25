@@ -8,7 +8,7 @@ class Api::V1::GroupsController < ApplicationController
     users = @group.users
     tasks = @group.tasks
     tags = @group.tags
-    invitations = @group.invitations
+    invitations = @group.invitations.where(disabled: false)
     
     render json: { 
       group: except_attributes(@group, ['created_at', 'updated_at']),
