@@ -22,3 +22,22 @@ export type HandleInvitationCreateProps = {
   >;
   handleClose: () => void;
 };
+
+export type HandleInvitationDeleteProps = {
+  groupDispatch: React.Dispatch<GroupContextAction>;
+  setPopup: React.Dispatch<
+    React.SetStateAction<{
+      message: string | null;
+      type: "success" | "error";
+    }>
+  >;
+  handleAxiosCall: <T, U>({
+    method,
+    url,
+    data,
+    needAuth,
+  }: handleAxiosCallProps<T>) => Promise<
+    void | AxiosResponse<U, any> | undefined
+  >;
+  elementId: number;
+};

@@ -54,8 +54,4 @@ class Api::V1::UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:username, :icon_id, :current_password, :password, :password_confirmation)
   end
-
-  def render_error(message, status)
-    render json: {message: message}, status: status
-  end
 end

@@ -5,10 +5,16 @@ import { GroupContext } from "../../../context/group/GroupContext";
 import { UserContext } from "../../../context/user/UserContext";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { InvitationRendererProps } from "./InvitationCard.types";
+import { handleInvitationDelete } from "../../../api/invitation/api";
+import { PopupContext } from "../../../context/popup/PopupContext";
+import useAxios from "../../../hooks/useAxios/useAxios";
 
 function InvitationCard({ element }: InvitationRendererProps) {
   const { state: userState } = useContext(UserContext);
-  const { state: groupState } = useContext(GroupContext);
+  const { state: groupState, dispatch: groupDispatch } =
+    useContext(GroupContext);
+  const { setPopup } = useContext(PopupContext);
+  const { handleAxiosCall } = useAxios();
 
   return (
     <Paper
@@ -39,7 +45,14 @@ function InvitationCard({ element }: InvitationRendererProps) {
       </Stack>
       {userState.userObject.user.id === groupState.group.admin_id && ( // user needs to be admin
         <IconButton
-          // onClick={() => handleUserDelete(user.id)}
+          onClick={() =>
+            handleInvitationDelete({
+              groupDispatch,
+              setPopup,
+              handleAxiosCall,
+              elementId: element.id,
+            })
+          }
           size="small"
         >
           <DeleteIcon />

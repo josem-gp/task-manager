@@ -52,4 +52,9 @@ module ApiHelper
       }
     end
   end
+
+  # Render error
+  def render_error(message, status)
+    render json: {message: message}, status: status
+  end
 end

@@ -18,6 +18,7 @@ class Invitation < ApplicationRecord
 
   def disable_invitation
     self.disabled = true
+    self.save!
   end
 
   private

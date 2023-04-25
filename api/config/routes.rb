@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       end
       resources :tasks, only: [:show, :create, :update, :destroy]
       get 'invitation_signup/:token', to: 'invitations#invitation_signup'
+      delete 'disable_invitation/:id', to: 'invitations#disable_invitation'
       get 'users/fetch_user_info', to: 'users#fetch_user_info'
     end
   end
