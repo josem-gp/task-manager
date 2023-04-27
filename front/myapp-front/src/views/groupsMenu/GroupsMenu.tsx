@@ -2,11 +2,10 @@ import { Box, Stack, Typography } from "@mui/material";
 import ElementsTab from "../../components/elementsTab/ElementsTab";
 import { useContext, useState } from "react";
 import { GroupContext } from "../../context/group/GroupContext";
-import { UserContext } from "../../context/user/UserContext";
 import ActionModal from "../../components/actionModal/ActionModal";
+import { colors } from "../../utils/colors";
 
 function GroupsMenu() {
-  const { state: userState } = useContext(UserContext);
   const { state: groupState } = useContext(GroupContext);
   const [tabValue, setTabValue] = useState("1");
 
@@ -33,18 +32,18 @@ function GroupsMenu() {
 
   return (
     <>
-      <Typography variant="h5" sx={{ color: "#B5B5B5" }}>
-        Hello, {userState.userObject.user.username}!
-      </Typography>
       <Stack
-        direction="row"
+        direction="column"
         spacing={2}
         width="100%"
-        alignItems="center"
+        alignItems="flex-start"
         marginBottom="40px"
       >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          Welcome to {groupState.group.name}
+          {groupState.group.name}
+        </Typography>
+        <Typography variant="h5" sx={{ color: colors.textLight }}>
+          {groupState.group.description}
         </Typography>
       </Stack>
 

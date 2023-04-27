@@ -1,5 +1,5 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Tab, Typography } from "@mui/material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import UserProfile from "../../components/userProfile/UserProfile";
@@ -24,7 +24,7 @@ function ProfileMenu() {
 
   return (
     <>
-      <Typography variant="h4" margin="50px 0" sx={{ fontWeight: "bold" }}>
+      <Typography variant="h4" sx={{ fontWeight: "bold" }}>
         My Profile
       </Typography>
       <Box height={40} display="flex" justifyContent="flex-end">
