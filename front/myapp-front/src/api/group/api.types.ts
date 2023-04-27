@@ -1,16 +1,10 @@
-import { AxiosResponse } from "axios";
-import { handleAxiosCallProps } from "../../hooks/useAxios/useAxios.types";
 import { GroupContextAction } from "../../context/group/GroupContext";
+import { ApiCallCommonProps } from "../../shared/api/types";
 
-export type FetchGroupInfoProps = {
-  handleAxiosCall: <T, U>({
-    method,
-    url,
-    data,
-    needAuth,
-  }: handleAxiosCallProps<T>) => Promise<
-    void | AxiosResponse<U, any> | undefined
-  >;
+export type FetchGroupInfoProps = Pick<
+  ApiCallCommonProps,
+  "handleAxiosCall"
+> & {
   dispatch: React.Dispatch<GroupContextAction>;
   selectedGroupId: string;
 };
