@@ -1,15 +1,21 @@
 import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import EmailIcon from "@mui/icons-material/Email";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { NavbarProps } from "./Navbar.types";
 import Sidebar from "../../views/sidebar/Sidebar";
 import { useContext } from "react";
 import { UserContext } from "../../context/user/UserContext";
+import useHandleUserAuth from "../../api/auth/useHandleUserAuth";
+import { GroupContext } from "../../context/group/GroupContext";
+import useAxios from "../../hooks/useAxios/useAxios";
+import { PopupContext } from "../../context/popup/PopupContext";
 
 function Navbar({ showSidebar }: NavbarProps) {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
+  const { dispatch: groupDispatch } = useContext(GroupContext);
+  const { handleAxiosCall } = useAxios();
+  const { setPopup } = useContext(PopupContext);
+  const { handleUserLogOut } = useHandleUserAuth();
 
   return (
     <Stack
@@ -36,16 +42,27 @@ function Navbar({ showSidebar }: NavbarProps) {
             height: 35,
           }}
         />
-        <Typography variant="caption" display="block" lineHeight={0}>
+        <Typography
+          variant="caption"
+          display="block"
+          lineHeight={0}
+          marginLeft={1}
+        >
           {userState.userObject.user.username}
         </Typography>
-        <IconButton>
+        {/* <IconButton>
           <NotificationsIcon sx={{ color: "#000000" }} />
-        </IconButton>
-        <IconButton>
-          <EmailIcon sx={{ color: "#000000" }} />
-        </IconButton>
-        <IconButton>
+        </IconButton> */}
+        <IconButton
+          onClick={() =>
+            handleUserLogOut({
+              handleAxiosCall,
+              userDispatch,
+              groupDispatch,
+              setPopup,
+            })
+          }
+        >
           <ExitToAppIcon sx={{ color: "#000000" }} />
         </IconButton>
       </Stack>

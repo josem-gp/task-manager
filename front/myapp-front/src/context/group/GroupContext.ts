@@ -24,7 +24,8 @@ export type GroupContextAction =
   | { type: "REMOVE_GROUP_TAG"; payload: number }
   | { type: "SET_GROUP_INVITATIONS"; payload: Invitation[] }
   | { type: "ADD_GROUP_INVITATION"; payload: Invitation }
-  | { type: "REMOVE_GROUP_INVITATION"; payload: number };
+  | { type: "REMOVE_GROUP_INVITATION"; payload: number }
+  | { type: "RESET_GROUP_CONTEXT" };
 
 export function reducer(state: DetailedGroup, action: GroupContextAction) {
   switch (action.type) {
@@ -68,6 +69,8 @@ export function reducer(state: DetailedGroup, action: GroupContextAction) {
         return invitation.id !== action.payload;
       });
       return { ...state, groupInvitations: updatedInvitations };
+    case "RESET_GROUP_CONTEXT":
+      return initialState;
     default:
       return state;
   }
