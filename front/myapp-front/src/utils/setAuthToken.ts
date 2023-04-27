@@ -7,3 +7,7 @@ export function setAuthToken(response: string) {
     httpOnly: false, // set the HttpOnly flag to true to prevent XSS attacks (this makes it so that it is not saved in dev)
   });
 }
+
+export function removeAuthToken() {
+  Cookies.remove("auth_token");
+}

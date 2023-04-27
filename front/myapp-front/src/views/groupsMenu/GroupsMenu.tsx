@@ -51,20 +51,6 @@ function GroupsMenu() {
       <Box height={40} display="flex" justifyContent="flex-end">
         {(() => {
           switch (tabValue) {
-            case "1":
-              return (
-                <ActionModal
-                  type="group"
-                  btnName="New Group"
-                  action="create"
-                  initialData={{
-                    group: {
-                      name: "",
-                      description: "",
-                    },
-                  }}
-                />
-              );
             case "2":
               return (
                 <ActionModal

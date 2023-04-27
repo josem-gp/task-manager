@@ -9,6 +9,7 @@ import useAxios from "../../../hooks/useAxios/useAxios";
 import { handleTaskDelete } from "../../../api/task/api";
 import { handleTagDelete } from "../../../api/tag/api";
 import { GroupContext } from "../../../context/group/GroupContext";
+import { handleGroupDelete } from "../../../api/group/api";
 
 function ActionModalHeader({
   title,
@@ -40,6 +41,15 @@ function ActionModalHeader({
         handleTagDelete({
           groupState,
           groupDispatch,
+          setPopup,
+          handleAxiosCall,
+          elementId: elementId!,
+        });
+      break;
+    case "group":
+      handleDelete = () =>
+        handleGroupDelete({
+          userDispatch,
           setPopup,
           handleAxiosCall,
           elementId: elementId!,

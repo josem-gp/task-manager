@@ -20,6 +20,9 @@ export type UserContextAction =
   | { type: "UPDATE_USER"; payload: UserObject }
   | { type: "SET_ALL_ICONS"; payload: Icon[] }
   | { type: "SET_USER_GROUPS"; payload: Group[] }
+  | { type: "ADD_USER_GROUP"; payload: Group }
+  | { type: "REMOVE_USER_GROUP"; payload: number }
+  | { type: "UPDATE_USER_GROUP"; payload: Group }
   | { type: "SET_USER_TASKS"; payload: TaskObject[] }
   | { type: "ADD_USER_TASK"; payload: TaskObject }
   | { type: "REMOVE_USER_TASK"; payload: number }
@@ -37,6 +40,21 @@ export function reducer(state: DetailedUser, action: UserContextAction) {
       return { ...state, allIcons: action.payload };
     case "SET_USER_GROUPS":
       return { ...state, userGroups: action.payload };
+    case "ADD_USER_GROUP":
+      return { ...state, userGroups: [...state.userGroups, action.payload] };
+    case "REMOVE_USER_GROUP":
+      const updatedGroups = state.userGroups.filter((group) => {
+        return group.id !== action.payload;
+      });
+      return { ...state, userGroups: updatedGroups };
+    case "UPDATE_USER_GROUP":
+      const updatedUserGroups = state.userGroups.map((group) => {
+        if (group.id === action.payload.id) {
+          return action.payload;
+        }
+        return group;
+      });
+      return { ...state, userGroups: updatedUserGroups };
     case "SET_USER_TASKS":
       return { ...state, userTasks: action.payload };
     case "ADD_USER_TASK":
