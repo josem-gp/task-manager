@@ -25,7 +25,7 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
   });
   const [showPassword, setShowPassword] = useState(false);
   const { handleAxiosCall } = useAxios();
-  const handleUserAuth = useHandleUserAuth();
+  const { handleUserAuth } = useHandleUserAuth();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;

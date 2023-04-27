@@ -1,6 +1,10 @@
+import { UserContext } from "../../context/user/UserContext";
 import { UserAuthRequest } from "../../shared/auth/interfaces";
 import { UserResponse } from "../../shared/user/interfaces";
-import { handleUserAuthProps } from "./useHandleUserAuth.types";
+import {
+  HandleUserAuthProps,
+  HandleUserLogOutProps,
+} from "./useHandleUserAuth.types";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function useHandleUserAuth() {
@@ -8,7 +12,7 @@ function useHandleUserAuth() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  async function handleUserAuth(props: handleUserAuthProps) {
+  async function handleUserAuth(props: HandleUserAuthProps) {
     const { handleAxiosCall, data, url, setAuthToken, userDispatch, setPopup } =
       props;
     const response = await handleAxiosCall<UserAuthRequest, UserResponse>({
@@ -31,7 +35,7 @@ function useHandleUserAuth() {
       // Add notification
       setPopup({ message: response.data.message, type: "success" });
 
-      // Check if the current URL is different from http://localhost:3001
+      // Check if the current URL is different from http://localhost:3001. This is used for the invitation signup
       if (location.pathname !== "/") {
         // Navigate to http://localhost:3001
         navigate("/");
@@ -39,7 +43,27 @@ function useHandleUserAuth() {
     }
   }
 
-  return handleUserAuth;
+  async function handleUserLogOut(props: HandleUserLogOutProps) {
+    const { handleAxiosCall, userDispatch, groupDispatch, setPopup } = props;
+    const response = await handleAxiosCall<UserAuthRequest, UserResponse>({
+      method: "delete",
+      url: "http://localhost:3000/users/sign_out",
+      needAuth: true,
+    });
+
+    if (response) {
+      // Reset userContext
+      userDispatch({ type: "RESET_USER_CONTEXT" });
+
+      // Reset groupContext
+      groupDispatch({ type: "RESET_GROUP_CONTEXT" });
+
+      // Add notification
+      setPopup({ message: response.data.message, type: "success" });
+    }
+  }
+
+  return { handleUserAuth, handleUserLogOut };
 }
 
 export default useHandleUserAuth;
