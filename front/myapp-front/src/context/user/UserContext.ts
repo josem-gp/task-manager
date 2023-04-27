@@ -24,7 +24,8 @@ export type UserContextAction =
   | { type: "ADD_USER_TASK"; payload: TaskObject }
   | { type: "REMOVE_USER_TASK"; payload: number }
   | { type: "UPDATE_USER_TASK"; payload: TaskObject }
-  | { type: "SET_USER_AUTH"; payload: string };
+  | { type: "SET_USER_AUTH"; payload: string }
+  | { type: "RESET_USER_CONTEXT" };
 
 export function reducer(state: DetailedUser, action: UserContextAction) {
   switch (action.type) {
@@ -55,6 +56,8 @@ export function reducer(state: DetailedUser, action: UserContextAction) {
       return { ...state, userTasks: updatedUserTasks };
     case "SET_USER_AUTH":
       return { ...state, userAuth: action.payload };
+    case "RESET_USER_CONTEXT":
+      return initialState;
     default:
       return state;
   }
