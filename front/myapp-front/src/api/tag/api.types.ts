@@ -1,37 +1,19 @@
-import { AxiosResponse } from "axios";
-import { handleAxiosCallProps } from "../../hooks/useAxios/useAxios.types";
-import { GroupContextAction } from "../../context/group/GroupContext";
+import { ApiCallCommonProps } from "../../shared/api/types";
 import { DetailedGroup } from "../../shared/group/interfaces";
 import { Tag } from "../../shared/tag/interfaces";
 
-type HandleTagCommonProps = {
+export type HandleTagCreateProps = Omit<ApiCallCommonProps, "userDispatch"> & {
   groupState: DetailedGroup;
-  groupDispatch: React.Dispatch<GroupContextAction>;
-  setPopup: React.Dispatch<
-    React.SetStateAction<{
-      message: string | null;
-      type: "success" | "error";
-    }>
-  >;
-  handleAxiosCall: <T, U>({
-    method,
-    url,
-    data,
-    needAuth,
-  }: handleAxiosCallProps<T>) => Promise<
-    void | AxiosResponse<U, any> | undefined
-  >;
-};
-
-export type HandleTagCreateProps = HandleTagCommonProps & {
   handleClose: () => void;
 };
 
-export type HandleTagUpdateProps = HandleTagCommonProps & {
+export type HandleTagUpdateProps = Omit<ApiCallCommonProps, "userDispatch"> & {
+  groupState: DetailedGroup;
   element: Tag;
   handleClose: () => void;
 };
 
-export type HandleTagDeleteProps = HandleTagCommonProps & {
+export type HandleTagDeleteProps = Omit<ApiCallCommonProps, "userDispatch"> & {
+  groupState: DetailedGroup;
   elementId: number;
 };
