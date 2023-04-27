@@ -4,54 +4,24 @@ import { UserContextAction } from "../../context/user/UserContext";
 import { DetailedGroup } from "../../shared/group/interfaces";
 import { GroupContextAction } from "../../context/group/GroupContext";
 import { DetailedUser } from "../../shared/user/interfaces";
+import { ApiCallCommonProps } from "../../shared/api/types";
 
-export type FetchUserInfoProps = {
-  handleAxiosCall: <T, U>({
-    method,
-    url,
-    data,
-    needAuth,
-  }: handleAxiosCallProps<T>) => Promise<
-    void | AxiosResponse<U, any> | undefined
-  >;
-  userDispatch: React.Dispatch<UserContextAction>;
-};
+export type FetchUserInfoProps = Pick<
+  ApiCallCommonProps,
+  "userDispatch" | "handleAxiosCall"
+>;
 
-export type HandleMemberDeleteProps = {
+export type HandleMemberDeleteProps = Omit<
+  ApiCallCommonProps,
+  "userDispatch"
+> & {
   groupState: DetailedGroup;
-  groupDispatch: React.Dispatch<GroupContextAction>;
-  setPopup: React.Dispatch<
-    React.SetStateAction<{
-      message: string | null;
-      type: "success" | "error";
-    }>
-  >;
-  handleAxiosCall: <T, U>({
-    method,
-    url,
-    data,
-    needAuth,
-  }: handleAxiosCallProps<T>) => Promise<
-    void | AxiosResponse<U, any> | undefined
-  >;
   elementId: number;
 };
 
-export type HandleUserUpdateProps = {
+export type HandleUserUpdateProps = Omit<
+  ApiCallCommonProps,
+  "groupDispatch"
+> & {
   userState: DetailedUser;
-  userDispatch: React.Dispatch<UserContextAction>;
-  setPopup: React.Dispatch<
-    React.SetStateAction<{
-      message: string | null;
-      type: "success" | "error";
-    }>
-  >;
-  handleAxiosCall: <T, U>({
-    method,
-    url,
-    data,
-    needAuth,
-  }: handleAxiosCallProps<T>) => Promise<
-    void | AxiosResponse<U, any> | undefined
-  >;
 };
