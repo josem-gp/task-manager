@@ -5,16 +5,28 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Users sign up
   # POST /users
   def create
-    super do |resource|
-      @user = resource
+    group_name = sign_up_params[:groups_as_admin_attributes].first[:name]
+    
+    @user = User.new(sign_up_params.except(:groups_as_admin_attributes))
+
+    unless session[:group]
+      @user.groups_as_admin.build(name: group_name, admin: @user)
     end
 
-    # We create a membership to the group if the user had it in the session (it means that it was invited)
+    ActiveRecord::Base.transaction do
+      @user.save!
+    end
+    
     if @user.persisted? && session[:group]      
       Membership.create!(user: @user, group: Group.find(session[:group]))
-      # We remove the existing session
       reset_session
     end
+
+    sign_in(@user) # sign in the user
+    
+    respond_with(@user)
+  rescue ActiveRecord::RecordInvalid => e
+    respond_with(@user)
   end
 
   private
@@ -30,5 +42,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def register_failed(resource)
     error_message = resource.errors.objects.first.full_message
     render json: { message: error_message }, status: :bad_request
+  end
+
+  def sign_up_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, groups_as_admin_attributes: [:name])
   end
 end
