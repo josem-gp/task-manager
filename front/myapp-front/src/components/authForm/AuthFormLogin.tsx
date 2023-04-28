@@ -133,7 +133,7 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
       >
         Don't have an account? Sign up
       </Typography>
-      <Typography
+      {/* <Typography
         variant="caption"
         display="block"
         gutterBottom
@@ -147,7 +147,7 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
         }}
       >
         Forgot your password?
-      </Typography>
+      </Typography> */}
     </Box>
   );
 }

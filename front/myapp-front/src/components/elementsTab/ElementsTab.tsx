@@ -1,6 +1,6 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab, Typography } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CompoundTabProps } from "./ElementsTab.types";
 import { v4 as uuidv4 } from "uuid";
 import TaskCard from "../card/task/TaskCard";
