@@ -10,7 +10,9 @@ class ApplicationController < ActionController::API
   def configure_permitted_parameters
     # Permit the `username` parameter along with the other user parameters
     # (https://www.rubydoc.info/github/plataformatec/devise/Devise/ParameterSanitizer)
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
+    devise_parameter_sanitizer.permit(:sign_up) do |user_params|
+      user_params.permit(:username, :email, :password, :password_confirmation, groups_as_admin_attributes: [:name])
+    end
     devise_parameter_sanitizer.permit(:account_update, keys: [:username])
   end
 

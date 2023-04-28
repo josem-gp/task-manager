@@ -15,6 +15,8 @@ class User < ApplicationRecord
   has_many :invitations, foreign_key: :recipient_id
   belongs_to :icon
 
+  accepts_nested_attributes_for :groups_as_admin
+
   # Validations (Devise already takes care of things like password length or email format validation)
   validates :username, presence: true
   validates :username, :email, uniqueness: { case_sensitive: false }

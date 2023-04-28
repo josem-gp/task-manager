@@ -21,7 +21,16 @@ function AuthFormSignup({ setIsLogin, email }: AuthFormSignupProps) {
   const { dispatch: userDispatch } = useContext(UserContext);
   const { setPopup } = useContext(PopupContext);
   const [data, setData] = useState<UserAuthRequest>({
-    user: { username: "", email: email || "", password: "" },
+    user: {
+      username: "",
+      email: email || "",
+      password: "",
+      groups_as_admin_attributes: [
+        {
+          name: "",
+        },
+      ],
+    },
   });
   const [showPassword, setShowPassword] = useState(false);
   const { handleAxiosCall } = useAxios();
@@ -30,10 +39,21 @@ function AuthFormSignup({ setIsLogin, email }: AuthFormSignupProps) {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setData((prevState) => {
+      // We just want to update the nested key if the name is "name" so we need to write that conditional on the side
+      let nestedKey = prevState.user.groups_as_admin_attributes;
+      if (name === "name" && prevState.user.groups_as_admin_attributes) {
+        nestedKey = [
+          {
+            ...prevState.user.groups_as_admin_attributes[0],
+            [name]: value,
+          },
+        ];
+      }
       return {
         user: {
           ...prevState.user,
-          [name]: value,
+          ...(name !== "name" && { [name]: value }),
+          groups_as_admin_attributes: nestedKey,
         },
       };
     });
@@ -79,6 +99,20 @@ function AuthFormSignup({ setIsLogin, email }: AuthFormSignupProps) {
           marginBottom: "10px",
         }}
       />
+      {!email && (
+        <TextField
+          required
+          disabled={email ? true : false}
+          id="group name"
+          label="Group name"
+          onChange={handleChange}
+          name="name"
+          value={data.user.groups_as_admin_attributes?.[0].name}
+          sx={{
+            marginBottom: "10px",
+          }}
+        />
+      )}
       <TextField
         required
         id="password"
@@ -127,7 +161,7 @@ function AuthFormSignup({ setIsLogin, email }: AuthFormSignupProps) {
       >
         Sign up
       </Button>
-      {!email ?? (
+      {!email && (
         <Typography
           variant="caption"
           display="block"
