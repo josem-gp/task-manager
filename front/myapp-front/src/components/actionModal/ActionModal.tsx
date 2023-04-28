@@ -17,6 +17,8 @@ import { handleTagCreate } from "../../api/tag/api";
 import { modalStyles } from "../../utils/modalStyles";
 import { InvitationRequest } from "../../shared/invitation/interfaces";
 import { handleInvitationCreate } from "../../api/invitation/api";
+import { GroupRequest } from "../../shared/group/interfaces";
+import { handleGroupCreate } from "../../api/group/api";
 
 function ActionModal({
   type,
@@ -25,7 +27,7 @@ function ActionModal({
   initialData,
   setGroup,
 }: ActionModalProps) {
-  const { dispatch: userDispatch } = useContext(UserContext);
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: groupState, dispatch: groupDispatch } =
     useContext(GroupContext);
   const { setPopup } = useContext(PopupContext);
@@ -51,7 +53,23 @@ function ActionModal({
           />
         );
       case "group":
-        return <ModalGroup />;
+        return (
+          <ModalGroup
+            action={action}
+            initialData={initialData}
+            handleSubmit={(data: GroupRequest) =>
+              handleGroupCreate(
+                {
+                  userDispatch,
+                  setPopup,
+                  handleAxiosCall,
+                  handleClose,
+                },
+                data
+              )
+            }
+          />
+        );
       case "tag":
         return (
           <ModalTag

@@ -1,6 +1,6 @@
-import { UserContext } from "../../context/user/UserContext";
 import { UserAuthRequest } from "../../shared/auth/interfaces";
 import { UserResponse } from "../../shared/user/interfaces";
+import { removeAuthToken } from "../../utils/setAuthToken";
 import {
   HandleUserAuthProps,
   HandleUserLogOutProps,
@@ -57,6 +57,9 @@ function useHandleUserAuth() {
 
       // Reset groupContext
       groupDispatch({ type: "RESET_GROUP_CONTEXT" });
+
+      // Remove cookies
+      removeAuthToken();
 
       // Add notification
       setPopup({ message: response.data.message, type: "success" });
