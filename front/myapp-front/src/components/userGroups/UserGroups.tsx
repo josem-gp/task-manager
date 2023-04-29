@@ -9,11 +9,12 @@ function UserGroups() {
   return (
     <Box
       sx={{
-        maxHeight: { md: "30vh", lg: "44vh" },
+        maxHeight: { xs: "60vh", md: "30vh", lg: "68vh" },
         overflow: "scroll",
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
         gap: "10px",
+        padding: "24px 24px 0px 24px",
       }}
     >
       {userState.userGroups.map((group) => {

@@ -43,7 +43,7 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
         selectedGroupId,
       });
     }
-  }, [selectedGroupId]);
+  }, [selectedGroupId, userState.userGroups]);
 
   return (
     <GroupContext.Provider value={{ state, dispatch }}>
