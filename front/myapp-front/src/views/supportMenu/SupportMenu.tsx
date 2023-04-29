@@ -135,13 +135,14 @@ function SupportMenu() {
           direction="column"
           spacing={1}
           width="100%"
+          padding="24px 24px 0px 24px"
           alignItems="center"
           marginTop="20px"
           maxWidth="350px"
-          maxHeight="400px"
           sx={{
             overflow: "scroll",
             padding: "0 10px",
+            maxHeight: { xs: "60vh", md: "45vh", lg: "49vh" },
           }}
         >
           {taskCardRenderer()}
