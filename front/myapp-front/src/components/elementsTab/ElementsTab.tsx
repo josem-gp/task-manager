@@ -52,7 +52,11 @@ function ElementsTab({ tabHeaders, tabValue, setTabValue }: CompoundTabProps) {
                 key={uuidv4()}
                 value={element.value}
                 sx={{
-                  maxHeight: { md: "30vh", lg: "44vh" },
+                  maxHeight:
+                    element.type === "task"
+                      ? { xs: "60vh", md: "57vh", lg: "68vh" }
+                      : { xs: "60vh", md: "61vh", lg: "72vh" },
+                  padding: "24px 24px 0px 24px",
                   overflow: "scroll",
                   display: tabValue === element.value ? "grid" : "none",
                   gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
