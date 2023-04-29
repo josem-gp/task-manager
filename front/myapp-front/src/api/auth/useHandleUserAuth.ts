@@ -35,9 +35,9 @@ function useHandleUserAuth() {
       // Add notification
       setPopup({ message: response.data.message, type: "success" });
 
-      // Check if the current URL is different from http://localhost:3001. This is used for the invitation signup
+      // Check if the current URL is different from homepage root. This is used for the invitation signup
       if (location.pathname !== "/") {
-        // Navigate to http://localhost:3001
+        // Navigate to homepage
         navigate("/");
       }
     }
@@ -47,7 +47,7 @@ function useHandleUserAuth() {
     const { handleAxiosCall, userDispatch, groupDispatch, setPopup } = props;
     const response = await handleAxiosCall<UserAuthRequest, UserResponse>({
       method: "delete",
-      url: "http://localhost:3000/users/sign_out",
+      url: `${process.env.REACT_APP_FRONTEND_URL}/users/sign_out`,
       needAuth: true,
     });
 
