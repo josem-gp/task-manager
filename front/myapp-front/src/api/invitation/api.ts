@@ -17,7 +17,7 @@ export async function handleInvitationCreate(
   const response = await handleAxiosCall<InvitationRequest, InvitationResponse>(
     {
       method: "post",
-      url: `http://localhost:3000/api/v1/groups/${groupState.group.id}/send_invitation`,
+      url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${groupState.group.id}/send_invitation`,
       data: data,
       needAuth: true,
     }
@@ -45,7 +45,7 @@ export async function handleInvitationDelete(
 
   const response = await handleAxiosCall<undefined, GenericMessageResponse>({
     method: "delete",
-    url: `http://localhost:3000/api/v1/disable_invitation/${elementId}`,
+    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/disable_invitation/${elementId}`,
     needAuth: true,
   });
 

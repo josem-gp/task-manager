@@ -54,8 +54,8 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
   # Devise requires a default url
-  host = 'localhost:3000'
-  config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
+  host = ENV['SHOP_API_URL']
+  config.action_mailer.default_url_options = { :host => ENV['SHOP_API_URL'], protocol: 'http' }
   config.action_mailer.delivery_method = :test # test to not send || smtp to send
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true

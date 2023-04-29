@@ -144,7 +144,7 @@ function AuthFormSignup({ setIsLogin, email }: AuthFormSignupProps) {
           handleUserAuth({
             handleAxiosCall,
             data,
-            url: "http://localhost:3000/users",
+            url: `${process.env.REACT_APP_FRONTEND_URL}/users`,
             setAuthToken,
             userDispatch,
             setPopup,

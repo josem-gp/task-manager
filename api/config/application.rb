@@ -24,6 +24,8 @@ module Api
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
 
+    config.secret_key_base = Rails.application.credentials.secret_key_base
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
