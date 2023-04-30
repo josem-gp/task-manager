@@ -58,12 +58,14 @@ services:
     volumes:
       - ./api:/myapp-api
     environment:
+      RAILS_ENV: ${RAILS_ENV:-development}
       REDIS_URL: ${REDIS_URL}
       GMAIL_SMTP_USER: ${GMAIL_SMTP_USER}
       GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
       APP_NAME: ${APP_NAME}
       SHOP_FRONTEND_URL: ${SHOP_FRONTEND_URL}
       SHOP_API_URL: ${SHOP_API_URL}
+      API_DATABASE_PASSWORD: ${API_DATABASE_PASSWORD}
     depends_on:
       - db
       - redis

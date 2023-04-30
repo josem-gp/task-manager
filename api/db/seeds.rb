@@ -25,8 +25,6 @@ puts "Deleting all Icons"
 
 Icon.destroy_all
 
-puts "Creating Icons"
-
 # With this function we create fake data for a specific group.
 # We will add a specific user we want so that it will have data created for them in the group
 def create_fake_data(group, admin, group_user, icons)
