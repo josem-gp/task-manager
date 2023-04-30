@@ -22,7 +22,7 @@ export async function handleTaskCreate(
   const response = await handleAxiosCall<TaskRequest, TaskResponse<TaskObject>>(
     {
       method: "post",
-      url: "${process.env.REACT_APP_FRONTEND_URL}/api/v1/tasks",
+      url: `${process.env.REACT_APP_API_URL}/api/v1/tasks`,
       data: data,
       needAuth: true,
     }
@@ -48,7 +48,7 @@ export async function handleTaskDelete(props: HandleTaskDeleteProps) {
 
   const response = await handleAxiosCall<undefined, GenericMessageResponse>({
     method: "delete",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/tasks/${elementId}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/tasks/${elementId}`,
     needAuth: true,
   });
 
@@ -74,7 +74,7 @@ export async function handleTaskUpdate(
   const response = await handleAxiosCall<TaskRequest, TaskResponse<TaskObject>>(
     {
       method: "patch",
-      url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/tasks/${element.task.id}`,
+      url: `${process.env.REACT_APP_API_URL}/api/v1/tasks/${element.task.id}`,
       data: data,
       needAuth: true,
     }
@@ -111,7 +111,7 @@ export async function handleTaskFilter(props: HandleTaskFilterProps) {
     TaskResponse<TaskObject[]>
   >({
     method: "post",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${groupState.group?.id}/filter_tasks`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${groupState.group?.id}/filter_tasks`,
     data: state,
     needAuth: true,
   });

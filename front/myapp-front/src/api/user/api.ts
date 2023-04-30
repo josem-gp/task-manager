@@ -15,7 +15,7 @@ export async function fetchUserInfo(props: FetchUserInfoProps) {
 
   const response = await handleAxiosCall<undefined, DetailedUserResponse>({
     method: "get",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/users/fetch_user_info`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/users/fetch_user_info`,
     needAuth: true,
   });
 
@@ -50,7 +50,7 @@ export async function handleMemberDelete(props: HandleMemberDeleteProps) {
 
   const response = await handleAxiosCall<undefined, GenericMessageResponse>({
     method: "delete",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${groupState.group.id}/remove_user/${elementId}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${groupState.group.id}/remove_user/${elementId}`,
     needAuth: true,
   });
 
@@ -74,7 +74,7 @@ export async function updateUser(
 
   const response = await handleAxiosCall<UserRequest, UserResponse>({
     method: "patch",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/users/${userState.userObject.user.id}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/users/${userState.userObject.user.id}`,
     data: data,
     needAuth: true,
   });
