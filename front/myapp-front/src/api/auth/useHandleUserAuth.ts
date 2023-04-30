@@ -47,7 +47,7 @@ function useHandleUserAuth() {
     const { handleAxiosCall, userDispatch, groupDispatch, setPopup } = props;
     const response = await handleAxiosCall<UserAuthRequest, UserResponse>({
       method: "delete",
-      url: `${process.env.REACT_APP_FRONTEND_URL}/users/sign_out`,
+      url: `${process.env.REACT_APP_API_URL}/users/sign_out`,
       needAuth: true,
     });
 
