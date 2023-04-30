@@ -16,7 +16,7 @@ export async function fetchGroupInfo(props: FetchGroupInfoProps) {
   const { handleAxiosCall, dispatch, selectedGroupId } = props;
   const response = await handleAxiosCall<undefined, DetailedGroup>({
     method: "get",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${selectedGroupId}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${selectedGroupId}`,
     needAuth: true,
   });
 
@@ -53,7 +53,7 @@ export async function handleGroupCreate(
 
   const response = await handleAxiosCall<GroupRequest, GroupResponse>({
     method: "post",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups`,
     data: data,
     needAuth: true,
   });
@@ -78,7 +78,7 @@ export async function handleGroupDelete(props: HandleGroupDeleteProps) {
 
   const response = await handleAxiosCall<undefined, GenericMessageResponse>({
     method: "delete",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${elementId}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${elementId}`,
     needAuth: true,
   });
 
@@ -103,7 +103,7 @@ export async function handleGroupUpdate(
 
   const response = await handleAxiosCall<GroupRequest, GroupResponse>({
     method: "patch",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${element.id}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${element.id}`,
     data: data,
     needAuth: true,
   });

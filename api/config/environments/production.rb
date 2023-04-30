@@ -88,7 +88,7 @@ Rails.application.configure do
   # Devise requires a default url
   host = ENV['SHOP_API_URL']
   config.action_mailer.default_url_options = { :host => ENV['SHOP_API_URL'], protocol: 'http' }
-  config.action_mailer.delivery_method = :smpt # test to not send || smtp to send
+  config.action_mailer.delivery_method = :smtp # test to not send || smtp to send
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default :charset => "utf-8"

@@ -14,7 +14,7 @@ export async function handleTagCreate(
     props;
   const response = await handleAxiosCall<TagRequest, TagResponse>({
     method: "post",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${groupState.group.id}/tags`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${groupState.group.id}/tags`,
     data: data,
     needAuth: true,
   });
@@ -49,7 +49,7 @@ export async function handleTagUpdate(
 
   const response = await handleAxiosCall<TagRequest, TagResponse>({
     method: "patch",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${groupState.group.id}/tags/${element.id}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${groupState.group.id}/tags/${element.id}`,
     data: data,
     needAuth: true,
   });
@@ -75,7 +75,7 @@ export async function handleTagDelete(props: HandleTagDeleteProps) {
 
   const response = await handleAxiosCall<undefined, GenericMessageResponse>({
     method: "delete",
-    url: `${process.env.REACT_APP_FRONTEND_URL}/api/v1/groups/${groupState.group.id}/tags/${elementId}`,
+    url: `${process.env.REACT_APP_API_URL}/api/v1/groups/${groupState.group.id}/tags/${elementId}`,
     needAuth: true,
   });
 
