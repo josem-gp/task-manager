@@ -98,7 +98,7 @@ function AuthFormLogin({ setIsLogin }: AuthFormProps) {
           handleUserAuth({
             handleAxiosCall,
             data,
-            url: "http://localhost:3000/users/sign_in",
+            url: `${process.env.REACT_APP_FRONTEND_URL}/users/sign_in`,
             setAuthToken,
             userDispatch,
             setPopup,
