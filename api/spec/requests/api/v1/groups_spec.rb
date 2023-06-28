@@ -11,7 +11,6 @@ RSpec.describe "Api::V1::Groups", type: :request do
   describe "GET /show" do
     # 2xx RESPONSE: { "group": user_instance, 
     #                 "groupUsers": [{user: user_instance, user_icon: icon_instance}], 
-    #                 "groupTasks": {today: [task_instances], upcoming: [task_instances], past: [task_instances]}, 
     #                 "groupTags": [group_tags], 
     #                 "groupInvitations": [group_invitations]
     #               }
@@ -29,10 +28,9 @@ RSpec.describe "Api::V1::Groups", type: :request do
       it "returns a json with the info of the group" do
         json = JSON.parse(response.body)
   
-        expect(json).to have_key("group").and(have_key("groupUsers")).and(have_key("groupTasks")).and(have_key("groupTags")).and(have_key("groupInvitations"))
+        expect(json).to have_key("group").and(have_key("groupUsers")).and(have_key("groupTags")).and(have_key("groupInvitations"))
         expect(json["group"]["id"]).to eq group.id
         expect(json["groupUsers"].length).to eq 2
-        expect(json["groupTasks"].length).to eq 3
         expect(json["groupTags"].length).to eq 1
         expect(json["groupInvitations"].length).to eq 1
       end
@@ -227,7 +225,7 @@ RSpec.describe "Api::V1::Groups", type: :request do
     let(:task_two) {create :task, group: group, assignee: user, finished: true, due_date: Date.current - 10}
     let(:tags) {create_list :tag, 3, group: group}
     before do
-      # The user is not owner nor assignee of one of the following task so I will not be fetched
+      # The user is not owner nor assignee of one of the following task so it will not be fetched
       create :task, group: group, assignee: nil, finished: true, due_date: Date.current
       create :tagged_task, task: task_one, tag: tags.first
       create :tagged_task, task: task_one, tag: tags.last
@@ -244,21 +242,16 @@ RSpec.describe "Api::V1::Groups", type: :request do
       
       it { expect(response).to have_http_status(:success) }
 
-
-
-      it "returns all tasks for that group divided by date" do
+      it "returns all tasks for that group whose creator or assignee is the user" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 4 # Because of the group factory callback
-        expect(json["tasks"]["today"].length).to eq 1
-        expect(json["tasks"]["past"].length).to eq 1
+        expect(json["task_value"].length).to eq 2 # Because of the tagged tasks
       end
 
       it "returns each task and their tags" do 
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["past"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"]["past"].first["task_tags"].length).to eq 1
+        expect(json["task_value"]).to all(have_key('task').and(have_key('task_tags')))
       end
     end
 
@@ -268,19 +261,10 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns the searched tasks for that group divided by date" do
+      it "returns all tasks for that group whose creator or assignee is the user filtered by that param" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 0
-        expect(json["tasks"]["today"].length).to eq 1
-        expect(json["tasks"]["past"].length).to eq 1
-      end
-
-      it "returns each task and their tags" do 
-        json = JSON.parse(response.body)
-
-        expect(json["tasks"]["past"].first).to have_key("task").and have_key("task_tags")
-        expect(json["tasks"]["past"].first["task_tags"].length).to eq 1
+        expect(json["task_value"].length).to eq 1
       end
     end
 
@@ -289,19 +273,10 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns the searched tasks for that group divided by date" do
+      it "returns all tasks for that group whose creator or assignee is the user filtered by those params" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 4
-        expect(json["tasks"]["today"].length).to eq 0
-        expect(json["tasks"]["past"].length).to eq 0
-      end
-
-      it "returns each task and their tags" do 
-        json = JSON.parse(response.body)
-
-        expect(json["tasks"]["past"].first).to be_nil
-        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 1
+        expect(json["task_value"].length).to eq 1
       end
     end
 
@@ -310,18 +285,10 @@ RSpec.describe "Api::V1::Groups", type: :request do
 
       it { expect(response).to have_http_status(:success) }
 
-      it "returns the searched tasks for that group divided by date" do
+      it "returns all tasks for that group whose creator or assignee is the user filtered by date" do
         json = JSON.parse(response.body)
 
-        expect(json["tasks"]["upcoming"].length).to eq 4
-        expect(json["tasks"]["today"].length).to eq 1
-        expect(json["tasks"]["past"].length).to eq 0
-      end
-
-      it "returns each task and their tags" do 
-        json = JSON.parse(response.body)
-
-        expect(json["tasks"]["upcoming"].first["task_tags"].length).to eq 1
+        expect(json["task_value"].length).to eq 1
       end
     end
 

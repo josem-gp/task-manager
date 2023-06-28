@@ -5,7 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Users sign up
   # POST /users
   def create
-    group_name = sign_up_params[:groups_as_admin_attributes].first[:name]
+    group_name = sign_up_params[:groups_as_admin_attributes]&.first&.dig(:name)
     
     @user = User.new(sign_up_params.except(:groups_as_admin_attributes))
 

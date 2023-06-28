@@ -11,7 +11,7 @@ class Api::V1::InvitationsController < ApplicationController
       # We add the group id in the session so that when the user is signed up, we create a membership automatically in that group
       session[:group] = @invitation.group.id
       # We redirect to sign up page with the email set already for the user
-      redirect_to "#{ENV['SHOP_FRONTEND_URL']}/signup?email=#{CGI.escape(@invitation.email)}"
+      redirect_to "#{ENV['SHOP_FRONTEND_URL']}/sign_up?email=#{CGI.escape(@invitation.email)}", allow_other_host: true
     else
       render json: { message: "The invitation has expired already" }, status: :found, location: ENV['SHOP_FRONTEND_URL']  # render homepage
     end
