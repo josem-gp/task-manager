@@ -57,9 +57,8 @@ RSpec.describe "Api::V1::Invitations", type: :request do
 
         it "redirects invitee to sign up page with email set" do
           redirect_params = Rack::Utils.parse_query(URI.parse(response.location).query)
-
-          expect(response).to redirect_to(user_session_path(email: invitation.email))
-          expect(redirect_params).to eq("email" => invitation.email)
+          
+          expect(response).to redirect_to("http://localhost:3001/sign_up?email=#{CGI.escape(invitation.email)}")
         end
       end
     end
