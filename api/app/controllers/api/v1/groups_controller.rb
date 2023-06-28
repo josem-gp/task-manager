@@ -61,7 +61,7 @@ class Api::V1::GroupsController < ApplicationController
   # Filter tasks thats belong to the group and whose user is either the creator or assignee
   # POST /api/v1/groups/:id/filter_tasks
   def filter_tasks
-    filtered_tasks = Task.filter(filter_params).where(group: @group)
+    filtered_tasks = Task.filter(filter_params).where(group: @group).where('assignee_id = ? OR user_id = ?', current_user.id, current_user.id)
     if filtered_tasks.empty?
       render_error("There are no matches for your search", :not_found)
     else
