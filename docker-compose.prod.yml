@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:14
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - myapp_db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
@@ -13,15 +13,12 @@ services:
     build:
       context: ./api/
       dockerfile: Dockerfile
-      target: development
-    command: /bin/sh -c "rm -f /myapp-api/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+      target: production
     ports:
       - "3000:3000"
-    volumes:
-      - ./api:/myapp-api
     environment:
       TZ: Asia/Tokyo
-      RAILS_ENV: ${RAILS_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-production}
       DEVISE_JWT_SECRET_KEY: ${DEVISE_JWT_SECRET_KEY}
       GMAIL_SMTP_USER: ${GMAIL_SMTP_USER}
       GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
@@ -40,8 +37,6 @@ services:
     command: sh -c "cd myapp-front && npm install && npm start"
     ports:
       - "3001:3000"
-    volumes:
-      - ./front:/usr/src/app
     environment:
       REACT_APP_API_URL: ${REACT_APP_API_URL}
 
@@ -55,12 +50,10 @@ services:
     build:
       context: ./api/
       dockerfile: Dockerfile
-      target: development
+      target: production
     command: bundle exec sidekiq
-    volumes:
-      - ./api:/myapp-api
     environment:
-      RAILS_ENV: ${RAILS_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-production}
       REDIS_URL: ${REDIS_URL}
       GMAIL_SMTP_USER: ${GMAIL_SMTP_USER}
       GMAIL_SMTP_PASSWORD: ${GMAIL_SMTP_PASSWORD}
@@ -71,3 +64,5 @@ services:
     depends_on:
       - db
       - redis
+volumes:
+  myapp_db_data:
